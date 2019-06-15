@@ -4,12 +4,13 @@
 
 % File: main.m
 % Author: Edward Ly (m5222120)
-% Last Updated: 14 June 2019
+% Last Updated: 15 June 2019
 
 %% Clear workspace, command window, and figures.
 clear; clc; close all;
 
 %% Add paths to any external functions used.
+addpath components
 addpath utilities
 
 %% Open an audio file.
@@ -56,7 +57,7 @@ while true
     end
 
     % Sort population by fitness value and update best individual.
-    [ ir_pop, ir_fitness ] = ir_sort( ir_pop, ir_fitness );
+    [ ir_pop, ir_fitness ] = pop_sort( ir_pop, ir_fitness );
     if ir_fitness( 1, 1 ) < ir_best_fitness
         ir_best_fitness = ir_fitness( 1, 1 );
         ir_best = ir_pop( :, :, 1 );
@@ -135,126 +136,3 @@ audiowrite( output_file_name, wet_signal, SAMPLE_RATE );
 
 %% END OF SCRIPT
 fprintf("Done.\n");
-
-%% FUNCTIONS
-
-function pop = init_pop( NUM_SAMPLES, NUM_CHANNELS, POPULATION_SIZE, SAMPLE_RATE, T60 )
-% INIT_POP Generate an initial population.
-% pop = output population
-% Current algorithm: use rir_generator by Habets to generate simulated
-% rooms. The receiver, source, and room parameters are also randomly
-% generated for each individual.
-    pop = zeros( NUM_SAMPLES, NUM_CHANNELS, POPULATION_SIZE );
-
-    for i = 1:POPULATION_SIZE
-        for j = 1:NUM_CHANNELS
-            room_dim = abs( randn( 1, 3 ) ) .* 10 + 5;
-            r_pos = [ rand * room_dim( 1, 1 ), rand * room_dim( 1, 2 ), rand * room_dim( 1, 3 ) ];
-            s_pos = [ rand * room_dim( 1, 1 ), rand * room_dim( 1, 2 ), rand * room_dim( 1, 3 ) ];
-
-            c = 340;                    % Sound velocity (m/s)
-            fs = SAMPLE_RATE;           % Sample frequency (samples/s)
-            r = r_pos;                  % Receiver position [x y z] (m)
-            s = s_pos;                  % Source position [x y z] (m)
-            L = room_dim;               % Room dimensions [x y z] (m)
-            beta = T60;                 % T60 Reverberation time (s)
-            n = NUM_SAMPLES;            % Number of samples (total reverberation time)
-            mtype = 'omnidirectional';  % Type of microphone
-            order = -1;                 % -1 equals maximum reflection order!
-            dim = 3;                    % Room dimension
-            orientation = 0;            % Microphone orientation (rad)
-            hp_filter = 1;              % Enable high-pass filter
-
-            h = rir_generator( c, fs, r, s, L, beta, n, mtype, order, dim, orientation, hp_filter );
-            pop( :, j, i ) = h';
-        end
-    end
-end
-
-function f = fitness( ir, SAMPLE_RATE, ZERO_THRESHOLD, T60, ITDG, EDT, C80 )
-% FITNESS Calculate fitness value of impulse response.
-% ir = impulse response
-% f = fitness value
-    % Find highest sample and ignore previous samples for some descriptors.
-    [ impulse_max_amplitude, impulse_max_sample ] = max( ir( :, 1 ) );
-    impulse_max_dB = 20 * log10( abs(impulse_max_amplitude) );
-    IR = ir( ( impulse_max_sample + 1 ):end, 1 );
-
-    % ITDG (initial time delay gap)
-    ir_ITDG = impulse_max_sample / SAMPLE_RATE;
-
-    % T60
-    impulse_T60_sample = find( ...
-        ( IR > ZERO_THRESHOLD ) & ( 20 * log10(IR) - impulse_max_dB < -60 ), 1 ...
-    );
-    if isempty(impulse_T60_sample)
-        impulse_T60_sample = Inf;
-    end
-    ir_T60 = impulse_T60_sample / SAMPLE_RATE;
-
-    % EDT (early decay time, a.k.a. T10)
-    impulse_EDT_sample = find( ...
-        ( IR > ZERO_THRESHOLD ) & ( 20 * log10(IR) - impulse_max_dB < -10 ), 1 ...
-    );
-    if isempty(impulse_EDT_sample)
-        impulse_EDT_sample = Inf;
-    end
-    ir_EDT = impulse_EDT_sample / SAMPLE_RATE;
-
-    % C80 (clarity)
-    sample_80ms = 0.08 * SAMPLE_RATE;
-    early_reflections = ir( 1:sample_80ms, 1 );
-    late_reflections = ir( ( sample_80ms + 1 ):end, 1 );
-    early_energy = sum( early_reflections .^ 2 );
-    late_energy = sum( late_reflections .^ 2 );
-    ir_C80 = 10 * log10( early_energy / late_energy );
-
-    f = ( ir_T60 - T60 )^2 + ...
-        ( ir_ITDG - ITDG )^2 + ...
-        ( ir_EDT - EDT )^2 + ...
-        ( ir_C80 - C80 )^2;
-end
-
-function [ sorted_pop, sorted_fitness ] = ir_sort( pop, fitness )
-% IR_SORT Sort population by fitness value.
-% sorted_pop = sorted population
-% sorted_fitness = fitness values of sorted population
-% pop = unsorted population
-% fitness = fitness values of unsorted population
-    [ sorted_fitness, indices ] = sort(fitness);
-    sorted_pop = pop;
-    for i = 1:numel(indices)
-        sorted_pop( :, :, i ) = pop( :, :, indices( 1, i ) );
-    end
-end
-
-function out_pop = crossover( in_pop, SELECTION_SIZE, POPULATION_SIZE )
-% CROSSOVER Generate children and replace least fit individuals.
-% out_pop = output population
-% in_pop = input population
-% Current algorithm: replace each worst individual with the weighted
-% average of two random parents from the selection pool.
-% The weights are random for each crossover.
-    out_pop = in_pop;
-    for i = ( SELECTION_SIZE + 1 ):POPULATION_SIZE
-        parents = randperm( SELECTION_SIZE, 2 );
-
-        weight = rand;
-        parent1 = weight .* in_pop( :, :, parents(1) );
-        parent2 = ( 1 - weight ) .* in_pop( :, :, parents(2) );
-        out_pop( :, :, i ) = parent1 + parent2;
-    end
-end
-
-function out_pop = mutate( in_pop, MUTATION_RATE )
-% MUTATE Changes the population's values with some probability.
-% out_pop = output population
-% in_pop = input population
-% Current algorithm: for each affected sample,
-% add to it a random number from the normal distribution
-% (standard deviation = 0.05).
-    out_pop = in_pop;
-    [ I, J, K ] = size(out_pop);
-    mut_values = double( rand( I, J, K ) < MUTATION_RATE ) .* randn( I, J, K ) .* 0.1;
-    out_pop = out_pop + mut_values;
-end
