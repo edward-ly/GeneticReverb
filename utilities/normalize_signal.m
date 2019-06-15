@@ -1,11 +1,11 @@
 function out = normalize_signal(in, peak, mode)
-% NORMALIZE_SIGNAL Normalizes a signal so that all values are no higher
-% than peak level.
+% NORMALIZE_SIGNAL Normalizes a signal so that all values are no higher than
+% peak level.
 % out = output signal
 % in = input signal
 % peak = max value
-% mode = ['each', 'all'] normalize each channel separately or normalize
-% all channels at once
+% mode = ['each', 'all'] normalize each channel independently or normalize
+% entire signal at once
     if mode == "each"
         [rows, cols] = size(in);
         out = zeros(rows, cols);

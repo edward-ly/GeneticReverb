@@ -14,9 +14,9 @@ addpath components
 addpath utilities
 
 %% Open an audio file for input.
-[ file_name, file_path ] = uigetfile( '*.wav', 'Open audio file' );
-[ dry_signal, audio_sample_rate ] = audioread( strcat( file_path, file_name ) );
-[ num_audio_samples, num_audio_channels ] = size(dry_signal);
+[fileName, filePath] = uigetfile('*.wav', 'Open audio file');
+[drySignal, audioSampleRate] = audioread(strcat(filePath, fileName));
+[numAudioSamples, numAudioChannels] = size(drySignal);
 
 %% Genetic algorithm parameters.
 POPULATION_SIZE = 20;
@@ -33,8 +33,8 @@ C80 = 1;
 BR = 1.1;
 
 %% Impulse response parameters.
-SAMPLE_RATE = audio_sample_rate;
-NUM_SAMPLES = round( ( T60 * 1.1 ) * SAMPLE_RATE );
+SAMPLE_RATE = audioSampleRate;
+NUM_SAMPLES = round((T60 * 1.1) * SAMPLE_RATE);
 NUM_CHANNELS = 1;
 ZERO_THRESHOLD = 1e-6;
 
@@ -42,95 +42,102 @@ ZERO_THRESHOLD = 1e-6;
 
 % Initialize population.
 fprintf("Initializing. Please wait...\n");
-ir_pop = init_pop( NUM_SAMPLES, NUM_CHANNELS, POPULATION_SIZE, SAMPLE_RATE, T60 );
-ir_fitness = Inf( 1, POPULATION_SIZE );
-ir_best_fitness = Inf;
-current_gen = 0;
+irPopulation = init_pop( ...
+    NUM_SAMPLES, NUM_CHANNELS, POPULATION_SIZE, SAMPLE_RATE, T60 ...
+);
+irFitness = Inf(1, POPULATION_SIZE);
+irBestFitness = Inf;
+currentGen = 0;
 
-fitness_over_time = zeros( NUM_GENERATIONS + 1, 1 );
+fitnessOverTime = zeros(NUM_GENERATIONS + 1, 1);
 
 while true
     % Evaluate population.
     for i = 1:POPULATION_SIZE
-        ir_fitness( 1, i ) = fitness( ir_pop( :, :, i ), ...
-            SAMPLE_RATE, ZERO_THRESHOLD, T60, ITDG, EDT, C80 );
+        irFitness(1, i) = fitness( ...
+            irPopulation(:, :, i), ...
+            SAMPLE_RATE, ZERO_THRESHOLD, T60, ITDG, EDT, C80 ...
+        );
     end
 
     % Sort population by fitness value and update best individual.
-    [ ir_pop, ir_fitness ] = pop_sort( ir_pop, ir_fitness );
-    if ir_fitness( 1, 1 ) < ir_best_fitness
-        ir_best_fitness = ir_fitness( 1, 1 );
-        ir_best = ir_pop( :, :, 1 );
+    [irPopulation, irFitness] = sort_pop(irPopulation, irFitness);
+    if irFitness(1, 1) < irBestFitness
+        irBestFitness = irFitness(1, 1);
+        irBest = irPopulation(:, :, 1);
     end
-    fitness_over_time( current_gen + 1, 1 ) = ir_best_fitness;
+    fitnessOverTime(currentGen + 1, 1) = irBestFitness;
 
-    fprintf( "Generation %d: best fitness value %d\n", current_gen, ir_best_fitness );
+    fprintf("Generation %d: best fitness value %d\n", ...
+        currentGen, irBestFitness ...
+    );
 
     % Stop if fitness value is within threshold.
-    if ir_best_fitness < FITNESS_THRESHOLD
+    if irBestFitness < FITNESS_THRESHOLD
         fprintf("Found optimal solution.\n");
         break
     end
 
     % Go to next generation (or stop if max number of generations reached).
-    current_gen = current_gen + 1;
-    if current_gen > NUM_GENERATIONS
+    currentGen = currentGen + 1;
+    if currentGen > NUM_GENERATIONS
         fprintf("Maximum number of generations reached.\n");
         break
     end
 
     % Select best individuals and generate children.
-    ir_pop = crossover( ir_pop, SELECTION_SIZE, POPULATION_SIZE );
+    irPopulation = crossover(irPopulation, SELECTION_SIZE, POPULATION_SIZE);
+    
     % Mutate population.
-    ir_pop = mutate( ir_pop, MUTATION_RATE );
+    irPopulation = mutate(irPopulation, MUTATION_RATE);
 end
 
 %% Show impulse response plot.
 figure
-plot( ir_best( :, 1 ) )
+plot(irBest(:, 1))
 grid on
 xlabel('Sample')
 ylabel('Amplitude')
 
-%% Show fitness over time.
+%% Show best fitness value over generations.
 figure
-plot( 0:NUM_GENERATIONS, fitness_over_time )
+plot(0:NUM_GENERATIONS, fitnessOverTime)
 grid on
 xlabel('Generation')
 ylabel('Fitness')
 
 %% Save best impulse response as audio file.
 % Normalize impulse response.
-ir_best = normalize_signal( ir_best, 1, "each" );
+irBest = normalize_signal(irBest, 1, "each");
 
-% Duplicate impulse response to accommodate number of audio channels, if necessary.
-if NUM_CHANNELS < num_audio_channels
-    ir_best = repmat( ir_best, 1, ceil( num_audio_channels / NUM_CHANNELS ) );
+% Duplicate impulse response to accommodate number of audio channels,
+% if necessary.
+if NUM_CHANNELS < numAudioChannels
+    irBest = repmat(irBest, 1, ceil(numAudioChannels / NUM_CHANNELS));
 end
 
 % Keep only channels that will affect input audio.
-ir_best = ir_best( :, 1:num_audio_channels );
+irBest = irBest(:, 1:numAudioChannels);
 
 % Write to WAV file.
-audiowrite( "output/ir.wav", ir_best, SAMPLE_RATE );
+audiowrite("output/ir.wav", irBest, SAMPLE_RATE);
 
 %% Apply the impulse response to the input audio signal.
 
-% Add silence to the end of the dry signal with duration equal to duration
-% of impulse response (to ensure trailing audio of wet signal doesn't get
-% cut off).
-dry_signal = cat( 1, dry_signal, zeros( NUM_SAMPLES, num_audio_channels ) );
+% Add silence to the end of the dry signal with duration equal to duration of
+% impulse response (to ensure trailing audio of wet signal doesn't get cut off).
+drySignal = cat(1, drySignal, zeros(NUM_SAMPLES, numAudioChannels));
 
 % Apply impulse response to input audio. Each column/channel of the impulse
 % response will filter the corresponding column/channel in the audio.
-wet_signal = fftfilt( ir_best, dry_signal );
+wetSignal = fftfilt(irBest, drySignal);
 
 % Normalize audio.
-wet_signal = normalize_signal( wet_signal, 0.99, "all" );
+wetSignal = normalize_signal(wetSignal, 0.99, "all");
 
 % Write to WAV file.
-output_file_name = strcat( "output/", replace( file_name, ".wav", "_wet.wav" ) );
-audiowrite( output_file_name, wet_signal, SAMPLE_RATE );
+outputFileName = strcat("output/", replace(fileName, ".wav", "_wet.wav"));
+audiowrite(outputFileName, wetSignal, SAMPLE_RATE);
 
 %% END OF SCRIPT
 fprintf("Done.\n");
