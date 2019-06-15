@@ -21,7 +21,7 @@ addpath utilities
 %% Genetic algorithm parameters.
 POPULATION_SIZE = 20;
 SELECTION_SIZE = 10;
-NUM_GENERATIONS = 200;
+NUM_GENERATIONS = 50;
 FITNESS_THRESHOLD = 1e-4;
 MUTATION_RATE = 0.02;
 
@@ -55,8 +55,7 @@ while true
     % Evaluate population.
     for i = 1:POPULATION_SIZE
         irFitness(1, i) = fitness( ...
-            irPopulation(:, :, i), ...
-            SAMPLE_RATE, ZERO_THRESHOLD, T60, ITDG, EDT, C80 ...
+            irPopulation(:, :, i), SAMPLE_RATE, T60, ITDG, EDT, C80 ...
         );
     end
 
