@@ -1,9 +1,9 @@
-% Generates an impulse response according to reverb parameters and saves it to a WAV file ("ir.wav").
-% Also applies the impulse response to an audio signal from a file upon user request
-% and saves the output ("output.wav").
+% Generates an impulse response according to reverb parameters.
+% Also applies the impulse response to an audio signal from a WAV file.
+% The impulse response and output audio are also saved as WAV files.
 
 % File: main.m
-% Author: Edward Ly (m5222120)
+% Author: Edward Ly (m5222120@u-aizu.ac.jp)
 % Last Updated: 15 June 2019
 
 %% Clear workspace, command window, and figures.
@@ -14,7 +14,7 @@ addpath components
 addpath utilities
 
 %% Open an audio file.
-[ file_name, file_path ] = uigetfile( '*.wav', 'Open audio file' ); % open file dialog box
+[ file_name, file_path ] = uigetfile( '*.wav', 'Open audio file' );
 [ dry_signal, audio_sample_rate ] = audioread( strcat( file_path, file_name ) );
 [ num_audio_samples, num_audio_channels ] = size(dry_signal);
 
@@ -38,7 +38,7 @@ NUM_SAMPLES = round( ( T60 * 1.1 ) * SAMPLE_RATE );
 NUM_CHANNELS = 1;
 ZERO_THRESHOLD = 1e-6;
 
-%% Genetic Algorithm
+%% Genetic Algorithm.
 
 % Initialize population.
 fprintf("Initializing. Please wait...\n");
@@ -99,7 +99,7 @@ grid on
 xlabel('Generation')
 ylabel('Fitness')
 
-%% Write best impulse response to audio file.
+%% Save best impulse response as audio file.
 % Normalize impulse response.
 ir_best = normalize_signal( ir_best, 1, "each" );
 
@@ -111,10 +111,10 @@ end
 % Keep only channels that will affect input audio.
 ir_best = ir_best( :, 1:num_audio_channels );
 
-% Write to file.
+% Write to WAV file.
 audiowrite( "output/ir.wav", ir_best, SAMPLE_RATE );
 
-%% Apply the impulse response to the audio signal.
+%% Apply the impulse response to the input audio signal.
 
 % Add silence to the end of the dry signal with duration equal to duration
 % of impulse response (to ensure trailing samples of wet signal don't get
@@ -130,7 +130,7 @@ end
 % Normalize audio.
 wet_signal = normalize_signal( wet_signal, 0.99, "all" );
 
-% Write to file.
+% Write to WAV file.
 output_file_name = strcat( "output/", replace( file_name, ".wav", "_wet.wav" ) );
 audiowrite( output_file_name, wet_signal, SAMPLE_RATE );
 
