@@ -13,7 +13,7 @@ clear; clc; close all;
 addpath components
 addpath utilities
 
-%% Open an audio file.
+%% Open an audio file for input.
 [ file_name, file_path ] = uigetfile( '*.wav', 'Open audio file' );
 [ dry_signal, audio_sample_rate ] = audioread( strcat( file_path, file_name ) );
 [ num_audio_samples, num_audio_channels ] = size(dry_signal);
@@ -117,15 +117,13 @@ audiowrite( "output/ir.wav", ir_best, SAMPLE_RATE );
 %% Apply the impulse response to the input audio signal.
 
 % Add silence to the end of the dry signal with duration equal to duration
-% of impulse response (to ensure trailing samples of wet signal don't get
+% of impulse response (to ensure trailing audio of wet signal doesn't get
 % cut off).
 dry_signal = cat( 1, dry_signal, zeros( NUM_SAMPLES, num_audio_channels ) );
 
-% Apply impulse response(s) to each channel separately.
-wet_signal = zeros( num_audio_samples + NUM_SAMPLES, num_audio_channels );
-for i = 1:num_audio_channels
-    wet_signal( :, i ) = fftfilt( ir_best( :, i ), dry_signal( :, i ) );
-end
+% Apply impulse response to input audio. Each column/channel of the impulse
+% response will filter the corresponding column/channel in the audio.
+wet_signal = fftfilt( ir_best, dry_signal );
 
 % Normalize audio.
 wet_signal = normalize_signal( wet_signal, 0.99, "all" );
