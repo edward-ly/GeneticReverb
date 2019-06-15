@@ -25,7 +25,7 @@ function f = fitness(ir, SAMPLE_RATE, ZERO_THRESHOLD, T60, ITDG, EDT, C80)
     irEDT = impulseEdtSample / SAMPLE_RATE;
 
     % C80 (clarity)
-    sample_80ms = 0.08 * SAMPLE_RATE;
+    sample_80ms = floor(0.08 * SAMPLE_RATE);
     earlyReflections = ir(1:sample_80ms, 1);
     lateReflections  = ir((sample_80ms + 1):end, 1);
     earlyEnergy = sum(earlyReflections .^ 2);
