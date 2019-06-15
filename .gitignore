@@ -1,0 +1,14 @@
+# Ignore MATLAB Drive files.
+**/.MATLABDriveTag
+
+# Ignore input/output .wav audio files.
+**/output
+**/*.wav
+
+# Ignore compiled MATLAB MEX functions.
+**/*.mexa64
+**/*.mexmaci64
+**/*.mexw64
+
+# Ignore example files.
+**/*example*
