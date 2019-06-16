@@ -88,7 +88,7 @@ while true
     irPopulation = crossover(irPopulation, SELECTION_SIZE, POPULATION_SIZE);
     
     % Mutate entire population.
-    irPopulation = mutate(irPopulation, MUTATION_RATE);
+    irPopulation = mutate(irPopulation, MUTATION_RATE, SAMPLE_RATE);
 end
 
 %% Show impulse response plot.
