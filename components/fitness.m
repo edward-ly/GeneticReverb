@@ -1,6 +1,6 @@
 function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
 % FITNESS Calculate fitness value of impulse response.
-% ir = impulse response
+% ir = impulse response (column vector)
 % f = fitness value
     % Calculate intensity values for each sample.
     irIntensities = ir .^ 2;
@@ -8,9 +8,9 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
     % Find peaks in intensity for remaining fitness calculations.
     MIN_PEAK_TIME = 0.001;
     MIN_INTENSITY_LEVEL = 1e-3;
-    maxIntensity = max(irIntensities(:, 1));
+    maxIntensity = max(irIntensities);
     [peakIntensities, peakTimes] = findpeaks( ...
-        irIntensities(:, 1), ...
+        irIntensities, ...
         SAMPLE_RATE, ...
         "MinPeakDistance", MIN_PEAK_TIME, ...
         "MinPeakProminence", maxIntensity * MIN_INTENSITY_LEVEL, ...
@@ -39,8 +39,8 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
 
     % C80 (clarity)
     sample_80ms = floor(0.08 * SAMPLE_RATE);
-    earlyReflections = irIntensities(1:sample_80ms, 1);
-    lateReflections  = irIntensities((sample_80ms + 1):end, 1);
+    earlyReflections = irIntensities(1:sample_80ms);
+    lateReflections  = irIntensities((sample_80ms + 1):end);
     earlyEnergy = sum(earlyReflections);
     lateEnergy  = sum(lateReflections);
     irC80 = 10 * log10(earlyEnergy / lateEnergy);
