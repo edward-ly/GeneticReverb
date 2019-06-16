@@ -21,9 +21,9 @@ addpath utilities
 %% Genetic algorithm parameters.
 POPULATION_SIZE = 20;
 SELECTION_SIZE = 10;
-NUM_GENERATIONS = 20;
+NUM_GENERATIONS = 40;
 FITNESS_THRESHOLD = 1e-4;
-MUTATION_RATE = 0.02;
+MUTATION_RATE = 0.01;
 
 %% User input (reverb fitness) parameters.
 T60 = 1;
