@@ -2,9 +2,9 @@
 % Also applies the impulse response to an audio signal from a WAV file.
 % The impulse response and output audio are also saved as WAV files.
 
-% File: main.m
+% File: main_script.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Last Updated: 15 June 2019
+% Last Updated: 16 June 2019
 
 %% Clear workspace, command window, and figures.
 clear; clc; close all;
@@ -84,10 +84,11 @@ while true
         break
     end
 
-    % Select best individuals and generate children.
+    % Select best individuals and generate children to replace remaining
+    % individuals.
     irPopulation = crossover(irPopulation, SELECTION_SIZE, POPULATION_SIZE);
     
-    % Mutate population.
+    % Mutate entire population.
     irPopulation = mutate(irPopulation, MUTATION_RATE);
 end
 
