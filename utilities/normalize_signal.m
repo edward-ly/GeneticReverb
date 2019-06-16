@@ -4,20 +4,24 @@ function out = normalize_signal(in, peak, mode)
 % out = output signal
 % in = input signal
 % peak = max value
-% mode = ['each', 'all'] normalize each channel independently or normalize
-% entire signal at once
-    if mode == "each"
-        [rows, cols] = size(in);
-        out = zeros(rows, cols);
-
-        for a = 1:cols
-            out(:, a) = peak .* in(:, a) ./ max(abs(in(:, a)));
-        end
+% mode = ['all' (default), 'each'] normalize entire signal at once or
+% normalize each channel independently
+    if nargin < 3 || isempty(mode)
+       mode = "all";
+    end
+    
+    [numSamples, numChannels] = size(in);
+    if numChannels == 1 || mode == "all"
+        out = peak .* in ./ max(max(abs(in)));
         return
     end
+    
+    if mode == "each"
+        out = zeros(numSamples, numChannels);
 
-    if mode == "all"
-        out = peak .* in ./ max(max(abs(in)));
+        for i = 1:numChannels
+            out(:, i) = peak .* in(:, i) ./ max(abs(in(:, i)));
+        end
         return
     end
 

@@ -5,7 +5,7 @@ function out = mutate(in, MUTATION_RATE)
 % Current algorithm: for each affected sample, add to it a random number from
 % the normal distribution (with standard deviation = 0.1).
     out = in;
-    [I, J, K] = size(out);
-    mutValues = double(rand(I, J, K) < MUTATION_RATE) .* randn(I, J, K) .* 0.1;
+    [I, J] = size(out);
+    mutValues = double(rand(I, J) < MUTATION_RATE) .* randn(I, J) .* 0.1;
     out = out + mutValues;
 end

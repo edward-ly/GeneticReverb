@@ -7,6 +7,6 @@ function [sortedPop, sortedFitness] = sort_pop(pop, fitness)
     [sortedFitness, indices] = sort(fitness);
     sortedPop = pop;
     for i = 1:numel(indices)
-        sortedPop(:, :, i) = pop(:, :, indices(1, i));
+        sortedPop(:, i) = pop(:, indices(i));
     end
 end

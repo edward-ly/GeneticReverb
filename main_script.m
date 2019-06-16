@@ -35,17 +35,16 @@ BR = 1.1;
 %% Impulse response parameters.
 SAMPLE_RATE = audioSampleRate;
 NUM_SAMPLES = round((T60 * 1.1) * SAMPLE_RATE);
-NUM_CHANNELS = 1;
 ZERO_THRESHOLD = 1e-6;
+% Only one impulse response channel per individual.
+% NUM_CHANNELS = 1;
 
 %% Genetic Algorithm.
 
 % Initialize population.
 fprintf("Initializing. Please wait...\n");
-irPopulation = init_pop( ...
-    NUM_SAMPLES, NUM_CHANNELS, POPULATION_SIZE, SAMPLE_RATE, T60 ...
-);
-irFitness = Inf(1, POPULATION_SIZE);
+irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60);
+irFitness = Inf(POPULATION_SIZE, 1);
 irBestFitness = Inf;
 currentGen = 0;
 
@@ -54,18 +53,18 @@ fitnessOverTime = zeros(NUM_GENERATIONS + 1, 1);
 while true
     % Evaluate population.
     for i = 1:POPULATION_SIZE
-        irFitness(1, i) = fitness( ...
-            irPopulation(:, 1, i), SAMPLE_RATE, T60, ITDG, EDT, C80 ...
+        irFitness(i) = fitness( ...
+            irPopulation(:, i), SAMPLE_RATE, T60, ITDG, EDT, C80 ...
         );
     end
 
     % Sort population by fitness value and update best individual.
     [irPopulation, irFitness] = sort_pop(irPopulation, irFitness);
-    if irFitness(1, 1) < irBestFitness
-        irBestFitness = irFitness(1, 1);
-        irBest = irPopulation(:, :, 1);
+    if irFitness(1) < irBestFitness
+        irBestFitness = irFitness(1);
+        irBest = irPopulation(:, 1);
     end
-    fitnessOverTime(currentGen + 1, 1) = irBestFitness;
+    fitnessOverTime(currentGen + 1) = irBestFitness;
 
     fprintf("Generation %d: best fitness value %d\n", ...
         currentGen, irBestFitness ...
@@ -94,7 +93,7 @@ end
 
 %% Show impulse response plot.
 figure
-plot(irBest(:, 1))
+plot(irBest)
 grid on
 xlabel('Sample')
 ylabel('Amplitude')
@@ -104,20 +103,17 @@ figure
 plot(0:NUM_GENERATIONS, fitnessOverTime)
 grid on
 xlabel('Generation')
-ylabel('Fitness')
+ylabel('Fitness Value')
 
 %% Save best impulse response as audio file.
 % Normalize impulse response.
-irBest = normalize_signal(irBest, 1, "each");
+irBest = normalize_signal(irBest, 1);
 
 % Duplicate impulse response to accommodate number of audio channels,
 % if necessary.
-if NUM_CHANNELS < numAudioChannels
-    irBest = repmat(irBest, 1, ceil(numAudioChannels / NUM_CHANNELS));
+if numAudioChannels > 1
+    irBest = repmat(irBest, 1, numAudioChannels);
 end
-
-% Keep only channels that will affect input audio.
-irBest = irBest(:, 1:numAudioChannels);
 
 % Write to WAV file.
 audiowrite("output/ir.wav", irBest, SAMPLE_RATE);

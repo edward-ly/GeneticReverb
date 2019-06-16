@@ -9,8 +9,8 @@ function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE)
     for i = (SELECTION_SIZE + 1):POPULATION_SIZE
         parents = randperm(SELECTION_SIZE, 2);
         weight = rand;
-        parent1 =      weight  .* in(:, :, parents(1));
-        parent2 = (1 - weight) .* in(:, :, parents(2));
-        out(:, :, i) = parent1 + parent2;
+        parent1 =      weight  .* in(:, parents(1));
+        parent2 = (1 - weight) .* in(:, parents(2));
+        out(:, i) = parent1 + parent2;
     end
 end
