@@ -21,16 +21,18 @@ addpath utilities
 %% Genetic algorithm parameters.
 POPULATION_SIZE = 20;
 SELECTION_SIZE = 10;
-NUM_GENERATIONS = 40;
+NUM_GENERATIONS = 50;
 FITNESS_THRESHOLD = 1e-4;
 MUTATION_RATE = 0.01;
 
 %% User input (reverb fitness) parameters.
-T60 = 1;
-ITDG = 0.005;
-EDT = 0.1;
-C80 = 1;
-BR = 1.1;
+T60 = 1.2;   % Total reverberation time (s)
+ITDG = 0.01; % Initial delay (s)
+EDT = 0.1;   % Early decay time (s)
+C80 = 0;     % Clarity, or relative loudness of early reverberations over late
+             % reverberations (dB)
+BR = 1.1;    % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
+             % frequency to high frequency reverberation) (currently not used)
 
 %% Impulse response parameters.
 SAMPLE_RATE = audioSampleRate;
