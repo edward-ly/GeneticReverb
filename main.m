@@ -2,7 +2,7 @@
 % Also applies the impulse response to an audio signal from a WAV file.
 % The impulse response and output audio are also saved as WAV files.
 
-% File: main_script.m
+% File: main.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
 % Version: 0.2.0
 % Last Updated: 16 June 2019
