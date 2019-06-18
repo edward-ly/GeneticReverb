@@ -13,5 +13,9 @@
 **/output
 **/*.wav
 
+# Ignore external packages/libraries.
+**/lib
+**/packages
+
 # Ignore example files.
 **/*example*
