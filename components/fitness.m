@@ -46,9 +46,10 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
     lateEnergy  = sum(lateReflections);
     irC80 = 10 * log10(earlyEnergy / lateEnergy);
 
-    % Calculate sum of squares of errors.
+    % Calculate the mean squared error.
     f = (irT60  - T60) ^ 2 + ...
         (irITDG - ITDG) ^ 2 + ...
         (irEDT  - EDT) ^ 2 + ...
         (irC80  - C80) ^ 2;
+    f = f / 4;
 end
