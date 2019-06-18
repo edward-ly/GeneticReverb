@@ -4,8 +4,8 @@
 
 % File: main.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.2.0
-% Last Updated: 16 June 2019
+% Version: 0.2.1
+% Last Updated: 18 June 2019
 
 % This program is free software; you can redistribute it and/or modify it under
 % the terms of the GNU General Public License as published by the Free Software
