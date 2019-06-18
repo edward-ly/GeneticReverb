@@ -10,13 +10,13 @@ You can also load the generated impulse response into the [IR Reverb](https://gi
 
 ## Setup
 
-In the project root directory, clone the RIR Generator repository into a new directory (we recommend something like `packages/RIR-Generator/`).
+From the project root directory, clone the RIR Generator repository into a new directory.
 
 ```sh
->> git clone git@github.com:ehabets/RIR-Generator.git packages/RIR-Generator/
+$ git clone git@github.com:ehabets/RIR-Generator.git <path>
 ```
 
-Now you can compile the source code for the `rir_generator` MEX function from the MATLAB command window.
+Then you can compile the source code for the `rir_generator` MEX function from the MATLAB command window.
 
 ```sh
 >> mex -setup C++
@@ -27,7 +27,7 @@ Now the binary MEX file should be added to the project root directory.
 
 ## Running the Script
 
-To run the script, open `main.m` in the MATLAB editor, adjust parameter values as needed, and click on __Editor > Run__ or run `main` in the MATLAB command window.
+To run the `main.m` script, open the file in the MATLAB editor, adjust parameter values as needed, and click on __Editor > Run__ or run `main` in the MATLAB command window.
 
 ## License
 
