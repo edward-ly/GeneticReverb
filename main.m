@@ -134,15 +134,14 @@ end
 % Write to WAV file.
 audiowrite("output/ir.wav", irBest, SAMPLE_RATE);
 
-%% Apply the impulse response to the input audio signal.
+%% Apply impulse response to input audio signal.
 
-% Add silence to the end of the dry signal with duration equal to duration of
-% impulse response (to ensure trailing audio of wet signal doesn't get cut off).
-drySignal = cat(1, drySignal, zeros(NUM_SAMPLES, numAudioChannels));
-
-% Apply impulse response to input audio. Each column/channel of the impulse
+% Apply impulse response via convolution. Each column/channel of the impulse
 % response will filter the corresponding column/channel in the audio.
-wetSignal = fftfilt(irBest, drySignal);
+wetSignal = zeros(numAudioSamples + NUM_SAMPLES - 1, numAudioChannels);
+for i = 1:numAudioChannels
+    wetSignal(:, i) = conv(irBest(:, i), drySignal(:, i));
+end
 
 % Normalize audio.
 wetSignal = normalize_signal(wetSignal, 0.99, "all");
