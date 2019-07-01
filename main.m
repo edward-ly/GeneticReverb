@@ -35,7 +35,7 @@ addpath utilities
 %% Genetic algorithm parameters.
 POPULATION_SIZE = 20;
 SELECTION_SIZE = 10;
-NUM_GENERATIONS = 50;
+NUM_GENERATIONS = 20;
 FITNESS_THRESHOLD = 1e-4;
 MUTATION_RATE = 0.01;
 
