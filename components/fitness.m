@@ -2,48 +2,34 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
 % FITNESS Calculate fitness value of impulse response.
 % ir = impulse response (column vector)
 % f = fitness value
-    % Calculate intensity values for each sample.
-    irIntensities = ir .^ 2;
-
-    % Find peaks in intensity for remaining fitness calculations.
-    MIN_PEAK_TIME = 0.001;
-    MIN_INTENSITY_LEVEL = 1e-3;
-    maxIntensity = max(irIntensities);
-    PEAK_THRESHOLD = maxIntensity * MIN_INTENSITY_LEVEL;
-    [peakIntensities, peakIndices] = findpeaks( ...
-        irIntensities, ...
-        "MinPeakDistance", MIN_PEAK_TIME, ...
-        "MinPeakProminence", PEAK_THRESHOLD, ...
-        "MinPeakHeight", PEAK_THRESHOLD ...
-    );
-    if isempty(peakIntensities), f = Inf; return; end
-    peakTimes = peakIndices ./ SAMPLE_RATE;
-
-    % Find sample of highest intensity and calculate its dB level.
-    [irMaxIntensity, irMaxTimeIndex] = max(peakIntensities);
-    irMaxDB = 10 * log10(irMaxIntensity);
+    % Calculate relative levels in decibels for each sample.
+    irLevels = 10 .* log10(ir .^ 2);
 
     % ITDG (initial time delay gap)
-    irITDG = peakTimes(irMaxTimeIndex);
+    % Calculate time of highest intensity.
+    [~, irMaxIndex] = max(irLevels);
+    irITDG = irMaxIndex / SAMPLE_RATE;
 
     % T60
-    % Calculate as T30 * 2, where T30 is approximately the time of last peak
-    % above -30 dB minus time of peak at 0 dB.
-    irT60 = 2 * (peakTimes(end) - irITDG);
+    % Calculate slope in dB/s of linear regression of impulse response levels,
+    % then divide -60 dB by the slope to get T60.
+    % Ignore first 0.1 seconds for better results.
+    sample_100ms = ceil(0.1 * SAMPLE_RATE);
+    x = (sample_100ms:length(irLevels))' ./ SAMPLE_RATE;
+    X = [ones(length(x), 1) x];
+    Y = irLevels(sample_100ms:end);
+    linReg = X \ Y;
+    irT60 = -60 / linReg(2);
 
     % EDT (early decay time, a.k.a. T10)
-    peakLevels = 10 .* log10(peakIntensities) - irMaxDB;
-    irEdtPeakTimeIndices = peakLevels < -10;
-    irEdtPeakTimes = peakTimes(irEdtPeakTimeIndices);
-    irEDT = min(irEdtPeakTimes(irEdtPeakTimes > irITDG));
-    if isempty(irEDT), f = Inf; return; end
+    irEDT = irT60 / 6;
 
     % C80 (clarity)
     sample_80ms = floor(0.08 * SAMPLE_RATE);
-    earlyReflections = irIntensities(1:sample_80ms);
-    lateReflections  = irIntensities((sample_80ms + 1):end);
-    earlyEnergy = sum(earlyReflections);
-    lateEnergy  = sum(lateReflections);
+    earlyReflections = ir(1:sample_80ms);
+    lateReflections  = ir((sample_80ms + 1):end);
+    earlyEnergy = sum(earlyReflections .^ 2);
+    lateEnergy  = sum(lateReflections .^ 2);
     irC80 = 10 * log10(earlyEnergy / lateEnergy);
 
     % Calculate the mean squared error.
