@@ -29,15 +29,9 @@ function pop = init_pop( ...
         L = roomDims;               % Room dimensions [x y z] (m)
         beta = T60;                 % T60 Reverberation time (s)
         n = NUM_SAMPLES;            % Total reverberation time (samples)
-        mtype = 'omnidirectional';  % Type of microphone
         order = -1;                 % -1 equals maximum reflection order!
-        dim = 3;                    % Room dimension
-        orientation = 0;            % Microphone orientation (rad)
         hpf = 1;                    % Enable high-pass filter
 
-        h = rir_generator(c, fs, r, s, L, beta, ...    % required params
-            n, mtype, order, dim, orientation, hpf ... % optional params
-        );
-        pop(:, i) = h';
+        pop(:, i) = rir_generator(c, fs, r, s, L, beta, n, order, hpf);
     end
 end

@@ -33,14 +33,14 @@ addpath utilities
 [numAudioSamples, numAudioChannels] = size(drySignal);
 
 %% Genetic algorithm parameters.
-POPULATION_SIZE = 20;
-SELECTION_SIZE = 10;
-NUM_GENERATIONS = 20;
+POPULATION_SIZE = 10;
+SELECTION_SIZE = 5;
+NUM_GENERATIONS = 25;
 FITNESS_THRESHOLD = 1e-4;
 MUTATION_RATE = 0.01;
 
 %% User input (reverb fitness) parameters.
-T60 = 1.2;   % Total reverberation time (s)
+T60 = 1.0;   % Total reverberation time (s)
 ITDG = 0.01; % Initial delay (s)
 EDT = 0.1;   % Early decay time (s)
 C80 = 0;     % Clarity, or relative loudness of early reverberations over late
@@ -50,7 +50,7 @@ BR = 1.1;    % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
 
 %% Impulse response parameters.
 SAMPLE_RATE = audioSampleRate;
-NUM_SAMPLES = round((T60 * 1.1) * SAMPLE_RATE);
+NUM_SAMPLES = round((T60 * 1.5) * SAMPLE_RATE);
 ZERO_THRESHOLD = 1e-6;
 % Only one impulse response channel per individual.
 % NUM_CHANNELS = 1;
