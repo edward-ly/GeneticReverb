@@ -101,7 +101,8 @@ while true
 
     % Select best individuals and generate children to replace remaining
     % individuals.
-    irPopulation = crossover(irPopulation, SELECTION_SIZE, POPULATION_SIZE);
+    irPopulation = crossover(irPopulation, SELECTION_SIZE, POPULATION_SIZE, ...
+        NUM_SAMPLES, ZERO_THRESHOLD);
     
     % Mutate entire population.
     irPopulation = mutate(irPopulation, MUTATION_RATE, SAMPLE_RATE);
