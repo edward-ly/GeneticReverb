@@ -17,5 +17,9 @@
 **/lib
 **/packages
 
-# Ignore example files.
+# Ignore example and test files.
 **/*example*
+**/*test*
+
+# Ignore RIR-Generator repository.
+**/*RIR-Generator*
