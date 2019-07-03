@@ -16,11 +16,14 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
         S = 2 * (L(1)*L(3) + L(2)*L(3) + L(1)*L(2)); % room surface area
         alfa = 24 * V * log(10.0) / (c * S * beta); % Sabin-Franklin's formula
         if alfa > 1
-            error("Error: Reflection coefficient cannot be calculated using the current room parameters, i.e. room size and reverberation time. Please change the room parameters or reverberation time.");
+            error(['Error: Reflection coefficient cannot be calculated ' ...
+                'using the current room parameters, i.e. room size and ' ...
+                'reverberation time. Please change the room parameters or ' ...
+                'reverberation time.']);
         end
         beta_hat = sqrt(1 - alfa);
     else
-        error("Error: Reverberation time must be positive.\n");
+        error('Error: Reverberation time must be positive.\n');
 	end
 
     % Calculate total time of impulse response in seconds
@@ -32,9 +35,12 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
     zMaxOrder = ceil(c * time / (2 * L(3)));
     
     % Create lookup tables for each dimension
-    [xDistSq, xRefCoef] = make_tables(L(1), r(1), s(1), beta_hat, beta_hat, xMaxOrder);
-    [yDistSq, yRefCoef] = make_tables(L(2), r(2), s(2), beta_hat, beta_hat, yMaxOrder);
-    [zDistSq, zRefCoef] = make_tables(L(3), r(3), s(3), beta_hat, beta_hat, zMaxOrder);
+    [xDistSq, xRefCoef] = make_tables( ...
+        L(1), r(1), s(1), beta_hat, beta_hat, xMaxOrder);
+    [yDistSq, yRefCoef] = make_tables( ...
+        L(2), r(2), s(2), beta_hat, beta_hat, yMaxOrder);
+    [zDistSq, zRefCoef] = make_tables( ...
+        L(3), r(3), s(3), beta_hat, beta_hat, zMaxOrder);
     
     % Initialize impulse response array
     h = zeros(nSamples, 1);
@@ -57,7 +63,8 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
                 if samp > nSamples, break; end
                 
                 % Add echo to impulse response array
-                h(samp) = h(samp) + (xRefCoef(i) * yRefCoef(j) * zRefCoef(k) / dist);
+                h(samp) = h(samp) + ...
+                    (xRefCoef(i) * yRefCoef(j) * zRefCoef(k) / dist);
                 
                 k = k + 1;
             end

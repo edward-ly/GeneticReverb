@@ -13,12 +13,14 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
     % T60
     % Calculate time of first sample whose level is 60 dB below highest sample.
     irTestLevels = irLevels(irMaxIndex:end);
-    irT60Sample = find(irTestLevels ~= -Inf & irTestLevels - irMaxLevel < -60, 1);
+    irT60Sample = find( ...
+        irTestLevels ~= -Inf & irTestLevels - irMaxLevel < -60, 1);
     if isempty(irT60Sample), f = Inf; return; end
     irT60 = irT60Sample / SAMPLE_RATE;
 
     % EDT (early decay time, a.k.a. T10)
-    irT10Sample = find(irTestLevels ~= -Inf & irTestLevels - irMaxLevel < -10, 1);
+    irT10Sample = find( ...
+        irTestLevels ~= -Inf & irTestLevels - irMaxLevel < -10, 1);
     if isempty(irT10Sample), f = Inf; return; end
     irEDT = irT10Sample / SAMPLE_RATE;
 
