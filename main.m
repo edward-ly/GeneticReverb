@@ -4,7 +4,7 @@
 
 % File: main.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.3.0
+% Version: 0.4.0
 % Last Updated: 3 July 2019
 
 % This program is free software; you can redistribute it and/or modify it under
@@ -112,13 +112,23 @@ end
 figure
 plot((1:NUM_SAMPLES) ./ SAMPLE_RATE, irBest)
 grid on
-xlabel('Time')
+xlabel('Time (s)')
 ylabel('Amplitude')
+
+%% Show impulse response plot in decibels.
+irBest2 = 20 .* log10(irBest);
+
+figure
+plot((1:NUM_SAMPLES) ./ SAMPLE_RATE, irBest2)
+grid on
+xlabel('Time (s)')
+ylabel('Level (dB)')
 
 %% Show best fitness value over generations.
 figure
 plot(0:NUM_GENERATIONS, fitnessOverTime)
 grid on
+axis([-inf inf 0 inf])
 xlabel('Generation')
 ylabel('Fitness Value')
 
