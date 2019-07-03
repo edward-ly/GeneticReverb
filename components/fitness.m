@@ -6,21 +6,20 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
     irLevels = 10 .* log10(ir .^ 2);
 
     % ITDG (initial time delay gap)
-    % Calculate time of highest intensity.
-    [~, irMaxIndex] = max(irLevels);
+    % Calculate as time of highest intensity reflection.
+    [irMaxLevel, irMaxIndex] = max(irLevels);
     irITDG = irMaxIndex / SAMPLE_RATE;
 
     % T60
     % Calculate first time at which sample level is 60 dB below highest sample.
-    % Smooth data first for better results.
     irTestLevels = irLevels(irMaxIndex:end);
-    irSmoothLevels = smoothdata(irTestLevels, 'movmedian', 'SmoothingFactor', 0.15);
-    irSmoothMaxLevel = irSmoothLevels(1);
-    irT60Sample = find(irSmoothLevels - irSmoothMaxLevel < -60, 1);
+    irT60Sample = find(irTestLevels ~= -Inf & irTestLevels - irMaxLevel < -60, 1);
+    if isempty(irT60Sample), f = Inf; return; end
     irT60 = irT60Sample / SAMPLE_RATE;
 
     % EDT (early decay time, a.k.a. T10)
-    irT10Sample = find(irSmoothLevels - irSmoothMaxLevel < -10, 1);
+    irT10Sample = find(irTestLevels ~= -Inf & irTestLevels - irMaxLevel < -10, 1);
+    if isempty(irT10Sample), f = Inf; return; end
     irEDT = irT10Sample / SAMPLE_RATE;
 
     % C80 (clarity)
