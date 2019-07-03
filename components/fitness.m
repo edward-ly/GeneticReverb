@@ -3,7 +3,7 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
 % ir = impulse response (column vector)
 % f = fitness value
     % Calculate relative levels in decibels for each sample.
-    irLevels = 10 .* log10(ir .^ 2);
+    irLevels = 20 .* log10(ir);
 
     % ITDG (initial time delay gap)
     % Calculate as time of highest intensity reflection.
@@ -11,7 +11,7 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
     irITDG = irMaxIndex / SAMPLE_RATE;
 
     % T60
-    % Calculate first time at which sample level is 60 dB below highest sample.
+    % Calculate time of first sample whose level is 60 dB below highest sample.
     irTestLevels = irLevels(irMaxIndex:end);
     irT60Sample = find(irTestLevels ~= -Inf & irTestLevels - irMaxLevel < -60, 1);
     if isempty(irT60Sample), f = Inf; return; end
@@ -26,14 +26,18 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
     sample_80ms = floor(0.08 * SAMPLE_RATE) + irMaxIndex;
     earlyReflections = ir(1:sample_80ms);
     lateReflections  = ir((sample_80ms + 1):end);
-    earlyEnergy = sum(earlyReflections .^ 2);
-    lateEnergy  = sum(lateReflections .^ 2);
+    earlyEnergy = sum(earlyReflections .* earlyReflections);
+    lateEnergy  = sum(lateReflections .* lateReflections);
     irC80 = 10 * log10(earlyEnergy / lateEnergy);
 
     % Calculate the mean squared error.
-    f = (irT60  - T60) ^ 2 + ...
-        (irITDG - ITDG) ^ 2 + ...
-        (irEDT  - EDT) ^ 2 + ...
-        (irC80  - C80) ^ 2;
+    T60diff  = irT60  - T60;
+    ITDGdiff = irITDG - ITDG;
+    EDTdiff  = irEDT  - EDT;
+    C80diff  = irC80  - C80;
+    f = (T60diff * T60diff) + ...
+        (ITDGdiff * ITDGdiff) + ...
+        (EDTdiff * EDTdiff) + ...
+        (C80diff * C80diff);
     f = f / 4;
 end
