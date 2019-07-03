@@ -11,18 +11,17 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
     irITDG = irMaxIndex / SAMPLE_RATE;
 
     % T60
-    % Calculate slope in dB/s of linear regression of impulse response levels,
-    % then divide -60 dB by the slope to get T60.
-    % Ignore first 0.1 seconds for better results.
-    sample_100ms = ceil(0.1 * SAMPLE_RATE);
-    x = (sample_100ms:length(irLevels))' ./ SAMPLE_RATE;
-    X = [ones(length(x), 1) x];
-    Y = irLevels(sample_100ms:end);
-    linReg = X \ Y;
-    irT60 = -60 / linReg(2);
+    % Calculate first time at which sample level is 60 dB below highest sample.
+    % Smooth data first for better results.
+    irTestLevels = irLevels(irMaxIndex:end);
+    irSmoothLevels = smoothdata(irTestLevels, 'movmedian', 'SmoothingFactor', 0.15);
+    irSmoothMaxLevel = irSmoothLevels(1);
+    irT60Sample = find(irSmoothLevels - irSmoothMaxLevel < -60, 1);
+    irT60 = irT60Sample / SAMPLE_RATE;
 
     % EDT (early decay time, a.k.a. T10)
-    irEDT = irT60 / 6;
+    irT10Sample = find(irSmoothLevels - irSmoothMaxLevel < -10, 1);
+    irEDT = irT10Sample / SAMPLE_RATE;
 
     % C80 (clarity)
     sample_80ms = floor(0.08 * SAMPLE_RATE) + irMaxIndex;
