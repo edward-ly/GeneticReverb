@@ -76,20 +76,28 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
     end
 end
 
+% Create square-of-distance and reflection coefficient lookup tables
 function [distSq, refCoef] = make_tables(w, r, s, Bmw, Bw, n)
     Limg = 1;
     Rimg = 1;
+
+    % Initialize tables
     distSq  = zeros(2*n + 1, 1);
     refCoef = zeros(2*n + 1, 1);
+
+    % Set initial values of tables
     refCoef(1) = 1;
-    
     DirSnd = s - r;
     distSq(1) = DirSnd * DirSnd;
 
+    % Set initial values of left/right image distance sequences
     LimgD = DirSnd;
     RimgD = DirSnd;
     
+    % Create tables
     for i = 2:(n + 1)
+        % Set image distances and reflection coefficients for i^th order images
+        % on left and right
         if mod(i, 2) ~= 0
             LimgD = LimgD - (2 * (w + s));
             RimgD = RimgD + (2 * (w - s));
@@ -102,6 +110,8 @@ function [distSq, refCoef] = make_tables(w, r, s, Bmw, Bw, n)
             Rimg = Rimg * Bmw;
         end
         
+        % Determine pattern for i^th order echo pair and set values for both
+        % tables
         if (mod(i, 2) ~= 0 && r + s < 0) || (mod(i, 2) == 0 && r - s < 0)
             distSq(2*i - 2) = LimgD * LimgD;
             distSq(2*i - 1) = RimgD * RimgD;
