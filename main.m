@@ -50,8 +50,8 @@ BR = 1.1;    % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
 
 %% Impulse response parameters.
 SAMPLE_RATE = audioSampleRate;
-NUM_SAMPLES = round((T60 * 2) * SAMPLE_RATE);
-ZERO_THRESHOLD = 1e-6;
+NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
+% ZERO_THRESHOLD = 1e-6;
 % Only one impulse response channel per individual.
 % NUM_CHANNELS = 1;
 
@@ -102,7 +102,7 @@ while true
     % Select best individuals and generate children to replace remaining
     % individuals.
     irPopulation = crossover(irPopulation, SELECTION_SIZE, POPULATION_SIZE, ...
-        NUM_SAMPLES, ZERO_THRESHOLD);
+        NUM_SAMPLES);
     
     % Mutate entire population.
     irPopulation = mutate(irPopulation, MUTATION_RATE);

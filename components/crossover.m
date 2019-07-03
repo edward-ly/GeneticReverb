@@ -1,4 +1,4 @@
-function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES, ZERO_THRESHOLD)
+function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES)
 % CROSSOVER Generate children and replace least fit individuals.
 % out = output population
 % in = input population
@@ -9,7 +9,7 @@ function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES, ZERO_
     for i = (SELECTION_SIZE + 1):POPULATION_SIZE
         parents = randperm(SELECTION_SIZE, 2);
         point = ceil(rand * (NUM_SAMPLES - 1));
-        while ~(in(point, parents(1)) < ZERO_THRESHOLD && in(point, parents(2)) < ZERO_THRESHOLD)
+        while in(point, parents(1)) ~= 0 || in(point, parents(2)) ~= 0
             point = ceil(rand * (NUM_SAMPLES - 1));
         end
         
