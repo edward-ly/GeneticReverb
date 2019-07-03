@@ -33,8 +33,8 @@ addpath utilities
 [numAudioSamples, numAudioChannels] = size(drySignal);
 
 %% Genetic algorithm parameters.
-POPULATION_SIZE = 10;
-SELECTION_SIZE = 5;
+POPULATION_SIZE = 20;
+SELECTION_SIZE = 10;
 NUM_GENERATIONS = 50;
 FITNESS_THRESHOLD = 1e-4;
 MUTATION_RATE = 0.01;
@@ -58,7 +58,7 @@ ZERO_THRESHOLD = 1e-6;
 %% Genetic Algorithm.
 
 % Initialize population.
-fprintf("Initializing. Please wait...\n");
+fprintf("Initializing population...\n");
 irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60);
 irFitness = Inf(POPULATION_SIZE, 1);
 irBestFitness = Inf;
@@ -105,7 +105,7 @@ while true
         NUM_SAMPLES, ZERO_THRESHOLD);
     
     % Mutate entire population.
-    irPopulation = mutate(irPopulation, MUTATION_RATE, SAMPLE_RATE);
+    irPopulation = mutate(irPopulation, MUTATION_RATE);
 end
 
 %% Show impulse response plot.
