@@ -37,7 +37,7 @@ POPULATION_SIZE = 40;
 SELECTION_SIZE = 20;
 NUM_GENERATIONS = 50;
 FITNESS_THRESHOLD = 1e-4;
-MUTATION_RATE = 0.01;
+MUTATION_RATE = 0.02;
 
 %% User input (reverb fitness) parameters.
 T60 = 1.0;   % Total reverberation time (s)
@@ -46,11 +46,11 @@ EDT = 0.1;   % Early decay time (s)
 C80 = 0;     % Clarity, or relative loudness of early reverberations over late
              % reverberations (dB)
 BR = 1.1;    % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
-             % frequency to high frequency reverberation) (currently not used)
+             % frequency to high frequency reverberation)
 
 %% Impulse response parameters.
 SAMPLE_RATE = audioSampleRate;
-NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
+NUM_SAMPLES = round(3 * T60 * SAMPLE_RATE);
 % ZERO_THRESHOLD = 1e-6;
 % Only one impulse response channel per individual.
 % NUM_CHANNELS = 1;
@@ -70,7 +70,7 @@ while true
     % Evaluate population.
     for i = 1:POPULATION_SIZE
         irFitness(i) = fitness( ...
-            irPopulation(:, i), SAMPLE_RATE, T60, ITDG, EDT, C80 ...
+            irPopulation(:, i), SAMPLE_RATE, T60, ITDG, EDT, C80, BR ...
         );
     end
 

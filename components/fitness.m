@@ -1,4 +1,4 @@
-function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
+function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
 % FITNESS Calculate fitness value of impulse response.
 % ir = impulse response (column vector)
 % f = fitness value
@@ -32,14 +32,30 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80)
     lateEnergy  = sum(lateReflections .* lateReflections);
     irC80 = 10 * log10(earlyEnergy / lateEnergy);
 
+    % BR (bass ratio)
+    % Find amount of energy in 125 - 500Hz and 500Hz - 2000Hz bands and
+    % calculate the ratio of the two.
+    irfft = abs(fft(ir));
+    freq = (0:length(irfft)-1) * SAMPLE_RATE / length(irfft);
+    f125 = ceil(125 * length(irfft) / SAMPLE_RATE) + 1;
+    f500 = ceil(500 * length(irfft) / SAMPLE_RATE);
+    f2000 = floor(2000 * length(irfft) / SAMPLE_RATE) + 1;
+    lowContent = freq(f125:f500);
+    highContent = freq((f500 + 1):f2000);
+    lowEnergy = sum(lowContent .* lowContent);
+    highEnergy = sum(highContent .* highContent);
+    irBR = lowEnergy / highEnergy;
+    
     % Calculate the mean squared error.
     T60diff  = irT60  - T60;
     ITDGdiff = irITDG - ITDG;
     EDTdiff  = irEDT  - EDT;
     C80diff  = irC80  - C80;
+    BRdiff   = irBR   - BR;
     f = (T60diff * T60diff) + ...
         (ITDGdiff * ITDGdiff) + ...
         (EDTdiff * EDTdiff) + ...
-        (C80diff * C80diff);
-    f = f / 4;
+        (C80diff * C80diff) + ...
+        (BRdiff * BRdiff);
+    f = f / 5;
 end
