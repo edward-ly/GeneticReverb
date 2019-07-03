@@ -35,7 +35,7 @@ addpath utilities
 %% Genetic algorithm parameters.
 POPULATION_SIZE = 10;
 SELECTION_SIZE = 5;
-NUM_GENERATIONS = 25;
+NUM_GENERATIONS = 50;
 FITNESS_THRESHOLD = 1e-4;
 MUTATION_RATE = 0.01;
 
@@ -110,9 +110,9 @@ end
 
 %% Show impulse response plot.
 figure
-plot(irBest)
+plot((1:NUM_SAMPLES) ./ SAMPLE_RATE, irBest)
 grid on
-xlabel('Sample')
+xlabel('Time')
 ylabel('Amplitude')
 
 %% Show best fitness value over generations.
