@@ -1,34 +1,34 @@
 /*
 Program     : Room Impulse Response Generator
- 
+
 Description : Computes the response of an acoustic source to one or more
               microphones in a reverberant room using the image method [1,2].
- 
+
               [1] J.B. Allen and D.A. Berkley,
               Image method for efficiently simulating small-room acoustics,
               Journal Acoustic Society of America, 65(4), April 1979, p 943.
- 
+
               [2] P.M. Peterson,
               Simulating the response of multiple microphones to a single
               acoustic source in a reverberant room, Journal Acoustic
               Society of America, 80(5), November 1986.
- 
-Author      : dr.ir. E.A.P. Habets (ehabets@dereverberation.org)
-Editor		: Edward Ly
- 
-Version     : 2.2.0
 
- 
+Author      : dr.ir. E.A.P. Habets (ehabets@dereverberation.org)
+Editor	  	: Edward Ly
+
+Version     : 2.2.20190703
+
+
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
- 
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
- 
+
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -42,8 +42,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #define ROUND(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
-#ifndef M_PI 
-    #define M_PI 3.14159265358979323846 
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
 #endif
 
 double sinc(double x) {
@@ -142,7 +142,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 						 "room parameters, i.e. room size and reverberation time.\n           Please "
 						 "specify the reflection coefficients or change the room parameters.");
 		beta = sqrt(1 - alfa);
-	} 
+	}
 	else {
 		mexErrMsgTxt("Error: Reverberation time must be positive.\n");
 	}
@@ -184,7 +184,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     double*      LPI = new double[Tw];
     double       r[3], s[3], L[3];
     double       Rm[3];
-    double       Rp_plus_Rm[3]; 
+    double       Rp_plus_Rm[3];
     double       refl[3];
     double       fdist, dist, ndist;
     double       gain;
@@ -261,7 +261,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 		double       X0;
 		double       Y[3];
 
-		for (int i = 0; i < 3; i++) { Y[i] = 0; }            
+		for (int i = 0; i < 3; i++) { Y[i] = 0; }
 		for (int i = 0; i < nSamples; i++) {
 			X0 = imp[i];
 			Y[2] = Y[1];
@@ -270,12 +270,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
 			imp[i] = Y[0] + A1*Y[1] + R1*Y[2];
 		}
 	}
-    
+
     if (nlhs > 1) {
         plhs[1] = mxCreateDoubleMatrix(1, 1, mxREAL);
         double* beta_hat = mxGetPr(plhs[1]);
         beta_hat[0] = beta;
     }
-    
+
     delete[] LPI;
 }
