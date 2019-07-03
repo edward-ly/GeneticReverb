@@ -1,6 +1,4 @@
-function pop = init_pop( ...
-    NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60 ...
-)
+function pop = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60)
 % INIT_POP Generate an initial population.
 % pop = output population
 % Current algorithm: use rir_generator by Habets to generate simulated rooms.
@@ -29,9 +27,7 @@ function pop = init_pop( ...
         L = roomDims;               % Room dimensions [x y z] (m)
         beta = T60;                 % T60 Reverberation time (s)
         n = NUM_SAMPLES;            % Total reverberation time (samples)
-        order = -1;                 % -1 equals maximum reflection order!
-        hpf = 1;                    % Enable high-pass filter
 
-        pop(:, i) = rir_generator(c, fs, r, s, L, beta, n, order, hpf);
+        pop(:, i) = frir_generator(c, fs, r, s, L, beta, n);
     end
 end
