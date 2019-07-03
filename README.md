@@ -4,30 +4,9 @@ A MATLAB script that uses a genetic algorithm to generate an impulse response de
 
 You can also load the generated impulse response into the [IR Reverb](https://github.com/edward-ly/reverb-pd) Pure Data patch to perform the reverb effect in real-time.
 
-## Dependencies
-
-* [RIR Generator](https://www.audiolabs-erlangen.de/fau/professor/habets/software/rir-generator) (Habets, 2014)
-
-## Setup
-
-From the project root directory, clone the RIR Generator repository into a new directory.
-
-```sh
-$ git clone git@github.com:ehabets/RIR-Generator.git <path>
-```
-
-Then you can compile the source code for the `rir_generator` MEX function from the MATLAB command window.
-
-```sh
->> mex -setup C++
->> mex path/to/rir_generator.cpp
-```
-
-Now the binary MEX file should be added to the project root directory.
-
 ## Running the Script
 
-To run the `main.m` script, open the file in the MATLAB editor, adjust parameter values as needed, and click on __Editor > Run__ or run `main` in the MATLAB command window.
+Open the `main.m` script in the MATLAB editor and adjust parameter values as needed. Then you can click on __Editor > Run__ or run `main` in the MATLAB command window.
 
 ## License
 
@@ -37,8 +16,6 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
-RIR Generator (c) 2003-2010 E.A.P. Habets, The Netherlands.
-
 ## Last Updated
 
-18 June 2019
+3 July 2019
