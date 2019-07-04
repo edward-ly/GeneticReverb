@@ -42,8 +42,8 @@ addpath utilities
 [numAudioSamples, numAudioChannels] = size(drySignal);
 
 %% Genetic algorithm parameters.
-POPULATION_SIZE = 40;
-SELECTION_SIZE = 20;
+POPULATION_SIZE = 20;
+SELECTION_SIZE = 10;
 NUM_GENERATIONS = 50;
 FITNESS_THRESHOLD = 1e-4;
 MUTATION_RATE = 0.02;

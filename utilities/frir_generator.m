@@ -28,7 +28,7 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
         beta_hat = sqrt(1 - alfa);
     else
         error('Error: Reverberation time must be positive.\n');
-	end
+    end
 
     % Calculate total time of impulse response in seconds
     time = nSamples / fs;
