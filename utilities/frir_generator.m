@@ -9,26 +9,26 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
 % nSamples = total number of samples in impulse response
 % h = nsample x 1 column vector containing the calculated room impulse response
 % beta_hat = reflection coefficient of the walls based on reverberation time
+%
 % Current algorithm: based on the fast image method by McGovern [1].
 %
 % [1] Stephen G. McGovern, Fast image method for impulse response calculations
 % of box-shaped rooms, Applied Acoustics 70 (2009), 182-189.
 %
-  % Calculate reflection coefficient via Sabin-Franklin's formula
-  if beta > 0
-        V = L(1) * L(2) * L(3); % room volume
-        S = 2 * (L(1)*L(3) + L(2)*L(3) + L(1)*L(2)); % room surface area
-        alfa = 24 * V * log(10.0) / (c * S * beta);
-        if alfa > 1
-            error(['Error: Reflection coefficient cannot be calculated ' ...
-                'using the current room parameters, i.e. room size and ' ...
-                'reverberation time. Please change the room parameters or ' ...
-                'reverberation time.']);
+    % Calculate reflection coefficient via Sabine's formula
+	if beta > 0
+        volume = L(1) * L(2) * L(3);
+        surfaceArea = 2 * (L(1)*L(3) + L(2)*L(3) + L(1)*L(2));
+        alpha = 24 * volume * log(10.0) / (c * surfaceArea * beta);
+        if alpha > 1
+            error(['Error: Reflection coefficient cannot be determined ' ...
+                'using the current room parameters. Please change the room ' ...
+                'size or reverberation time.']);
         end
-        beta_hat = sqrt(1 - alfa);
+        beta_hat = sqrt(1 - alpha);
     else
         error('Error: Reverberation time must be positive.\n');
-    end
+	end
 
     % Calculate total time of impulse response in seconds
     time = nSamples / fs;
