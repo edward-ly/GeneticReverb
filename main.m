@@ -44,7 +44,7 @@ addpath utilities
 %% Genetic algorithm parameters.
 POPULATION_SIZE = 20;
 SELECTION_SIZE = 10;
-NUM_GENERATIONS = 50;
+NUM_GENERATIONS = 25;
 FITNESS_THRESHOLD = 1e-4;
 MUTATION_RATE = 0.02;
 
@@ -59,7 +59,7 @@ BR = 1.1;    % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
 
 %% Impulse response parameters.
 SAMPLE_RATE = audioSampleRate;
-NUM_SAMPLES = round(3 * T60 * SAMPLE_RATE);
+NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
 % ZERO_THRESHOLD = 1e-6;
 % Only one impulse response channel per individual.
 % NUM_CHANNELS = 1;
