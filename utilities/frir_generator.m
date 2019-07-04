@@ -16,7 +16,7 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
 % of box-shaped rooms, Applied Acoustics 70 (2009), 182-189.
 %
     % Calculate reflection coefficient via Sabine's formula
-	if beta > 0
+    if beta > 0
         volume = L(1) * L(2) * L(3);
         surfaceArea = 2 * (L(1)*L(3) + L(2)*L(3) + L(1)*L(2));
         alpha = 24 * volume * log(10.0) / (c * surfaceArea * beta);
@@ -28,7 +28,7 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
         beta_hat = sqrt(1 - alpha);
     else
         error('Error: Reverberation time must be positive.\n');
-	end
+    end
 
     % Calculate total time of impulse response in seconds
     time = nSamples / fs;
@@ -85,10 +85,10 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
         if j == 1, break; end
         i = i + 1;
     end
-end
+    end
 
-% Create square-of-distance and reflection coefficient lookup tables
-function [distSq, refCoef] = make_tables(w, r, s, Bmw, Bw, n)
+    % Create square-of-distance and reflection coefficient lookup tables
+    function [distSq, refCoef] = make_tables(w, r, s, Bmw, Bw, n)
     Limg = 1;
     Rimg = 1;
 
