@@ -97,7 +97,7 @@ while true
 
     % Stop if fitness value is within threshold.
     if irBestFitness < FITNESS_THRESHOLD
-        fprintf("Found optimal solution.\n");
+        fprintf("Optimal solution found.\n");
         break
     end
 
@@ -131,7 +131,7 @@ figure
 plot((1:NUM_SAMPLES) ./ SAMPLE_RATE, irBest2)
 grid on
 xlabel('Time (s)')
-ylabel('Level (dB)')
+ylabel('Relative Level (dB)')
 
 %% Show best fitness value over generations.
 figure
