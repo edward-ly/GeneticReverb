@@ -29,8 +29,8 @@
 % OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 % SOFTWARE.
 
-%% Clear workspace, command window, and figures.
-clear; clc; close all;
+%% Clear workspace and figures.
+clear; close all;
 
 %% Add paths to any external functions used.
 addpath components
