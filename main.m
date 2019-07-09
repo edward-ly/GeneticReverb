@@ -82,8 +82,7 @@ while true
     % Evaluate population.
     for i = 1:POPULATION_SIZE
         irFitness(i) = fitness( ...
-            irPopulation(:, i), SAMPLE_RATE, T60, ITDG, EDT, C80, BR ...
-        );
+            irPopulation(:, i), SAMPLE_RATE, T60, ITDG, EDT, C80, BR);
     end
 
     % Sort population by fitness value and update best individual.
@@ -95,8 +94,7 @@ while true
     fitnessOverTime(currentGen + 1) = irBestFitness;
 
     fprintf('Generation %d: best fitness value %d\n', ...
-        currentGen, irBestFitness ...
-    );
+        currentGen, irBestFitness);
 
     % Stop if fitness value is within threshold.
     if irBestFitness < FITNESS_THRESHOLD
@@ -150,9 +148,7 @@ irBest = normalize_signal(irBest, 1);
 
 % Duplicate impulse response to accommodate number of audio channels,
 % if necessary.
-if numAudioChannels > 1
-    irBest = repmat(irBest, 1, numAudioChannels);
-end
+if numAudioChannels > 1, irBest = repmat(irBest, 1, numAudioChannels); end
 
 % Create output folder if it doesn't already exist.
 if ~isfolder(OUTPUT_DIR), mkdir(OUTPUT_DIR); end
