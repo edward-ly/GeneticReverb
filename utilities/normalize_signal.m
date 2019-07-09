@@ -6,7 +6,7 @@ function out = normalize_signal(in, peak, mode)
 % peak = max value
 % mode = ['all' (default), 'each'] normalize entire signal at once or
 % normalize each channel independently
-    if nargin < 3 || isempty(mode)
+    if nargin < 3
        mode = 'all';
     end
     
