@@ -41,6 +41,9 @@ addpath utilities
 [drySignal, audioSampleRate] = audioread(strcat(filePath, fileName));
 [numAudioSamples, numAudioChannels] = size(drySignal);
 
+%% Output parameters.
+OUTPUT_DIR = 'output';
+
 %% Genetic algorithm parameters.
 POPULATION_SIZE = 20;
 SELECTION_SIZE = 10;
@@ -152,10 +155,10 @@ if numAudioChannels > 1
 end
 
 % Create output folder if it doesn't already exist.
-if ~isfolder('output'), mkdir('output'); end
+if ~isfolder(OUTPUT_DIR), mkdir(OUTPUT_DIR); end
 
 % Write to WAV file.
-audiowrite(['output' filesep 'ir.wav'], irBest, SAMPLE_RATE);
+audiowrite([OUTPUT_DIR filesep 'ir.wav'], irBest, SAMPLE_RATE);
 
 %% Apply impulse response to input audio signal.
 
@@ -170,7 +173,7 @@ end
 wetSignal = normalize_signal(wetSignal, 0.99, 'all');
 
 % Write to WAV file.
-outputFileName = ['output' filesep replace(fileName, '.wav', '_wet.wav')];
+outputFileName = [OUTPUT_DIR filesep replace(fileName, '.wav', '_wet.wav')];
 audiowrite(outputFileName, wetSignal, SAMPLE_RATE);
 
 %% END OF SCRIPT
