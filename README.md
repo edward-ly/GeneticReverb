@@ -1,8 +1,8 @@
 # Genetic Reverb
 
-A MATLAB script that uses a genetic algorithm to generate an impulse response describing the reverberation of an artificial room. It also accepts a WAV audio file as input to allow for hearing the reverb effect on an audio source.
+A MATLAB script that uses a genetic algorithm to generate a random impulse response describing the reverberation of an artificial room. It also accepts a WAV audio file as input to allow for hearing the reverb effect on an audio source.
 
-You can also load the generated impulse response into the [IR Reverb](https://github.com/edward-ly/reverb-pd) Pure Data patch to perform the reverb effect in real-time.
+You can also load the generated impulse response into other programs such as my simple [IR Reverb](https://github.com/edward-ly/reverb-pd) Pure Data patch or the [Convolution Reverb](https://www.ableton.com/en/packs/convolution-reverb/) device in [Ableton Live](https://www.ableton.com/en/) to perform the reverb effect in real-time.
 
 ## Running the Script
 
@@ -14,4 +14,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-4 July 2019
+9 July 2019
