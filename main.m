@@ -67,7 +67,7 @@ NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
 %% Genetic Algorithm.
 
 % Initialize population.
-fprintf("Initializing population...\n");
+fprintf('Initializing population...\n');
 irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60);
 irFitness = Inf(POPULATION_SIZE, 1);
 irBestFitness = Inf;
@@ -91,20 +91,20 @@ while true
     end
     fitnessOverTime(currentGen + 1) = irBestFitness;
 
-    fprintf("Generation %d: best fitness value %d\n", ...
+    fprintf('Generation %d: best fitness value %d\n', ...
         currentGen, irBestFitness ...
     );
 
     % Stop if fitness value is within threshold.
     if irBestFitness < FITNESS_THRESHOLD
-        fprintf("Optimal solution found.\n");
+        fprintf('Optimal solution found.\n');
         break
     end
 
     % Go to next generation (or stop if max number of generations reached).
     currentGen = currentGen + 1;
     if currentGen > NUM_GENERATIONS
-        fprintf("Maximum number of generations reached.\n");
+        fprintf('Maximum number of generations reached.\n');
         break
     end
 
@@ -152,7 +152,7 @@ if numAudioChannels > 1
 end
 
 % Write to WAV file.
-audiowrite("output/ir.wav", irBest, SAMPLE_RATE);
+audiowrite(['output' filesep 'ir.wav'], irBest, SAMPLE_RATE);
 
 %% Apply impulse response to input audio signal.
 
@@ -164,11 +164,11 @@ for i = 1:numAudioChannels
 end
 
 % Normalize audio.
-wetSignal = normalize_signal(wetSignal, 0.99, "all");
+wetSignal = normalize_signal(wetSignal, 0.99, 'all');
 
 % Write to WAV file.
-outputFileName = strcat("output/", replace(fileName, ".wav", "_wet.wav"));
+outputFileName = ['output' filesep replace(fileName, '.wav', '_wet.wav')];
 audiowrite(outputFileName, wetSignal, SAMPLE_RATE);
 
 %% END OF SCRIPT
-fprintf("Done.\n");
+fprintf('Done.\n');

@@ -7,16 +7,16 @@ function out = normalize_signal(in, peak, mode)
 % mode = ['all' (default), 'each'] normalize entire signal at once or
 % normalize each channel independently
     if nargin < 3 || isempty(mode)
-       mode = "all";
+       mode = 'all';
     end
     
     [numSamples, numChannels] = size(in);
-    if numChannels == 1 || mode == "all"
+    if numChannels == 1 || strcmp(mode, 'all')
         out = peak .* in ./ max(max(abs(in)));
         return
     end
     
-    if mode == "each"
+    if strcmp(mode, 'each')
         out = zeros(numSamples, numChannels);
 
         for i = 1:numChannels
@@ -25,5 +25,5 @@ function out = normalize_signal(in, peak, mode)
         return
     end
 
-    error("Unknown mode '%s' (must be 'each' or 'all').", mode);
+    error('Unknown mode "%s" (must be "each" or "all").', mode);
 end
