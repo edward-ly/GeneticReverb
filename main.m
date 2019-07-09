@@ -4,7 +4,7 @@
 %
 % File: main.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.5.2
+% Version: 0.5.3
 % Last Updated: 8 July 2019
 %
 % MIT License
