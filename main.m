@@ -151,6 +151,9 @@ if numAudioChannels > 1
     irBest = repmat(irBest, 1, numAudioChannels);
 end
 
+% Create output folder if it doesn't already exist.
+if ~isfolder('output'), mkdir('output'); end
+
 % Write to WAV file.
 audiowrite(['output' filesep 'ir.wav'], irBest, SAMPLE_RATE);
 
