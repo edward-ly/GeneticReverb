@@ -36,11 +36,6 @@ clear; close all;
 addpath components
 addpath utilities
 
-%% Open an audio file for input.
-[fileName, filePath] = uigetfile('*.wav', 'Open audio file');
-[drySignal, audioSampleRate] = audioread(strcat(filePath, fileName));
-[numAudioSamples, numAudioChannels] = size(drySignal);
-
 %% Output parameters.
 OUTPUT_DIR = 'output';
 
@@ -66,6 +61,11 @@ NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
 % ZERO_THRESHOLD = 1e-6;
 % Only one impulse response channel per individual.
 % NUM_CHANNELS = 1;
+
+%% Open an audio file for input.
+[fileName, filePath] = uigetfile('*.wav', 'Open audio file');
+[drySignal, audioSampleRate] = audioread(strcat(filePath, fileName));
+[numAudioSamples, numAudioChannels] = size(drySignal);
 
 %% Genetic Algorithm.
 
