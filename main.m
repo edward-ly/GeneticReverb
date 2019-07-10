@@ -132,7 +132,7 @@ figure
 plot((1:NUM_SAMPLES) ./ SAMPLE_RATE, irBest2)
 grid on
 xlabel('Time (s)')
-ylabel('Relative Level (dB)')
+ylabel('Relative Gain (dB)')
 
 %% Show best fitness value over generations.
 figure
