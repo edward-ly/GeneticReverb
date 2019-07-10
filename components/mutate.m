@@ -4,6 +4,9 @@ function out = mutate(in, MUTATION_RATE)
 % in = input population
 % Current algorithm: for each affected sample, multiply its value by a random
 % positive factor from the standard normal distribution.
+    % Require all arguments
+    if nargin < 2, error('Not enough input arguments.'); end
+
     out = in;
     [I, J] = size(out);
     mutValues = double(rand(I, J) < MUTATION_RATE) .* abs(randn(I, J));

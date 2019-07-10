@@ -4,6 +4,9 @@ function pop = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60)
 % Current algorithm: use rir_generator by Habets to generate simulated rooms.
 % The receiver, source, and room parameters are also randomly generated for each
 % individual.
+    % Require all arguments
+    if nargin < 4, error('Not enough input arguments.'); end
+
     pop = zeros(NUM_SAMPLES, POPULATION_SIZE);
 
     for i = 1:POPULATION_SIZE
