@@ -160,7 +160,7 @@ if numAudioChannels > 1, irBest = repmat(irBest, 1, numAudioChannels); end
 if ~isfolder(OUTPUT_DIR), mkdir(OUTPUT_DIR); end
 
 % Write to WAV file.
-audiowrite([OUTPUT_DIR filesep 'ir.wav'], irBest, SAMPLE_RATE);
+audiowrite([OUTPUT_DIR filesep 'ir.wav'], irBest, audioSampleRate);
 
 %% Apply impulse response to input audio signal.
 
@@ -176,7 +176,7 @@ wetSignal = normalize_signal(wetSignal, 0.99, 'all');
 
 % Write to WAV file.
 outputFileName = [OUTPUT_DIR filesep replace(fileName, '.wav', '_wet.wav')];
-audiowrite(outputFileName, wetSignal, SAMPLE_RATE);
+audiowrite(outputFileName, wetSignal, audioSampleRate);
 
 %% END OF SCRIPT
 fprintf('Done.\n');
