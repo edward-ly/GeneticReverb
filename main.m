@@ -56,7 +56,7 @@ BR = 1.1;    % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
              % frequency to high frequency reverberation)
 
 %% Impulse response parameters.
-SAMPLE_RATE = audioSampleRate;
+SAMPLE_RATE = 16000;
 NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
 % ZERO_THRESHOLD = 1e-6;
 % Only one impulse response channel per individual.
@@ -145,6 +145,12 @@ ylabel('Fitness Value')
 %% Save best impulse response as audio file.
 % Normalize impulse response.
 irBest = normalize_signal(irBest, 1);
+
+% Resample IR sample rate to match audio sample rate, if necessary.
+if SAMPLE_RATE ~= audioSampleRate
+    irBest = resample(irBest, audioSampleRate, SAMPLE_RATE);
+    NUM_SAMPLES = numel(irBest);
+end
 
 % Duplicate impulse response to accommodate number of audio channels,
 % if necessary.
