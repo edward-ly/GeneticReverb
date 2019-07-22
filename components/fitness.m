@@ -7,11 +7,13 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
 
     % Calculate relative levels in decibels for each sample.
     irLevels = 20 .* log10(ir);
+    [irMaxLevel, irMaxIndex] = max(irLevels);
 
     % ITDG (initial time delay gap)
-    % Calculate as time of highest intensity reflection.
-    [irMaxLevel, irMaxIndex] = max(irLevels);
-    irITDG = irMaxIndex / SAMPLE_RATE;
+    % Calculate time difference between first two arrivals.
+    irIndices = find(ir, 2);
+    if numel(irIndices) < 2, f = Inf; return; end
+    irITDG = (irIndices(2) - irIndices(1)) / SAMPLE_RATE;
 
     % T60
     % Calculate time of first sample whose level is 60 dB below highest sample.
