@@ -6,7 +6,7 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     if nargin < 7, error('Not enough input arguments.'); end
 
     % Calculate relative levels in decibels for each sample.
-    irLevels = 20 .* log10(ir);
+    irLevels = 10 .* log10(ir .* ir);
     [irMaxLevel, irMaxIndex] = max(irLevels);
 
     % ITDG (initial time delay gap)

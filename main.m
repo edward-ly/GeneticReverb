@@ -44,7 +44,7 @@ POPULATION_SIZE = 20;
 SELECTION_SIZE = 10;
 NUM_GENERATIONS = 25;
 FITNESS_THRESHOLD = 1e-4;
-MUTATION_RATE = 0.02;
+MUTATION_RATE = 0.0001;
 
 %% User input (reverb fitness) parameters.
 T60 = 1.0;   % Total reverberation time (s)
@@ -56,7 +56,7 @@ BR = 1.1;    % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
              % frequency to high frequency reverberation)
 
 %% Impulse response parameters.
-SAMPLE_RATE = 16000;
+SAMPLE_RATE = 44100;
 NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
 % ZERO_THRESHOLD = 1e-6;
 % Only one impulse response channel per individual.
@@ -126,7 +126,7 @@ xlabel('Time (s)')
 ylabel('Amplitude')
 
 %% Show impulse response plot in decibels.
-irBest2 = 20 .* log10(irBest);
+irBest2 = 10 .* log10(irBest .* irBest);
 
 figure
 plot((1:NUM_SAMPLES) ./ SAMPLE_RATE, irBest2)
