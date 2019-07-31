@@ -44,7 +44,7 @@ POPULATION_SIZE = 20;
 SELECTION_SIZE = 10;
 NUM_GENERATIONS = 25;
 FITNESS_THRESHOLD = 1e-4;
-MUTATION_RATE = 0.0001;
+MUTATION_RATE = 0.001;
 
 %% User input (reverb fitness) parameters.
 T60 = 1.0;   % Total reverberation time (s)
