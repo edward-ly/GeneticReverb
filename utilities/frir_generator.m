@@ -28,7 +28,7 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
                 'using the current room parameters. Please change the room ' ...
                 'size or reverberation time.']);
         end
-        beta_hat = sqrt(1 - alpha);
+        beta_hat = -1 * sqrt(1 - alpha);
     else
         error('Error: Reverberation time must be positive.\n');
     end
