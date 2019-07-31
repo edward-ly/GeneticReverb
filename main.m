@@ -43,6 +43,7 @@ OUTPUT_DIR = 'output';
 POPULATION_SIZE = 20;
 SELECTION_SIZE = 10;
 NUM_GENERATIONS = 25;
+STOP_GENERATIONS = 5;
 FITNESS_THRESHOLD = 1e-4;
 MUTATION_RATE = 0.001;
 
@@ -75,6 +76,7 @@ irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60);
 irFitness = Inf(POPULATION_SIZE, 1);
 irBestFitness = Inf;
 currentGen = 0;
+currentStopGen = 0;
 
 fitnessOverTime = zeros(NUM_GENERATIONS + 1, 1);
 
@@ -90,6 +92,9 @@ while true
     if irFitness(1) < irBestFitness
         irBestFitness = irFitness(1);
         irBest = irPopulation(:, 1);
+        currentStopGen = 0;
+    else
+        currentStopGen = currentStopGen + 1;
     end
     fitnessOverTime(currentGen + 1) = irBestFitness;
 
@@ -99,6 +104,12 @@ while true
     % Stop if fitness value is within threshold.
     if irBestFitness < FITNESS_THRESHOLD
         fprintf('Optimal solution found.\n');
+        break
+    end
+
+    % Stop if fitness value is not updated after some number of generations.
+    if currentStopGen >= STOP_GENERATIONS
+        fprintf('Local optimal solution found.\n');
         break
     end
 
