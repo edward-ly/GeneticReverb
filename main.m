@@ -154,7 +154,7 @@ ylabel('Fitness Value')
 
 %% Save best impulse response as audio file.
 % Normalize impulse response.
-irBest = normalize_signal(irBest, 1);
+irBest = normalize_signal(irBest, 0.99);
 
 % Resample IR sample rate to match audio sample rate, if necessary.
 if SAMPLE_RATE ~= audioSampleRate
