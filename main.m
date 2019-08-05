@@ -33,8 +33,7 @@
 clear; close all;
 
 %% Add paths to any external functions used.
-addpath components
-addpath utilities
+addpath functions
 
 %% Output parameters.
 OUTPUT_DIR = 'output';
