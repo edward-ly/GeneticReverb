@@ -1,6 +1,6 @@
 % Generates an impulse response according to reverb parameters.
-% Also applies the impulse response to an audio signal from a WAV file.
-% The impulse response and output audio are also saved as WAV files.
+% Also applies the impulse response to an input audio signal from a WAV file via
+% convolution, and saves the impulse response and output audio to WAV files.
 %
 % File: main.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
