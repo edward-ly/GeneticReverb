@@ -6,11 +6,15 @@
 **/*.mexmaci64
 **/*.mexw64
 
+# Ignore MATLAB audio plugin bench files.
+**/audioplugin
+
 # Ignore MATLAB autosave files.
 **/*.asv
 
-# Ignore input/output .wav audio files.
+# Ignore all .wav audio files.
 **/output
+**/irs
 **/*.wav
 
 # Ignore external packages/libraries.
@@ -20,6 +24,3 @@
 # Ignore example and test files.
 **/*example*
 **/*test*
-
-# Ignore RIR-Generator repository.
-**/*RIR-Generator*
