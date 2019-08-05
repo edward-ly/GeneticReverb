@@ -21,6 +21,9 @@
 **/lib
 **/packages
 
+# Ignore .dll files (e.g. VST plugins).
+**/*.dll
+
 # Ignore example and test files.
 **/*example*
 **/*test*
