@@ -52,7 +52,7 @@ ITDG = 0.01; % Initial delay (s)
 EDT = 0.1;   % Early decay time (s)
 C80 = 0;     % Clarity, or relative loudness of early reverberations over late
              % reverberations (dB)
-BR = 1.1;    % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
+BR = 1;      % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
              % frequency to high frequency reverberation)
 
 %% Impulse response parameters.
@@ -153,14 +153,14 @@ xlabel('Generation')
 ylabel('Fitness Value')
 
 %% Save best impulse response as audio file.
-% Normalize impulse response.
-irBest = normalize_signal(irBest, 0.99);
-
 % Resample IR sample rate to match audio sample rate, if necessary.
 if SAMPLE_RATE ~= audioSampleRate
     irBest = resample(irBest, audioSampleRate, SAMPLE_RATE);
     NUM_SAMPLES = numel(irBest);
 end
+
+% Normalize impulse response.
+irBest = normalize_signal(irBest, 0.99);
 
 % Create output folder if it doesn't already exist.
 if ~isfolder(OUTPUT_DIR), mkdir(OUTPUT_DIR); end
