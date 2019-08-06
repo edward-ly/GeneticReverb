@@ -31,6 +31,7 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
 
     % C80 (clarity)
     sample_80ms = floor(0.08 * SAMPLE_RATE) + irMaxIndex;
+    if sample_80ms >= numel(ir), f = Inf; return; end
     earlyReflections = ir(1:sample_80ms);
     lateReflections  = ir((sample_80ms + 1):end);
     earlyEnergy = sum(earlyReflections .* earlyReflections);
