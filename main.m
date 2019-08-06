@@ -162,10 +162,6 @@ if SAMPLE_RATE ~= audioSampleRate
     NUM_SAMPLES = numel(irBest);
 end
 
-% Duplicate impulse response to accommodate number of audio channels,
-% if necessary.
-if numAudioChannels > 1, irBest = repmat(irBest, 1, numAudioChannels); end
-
 % Create output folder if it doesn't already exist.
 if ~isfolder(OUTPUT_DIR), mkdir(OUTPUT_DIR); end
 
@@ -178,7 +174,7 @@ audiowrite([OUTPUT_DIR filesep 'ir.wav'], irBest, audioSampleRate);
 % response will filter the corresponding column/channel in the audio.
 wetSignal = zeros(numAudioSamples + NUM_SAMPLES - 1, numAudioChannels);
 for i = 1:numAudioChannels
-    wetSignal(:, i) = conv(irBest(:, i), drySignal(:, i));
+    wetSignal(:, i) = conv(irBest, drySignal(:, i));
 end
 
 % Normalize audio.
