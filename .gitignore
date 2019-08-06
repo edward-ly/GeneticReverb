@@ -6,8 +6,9 @@
 **/*.mexmaci64
 **/*.mexw64
 
-# Ignore MATLAB audio plugin bench files.
+# Ignore MATLAB audio plugin test bench files.
 **/audioplugin
+**/codegen
 
 # Ignore MATLAB autosave files.
 **/*.asv
