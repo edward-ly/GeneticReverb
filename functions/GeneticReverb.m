@@ -1,12 +1,12 @@
-% Class file for VST2 plugin that performs IR-based reverb in real-time
+% Class file for a VST 2 plugin that performs IR-based reverb in real-time
 % via frequency-domain partitioned convolution [1], while adding the ability to
 % shape the impulse response using a genetic algorithm, as well as control the
 % dry/wet mix and gain of the output signal.
 %
 % File: GeneticReverb.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.1.0
-% Last Updated: 5 August 2019
+% Version: 1.0.0
+% Last Updated: 6 August 2019
 %
 % Usage: validate and generate the VST plugin, respectively, with:
 %     validateAudioPlugin GeneticReverb
@@ -40,16 +40,16 @@
 classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
         matlab.system.mixin.Propagates
     properties % Public variables
-        T60 = 1;
-        ITDG = 0.1;
+        T60 = 0.5;
+        ITDG = 0;
         EDT = 0.1;
         C80 = 0;
         BR = 1;
         GAIN = 0;
         WET = 100;
 
-        % Load default impulse response
-        ImpulseResponse = audioread(['.' filesep 'output' filesep 'ir.wav']).';
+        ImpulseResponse = zeros(1, 288000);
+        pFIR; % DSP Object for partitioned convolution
     end
     
     properties (Constant) % Interface parameters
@@ -60,7 +60,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
             audioPluginParameter('T60', ...
                 'DisplayName', 'Total Time', ...
                 'Label', 's', ...
-                'Mapping', {'log', 0.1, 5}), ...
+                'Mapping', {'log', 0.25, 1}), ...
             audioPluginParameter('ITDG', ...
                 'DisplayName', 'Intimacy', ...
                 'Label', 's', ...
@@ -79,7 +79,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
             audioPluginParameter('GAIN', ...
                 'DisplayName', 'Gain', ...
                 'Label', 'dB', ...
-                'Mapping', {'pow', 1/3, -60, 6}), ...
+                'Mapping', {'lin', -36, 36}), ...
             audioPluginParameter('WET', ...
                 'DisplayName', 'Dry/Wet', ...
                 'Label', '%', ...
@@ -87,12 +87,8 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
         )
     end
     
-    properties (Access = private, Nontunable)
-        PartitionSize = 1024;
-        
-        % DSP Objects for partitioned convolution
-        pFIR_L
-        pFIR_R
+    properties (Nontunable)
+        PartitionSize = 2048; % Default partition size
     end
     
     % Plugin methods for frequency-domain partitioned convolution [1]
@@ -100,10 +96,8 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
     methods (Access = protected)
         % Main process function
         function out = stepImpl (plugin, in)
-            % Calculate next convolution step for each channel
-            outL = step(plugin.pFIR_L, in(:, 1));
-            outR = step(plugin.pFIR_R, in(:, 2));
-            out = [outL outR];
+            % Calculate next convolution step for both channels
+            out = step(plugin.pFIR, in);
             
             % Apply dry/wet mix
             out = in .* (1 - plugin.WET / 100) + out .* plugin.WET ./ 100;
@@ -115,35 +109,17 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
 
         % DSP initialization / setup
         function setupImpl (plugin, in)
-            [numChannels, ~] = size(plugin.ImpulseResponse);
-            if numChannels > 1
-                % Stereo/multi-channel impulse response
-                % Use only first two channels if more than two
-                plugin.pFIR_L = dsp.FrequencyDomainFIRFilter( ...
-                    'Numerator', plugin.ImpulseResponse(1, :), ...
-                    'PartitionForReducedLatency', true, ...
-                    'PartitionLength', plugin.PartitionSize);
-                plugin.pFIR_R = dsp.FrequencyDomainFIRFilter( ...
-                    'Numerator', plugin.ImpulseResponse(2, :), ...
-                    'PartitionForReducedLatency', true, ...
-                    'PartitionLength', plugin.PartitionSize);
-            else
-                % Single-channel impulse response
-                dspFilter = dsp.FrequencyDomainFIRFilter( ...
-                    'Numerator', plugin.ImpulseResponse, ...
-                    'PartitionForReducedLatency', true, ...
-                    'PartitionLength', plugin.PartitionSize);
-                plugin.pFIR_L = dspFilter;
-                plugin.pFIR_R = dspFilter;
-            end
-            setup(plugin.pFIR_L, in(:, 1));
-            setup(plugin.pFIR_R, in(:, 2));
+            plugin.pFIR = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', plugin.ImpulseResponse, ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PartitionSize);
+
+            setup(plugin.pFIR, in);
         end
 
         % Initialize / reset discrete-state properties
         function resetImpl (plugin)
-            reset(plugin.pFIR_L);
-            reset(plugin.pFIR_R);
+            reset(plugin.pFIR);
         end
         
         % Generate and load new impulse response when reverb parameters change
@@ -155,7 +131,13 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
                 isChangedProperty(plugin, 'BR');
             
             if propChange
-                % TODO run genetic algorithm here
+                % Generate and save new impulse response
+                plugin.ImpulseResponse = genetic_rir( ...
+                    getSampleRate(plugin), plugin.T60, plugin.ITDG, ...
+                    plugin.EDT, plugin.C80, plugin.BR);
+                
+                % Update DSP filter
+                plugin.pFIR.Numerator(1:end) = plugin.ImpulseResponse(1:end);
             end
         end
     
