@@ -48,7 +48,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
         GAIN = 0;
         WET = 100;
 
-        ImpulseResponse = zeros(1, 288000);
+        ImpulseResponse = zeros(1, 88200);
         pFIR; % DSP Object for partitioned convolution
     end
     
@@ -88,7 +88,8 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
     end
     
     properties (Nontunable)
-        PartitionSize = 2048; % Default partition size
+        SampleRate = 44100; % Default sample rate
+        PartitionSize = 1024; % Default partition size
     end
     
     % Plugin methods for frequency-domain partitioned convolution [1]
@@ -133,11 +134,11 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
             if propChange
                 % Generate and save new impulse response
                 plugin.ImpulseResponse = genetic_rir( ...
-                    getSampleRate(plugin), plugin.T60, plugin.ITDG, ...
+                    plugin.SampleRate, plugin.T60, plugin.ITDG, ...
                     plugin.EDT, plugin.C80, plugin.BR);
                 
                 % Update DSP filter
-                plugin.pFIR.Numerator(1:end) = plugin.ImpulseResponse(1:end);
+                plugin.pFIR.Numerator = plugin.ImpulseResponse;
             end
         end
     
