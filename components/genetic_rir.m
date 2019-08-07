@@ -23,9 +23,6 @@ function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     % Impulse response parameters
     NUM_SAMPLES = round(2 * T60 * IR_SAMPLE_RATE);
 
-    % Initialize output
-    out = zeros(1, 88200);
-
     %-----------------------------------------------------------------------
 
     % Initialize population
@@ -77,6 +74,9 @@ function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     % Upsample back to audio sample rate
     irBest = upsample(irBest, sampleFactor);
     
+    % Initialize output
+    out = zeros(1, 88200);
+
     % Transform to row vector
     out(1:length(irBest)) = irBest';
 end
