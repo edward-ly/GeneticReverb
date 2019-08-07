@@ -78,5 +78,5 @@ function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     irBest = upsample(irBest, sampleFactor);
     
     % Transform to row vector
-    out(1:NUM_SAMPLES) = irBest';
+    out(1:length(irBest)) = irBest';
 end
