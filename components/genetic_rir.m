@@ -75,7 +75,7 @@ function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     %-----------------------------------------------------------------------
 
     % Upsample back to audio sample rate
-    if sampleFactor ~= 1, irBest = upsample(irBest, sampleFactor); end
+    irBest = upsample(irBest, sampleFactor);
     
     % Transform to row vector
     out(1:NUM_SAMPLES) = irBest';
