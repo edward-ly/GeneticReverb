@@ -9,7 +9,11 @@ function out = resample_ir(plugin, in, sampleRate)
 
     % Initialize constant-length input for resamplers
     input = zeros(plugin.BUFFER_LENGTH, 1);
-    input(1:length(in)) = in';
+    if length(in) > plugin.BUFFER_LENGTH
+        input = in(1:plugin.BUFFER_LENGTH)';
+    else
+        input(1:length(in)) = in';
+    end
     
     if plugin.resample
         if sampleRate == 44100
