@@ -89,13 +89,14 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     properties (Nontunable)
         % Constant parameters
         IR_SAMPLE_RATE = 16000;  % Sample rate of generated IRs
-        PARTITION_SIZE = 1024;   % Default partition length of pFIRFilter
+        PARTITION_SIZE = 1024;   % Default partition length of filters
         BUFFER_LENGTH = 96000;   % Maximum number of samples in IR
     end
     
     properties
-        % System object for partitioned convolution of audio stream with IR
-        pFIRFilter
+        % System objects for partitioned convolution of audio stream with IR
+        pFIRFilterLeft
+        pFIRFilterRight
 
         % System objects for resampling IR to audio sample rate
         pFIR22050     % 16 kHz to 22.05 kHz
@@ -111,7 +112,9 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         % Main process function
         function out = stepImpl (plugin, in)
             % Calculate next convolution step for both channels
-            out = step(plugin.pFIRFilter, in);
+            outL = step(plugin.pFIRFilterLeft, in(:, 1));
+            outR = step(plugin.pFIRFilterRight, in(:, 2));
+            out = [outL outR];
             
             % Apply dry/wet mix
             out = in .* (1 - plugin.MIX / 100) + out .* plugin.MIX ./ 100;
@@ -122,7 +125,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         end
 
         % DSP initialization / setup
-        function setupImpl (plugin, in)
+        function setupImpl (plugin, ~)
             % Initialize resampler objects:
             % 22.05/44.1/88.2 kHz sample rates are rounded to 22/44/88 kHz for
             % faster computation times
@@ -136,18 +139,21 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             % Initialize buffer
             numerator = zeros(1, plugin.BUFFER_LENGTH);
             
-            % Initialize convolution filter
-            plugin.pFIRFilter = dsp.FrequencyDomainFIRFilter( ...
+            % Initialize convolution filters
+            plugin.pFIRFilterLeft = dsp.FrequencyDomainFIRFilter( ...
                 'Numerator', numerator, ...
                 'PartitionForReducedLatency', true, ...
                 'PartitionLength', plugin.PARTITION_SIZE);
-
-            setup(plugin.pFIRFilter, in);
+            plugin.pFIRFilterRight = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', numerator, ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
         end
 
         % Initialize / reset discrete-state properties
         function resetImpl (plugin)
-            reset(plugin.pFIRFilter);
+            reset(plugin.pFIRFilterLeft);
+            reset(plugin.pFIRFilterRight);
             reset(plugin.pFIR22050);
             reset(plugin.pFIR32000);
             reset(plugin.pFIR44100);
@@ -166,16 +172,21 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                 isChangedProperty(plugin, 'BR');
             
             if propChange
-                % Generate new impulse response
-                newIR = genetic_rir( ...
+                % Generate new impulse responses
+                newIRLeft = genetic_rir( ...
+                    plugin.IR_SAMPLE_RATE, plugin.T60, plugin.ITDG, ...
+                    plugin.EDT, plugin.C80, plugin.BR);
+                newIRRight = genetic_rir( ...
                     plugin.IR_SAMPLE_RATE, plugin.T60, plugin.ITDG, ...
                     plugin.EDT, plugin.C80, plugin.BR);
                 
-                % Resample/resize impulse response to match plugin sample rate
-                newBufferIR = resample_ir(plugin, newIR, getSampleRate(plugin));
+                % Resample/resize impulse responses to match plugin sample rate
+                IRLeft = resample_ir(plugin, newIRLeft, getSampleRate(plugin));
+                IRRight = resample_ir(plugin, newIRRight, getSampleRate(plugin));
                 
-                % Update convolution filter
-                plugin.pFIRFilter.Numerator = newBufferIR;
+                % Update convolution filters
+                plugin.pFIRFilterLeft.Numerator = IRLeft;
+                plugin.pFIRFilterRight.Numerator = IRRight;
             end
         end
     end
