@@ -179,26 +179,4 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             end
         end
     end
-    
-    % Get methods for private properties
-    methods
-        function out = get.pFIR22050 (plugin)
-            out = plugin.pFIR22050;
-        end
-        function out = get.pFIR32000 (plugin)
-            out = plugin.pFIR32000;
-        end
-        function out = get.pFIR44100 (plugin)
-            out = plugin.pFIR44100;
-        end
-        function out = get.pFIR48000 (plugin)
-            out = plugin.pFIR48000;
-        end
-        function out = get.pFIR88200 (plugin)
-            out = plugin.pFIR88200;
-        end
-        function out = get.pFIR96000 (plugin)
-            out = plugin.pFIR96000;
-        end
-    end
 end
