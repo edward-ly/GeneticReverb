@@ -37,8 +37,7 @@
 % OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 % SOFTWARE.
 
-classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
-        matlab.system.mixin.Propagates
+classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     properties % Public variables
         T60 = 0.5;
         ITDG = 0;
@@ -136,24 +135,6 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System & ...
                     plugin.SampleRate, plugin.T60, plugin.ITDG, ...
                     plugin.EDT, plugin.C80, plugin.BR);
             end
-        end
-    
-        %------------------------------------------------------------------
-        % Propagators
-        function varargout = isOutputComplexImpl (~)
-            varargout{1} = false;
-        end
-        
-        function varargout = getOutputSizeImpl (obj)
-            varargout{1} = propagatedInputSize(obj, 1);
-        end
-        
-        function varargout = getOutputDataTypeImpl (obj)
-            varargout{1} = propagatedInputDataType(obj, 1);
-        end
-        
-        function varargout = isOutputFixedSizeImpl (obj)
-            varargout{1} = propagatedInputFixedSize(obj, 1);
         end
     end
 end
