@@ -15,7 +15,7 @@ function out = resample_ir(plugin, in, sampleRate)
         input(1:length(in)) = in';
     end
 
-    if plugin.resample
+    if plugin.RESAMPLE
         if sampleRate == 44100
             output = step(plugin.pFIR44100, input);
         elseif sampleRate == 22050
