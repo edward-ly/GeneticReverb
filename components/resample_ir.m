@@ -11,20 +11,24 @@ function out = resample_ir(plugin, in, sampleRate)
     input = zeros(plugin.BUFFER_LENGTH, 1);
     input(1:length(in)) = in';
     
-    if sampleRate == 44100
-        output = step(plugin.pFIR44100, input);
-    elseif sampleRate == 22050
-        output = step(plugin.pFIR22050, input);
-    elseif sampleRate == 32000
-        output = step(plugin.pFIR32000, input);
-    elseif sampleRate == 48000 
-        output = step(plugin.pFIR48000, input);
-    elseif sampleRate == 88200 
-        output = step(plugin.pFIR88200, input);
-    elseif sampleRate == 96000
-        output = step(plugin.pFIR96000, input);
+    if plugin.resample
+        if sampleRate == 44100
+            output = step(plugin.pFIR44100, input);
+        elseif sampleRate == 22050
+            output = step(plugin.pFIR22050, input);
+        elseif sampleRate == 32000
+            output = step(plugin.pFIR32000, input);
+        elseif sampleRate == 48000 
+            output = step(plugin.pFIR48000, input);
+        elseif sampleRate == 88200 
+            output = step(plugin.pFIR88200, input);
+        elseif sampleRate == 96000
+            output = step(plugin.pFIR96000, input);
+        else
+            % No conversion for unsupported sample rates
+            output = in';
+        end
     else
-        % No conversion for unsupported sample rates
         output = in';
     end
     

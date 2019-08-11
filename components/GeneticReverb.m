@@ -37,13 +37,14 @@
 classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     properties
         % Public variables
-        T60 = 0.5;  % Total reverberation time
-        ITDG = 0;   % Initial time delay gap
-        EDT = 0.1;  % Early decay time (T10)
-        C80 = 0;    % Clarity
-        BR = 1;     % Bass Ratio
-        GAIN = 0;   % Output gain
-        MIX = 100;  % Dry/Wet Mix
+        T60 = 0.5;        % Total reverberation time
+        ITDG = 0;         % Initial time delay gap
+        EDT = 0.1;        % Early decay time (T10)
+        C80 = 0;          % Clarity
+        BR = 1;           % Bass Ratio
+        GAIN = 0;         % Output gain
+        MIX = 100;        % Dry/Wet Mix
+        resample = true;  % Enable resampling of IR to match audio
     end
     
     properties (Constant)
@@ -78,7 +79,10 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             audioPluginParameter('MIX', ...
                 'DisplayName', 'Dry/Wet', ...
                 'Label', '%', ...
-                'Mapping', {'lin', 0, 100}) ...
+                'Mapping', {'lin', 0, 100}), ...
+            audioPluginParameter('resample', ...
+                'DisplayName', 'Resample', ...
+                'Mapping', {'enum', 'Off', 'On'}) ...
         )
     end
     
