@@ -12,21 +12,13 @@ function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     FITNESS_THRESHOLD = 1e-2;
     MUTATION_RATE = 0.001;
 
-    % Downsample IR for faster calculations
-    IR_SAMPLE_RATE = SAMPLE_RATE;
-    sampleFactor = 1;
-    while IR_SAMPLE_RATE >= 32000
-        IR_SAMPLE_RATE = IR_SAMPLE_RATE / 2;
-        sampleFactor = sampleFactor * 2;
-    end
-
     % Impulse response parameters
-    NUM_SAMPLES = round(2 * T60 * IR_SAMPLE_RATE);
+    NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
 
     %-----------------------------------------------------------------------
 
     % Initialize population
-    irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, IR_SAMPLE_RATE, T60);
+    irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60);
     irFitness = Inf(POPULATION_SIZE, 1);
     irBest = zeros(NUM_SAMPLES, 1);
     irBestFitness = Inf;
@@ -37,7 +29,7 @@ function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
         % Evaluate population
         for i = 1:POPULATION_SIZE
             irFitness(i) = fitness( ...
-                irPopulation(:, i), IR_SAMPLE_RATE, T60, ITDG, EDT, C80, BR);
+                irPopulation(:, i), SAMPLE_RATE, T60, ITDG, EDT, C80, BR);
         end
 
         % Sort population by fitness value and update best individual
@@ -71,12 +63,6 @@ function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
 
     %-----------------------------------------------------------------------
 
-    % Upsample back to audio sample rate
-    irBest = upsample(irBest, sampleFactor);
-    
-    % Initialize output
-    out = zeros(1, 88200);
-
     % Transform to row vector
-    out(1:length(irBest)) = irBest';
+    out = irBest';
 end

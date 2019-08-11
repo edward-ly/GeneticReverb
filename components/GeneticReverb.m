@@ -1,5 +1,5 @@
 % Class file for a VST 2 plugin that performs IR-based reverb in real-time
-% via frequency-domain partitioned convolution [1], while adding the ability to
+% via frequency-domain partitioned convolution, while adding the ability to
 % shape the impulse response using a genetic algorithm, as well as control the
 % dry/wet mix and gain of the output signal.
 %
@@ -11,9 +11,6 @@
 % Usage: validate and generate the VST plugin, respectively, with:
 %     validateAudioPlugin GeneticReverb
 %     generateAudioPlugin GeneticReverb
-% 
-% Sources:
-% [1] MATLAB Example 'audiopluginexample.FastConvolver'
 %
 % MIT License
 %
@@ -38,17 +35,19 @@
 % SOFTWARE.
 
 classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
-    properties % Public variables
-        T60 = 0.5;
-        ITDG = 0;
-        EDT = 0.1;
-        C80 = 0;
-        BR = 1;
-        GAIN = 0;
-        MIX = 100;
+    properties
+        % Public variables
+        T60 = 0.5;  % Total reverberation time
+        ITDG = 0;   % Initial time delay gap
+        EDT = 0.1;  % Early decay time (T10)
+        C80 = 0;    % Clarity
+        BR = 1;     % Bass Ratio
+        GAIN = 0;   % Output gain
+        MIX = 100;  % Dry/Wet Mix
     end
     
-    properties (Constant) % Interface parameters
+    properties (Constant)
+        % Interface parameters
         PluginInterface = audioPluginInterface( ...
             'InputChannels', 2, ...
             'OutputChannels', 2, ...
@@ -84,21 +83,31 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     end
     
     properties (Nontunable)
-        SampleRate = 44100; % Default sample rate
-        PartitionSize = 1024; % Default partition size
+        % Constant parameters
+        IR_SAMPLE_RATE = 16000;  % Sample rate of generated IRs
+        PARTITION_SIZE = 1024;   % Default partition length of pFIRFilter
+        BUFFER_LENGTH = 96000;   % Maximum number of samples in IR
     end
     
-    properties (Access = private)
-        pFIR; % DSP Object for partitioned convolution
+    properties
+        % System object for partitioned convolution of audio stream with IR
+        pFIRFilter
+
+        % System objects for resampling IR to audio sample rate
+        pFIR22050     % 16 kHz to 22.05 kHz
+        pFIR32000     % 16 kHz to 32 kHz
+        pFIR44100     % 16 kHz to 44.1 kHz
+        pFIR48000     % 16 kHz to 48 kHz
+        pFIR88200     % 16 kHz to 88.2 kHz
+        pFIR96000     % 16 kHz to 96 kHz
     end
     
-    % Plugin methods for frequency-domain partitioned convolution [1]
-    % Modified for multi-channel, mutable IRs and output control
+    % Plugin methods for frequency-domain partitioned convolution
     methods (Access = protected)
         % Main process function
         function out = stepImpl (plugin, in)
             % Calculate next convolution step for both channels
-            out = step(plugin.pFIR, in);
+            out = step(plugin.pFIRFilter, in);
             
             % Apply dry/wet mix
             out = in .* (1 - plugin.MIX / 100) + out .* plugin.MIX ./ 100;
@@ -110,21 +119,42 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
 
         % DSP initialization / setup
         function setupImpl (plugin, in)
-            plugin.pFIR = dsp.FrequencyDomainFIRFilter( ...
-                'Numerator', zeros(1, 88200), ...
-                'PartitionForReducedLatency', true, ...
-                'PartitionLength', plugin.PartitionSize);
+            % Initialize resampler objects:
+            % 22.05/44.1/88.2 kHz sample rates are rounded to 22/44/88 kHz for
+            % faster computation times
+            plugin.pFIR22050 = dsp.FIRRateConverter(11, 8);
+            plugin.pFIR32000 = dsp.FIRRateConverter(2, 1);
+            plugin.pFIR44100 = dsp.FIRRateConverter(11, 4);
+            plugin.pFIR48000 = dsp.FIRRateConverter(3, 1);
+            plugin.pFIR88200 = dsp.FIRRateConverter(11, 2);
+            plugin.pFIR96000 = dsp.FIRRateConverter(6, 1);
 
-            setup(plugin.pFIR, in);
+            % Initialize buffer
+            numerator = zeros(1, plugin.BUFFER_LENGTH);
+            
+            % Initialize convolution filter
+            plugin.pFIRFilter = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', numerator, ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+
+            setup(plugin.pFIRFilter, in);
         end
 
         % Initialize / reset discrete-state properties
         function resetImpl (plugin)
-            reset(plugin.pFIR);
+            reset(plugin.pFIRFilter);
+            reset(plugin.pFIR22050);
+            reset(plugin.pFIR32000);
+            reset(plugin.pFIR44100);
+            reset(plugin.pFIR48000);
+            reset(plugin.pFIR88200);
+            reset(plugin.pFIR96000);
         end
         
         % Generate and load new impulse response when reverb parameters change
         function processTunedPropertiesImpl (plugin)
+            % Detect changes in reverb parameters
             propChange = isChangedProperty(plugin, 'T60') || ...
                 isChangedProperty(plugin, 'ITDG') || ...
                 isChangedProperty(plugin, 'EDT') || ...
@@ -132,11 +162,39 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                 isChangedProperty(plugin, 'BR');
             
             if propChange
-                % Update DSP filter
-                plugin.pFIR.Numerator = genetic_rir( ...
-                    plugin.SampleRate, plugin.T60, plugin.ITDG, ...
+                % Generate new impulse response
+                newIR = genetic_rir( ...
+                    plugin.IR_SAMPLE_RATE, plugin.T60, plugin.ITDG, ...
                     plugin.EDT, plugin.C80, plugin.BR);
+                
+                % Resample/resize impulse response to match plugin sample rate
+                newBufferIR = resample_ir(plugin, newIR, getSampleRate(plugin));
+                
+                % Update convolution filter
+                plugin.pFIRFilter.Numerator = newBufferIR;
             end
+        end
+    end
+    
+    % Get methods for private properties
+    methods
+        function out = get.pFIR22050 (plugin)
+            out = plugin.pFIR22050;
+        end
+        function out = get.pFIR32000 (plugin)
+            out = plugin.pFIR32000;
+        end
+        function out = get.pFIR44100 (plugin)
+            out = plugin.pFIR44100;
+        end
+        function out = get.pFIR48000 (plugin)
+            out = plugin.pFIR48000;
+        end
+        function out = get.pFIR88200 (plugin)
+            out = plugin.pFIR88200;
+        end
+        function out = get.pFIR96000 (plugin)
+            out = plugin.pFIR96000;
         end
     end
 end
