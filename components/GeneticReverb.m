@@ -44,6 +44,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         BR = 1;           % Bass Ratio
         GAIN = 0;         % Output gain
         MIX = 100;        % Dry/Wet Mix
+        stereo = true;    % Enable stereo effect
         resample = true;  % Enable resampling of IR to match audio
     end
     
@@ -80,6 +81,9 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                 'DisplayName', 'Dry/Wet', ...
                 'Label', '%', ...
                 'Mapping', {'lin', 0, 100}), ...
+            audioPluginParameter('stereo', ...
+                'DisplayName', 'Mono/Stereo', ...
+                'Mapping', {'enum', 'Mono', 'Stereo'}), ...
             audioPluginParameter('resample', ...
                 'DisplayName', 'Resample', ...
                 'Mapping', {'enum', 'Off', 'On'}) ...
@@ -172,21 +176,38 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                 isChangedProperty(plugin, 'BR');
             
             if propChange
-                % Generate new impulse responses
-                newIRLeft = genetic_rir( ...
-                    plugin.IR_SAMPLE_RATE, plugin.T60, plugin.ITDG, ...
-                    plugin.EDT, plugin.C80, plugin.BR);
-                newIRRight = genetic_rir( ...
-                    plugin.IR_SAMPLE_RATE, plugin.T60, plugin.ITDG, ...
-                    plugin.EDT, plugin.C80, plugin.BR);
+                % Get current sample rate of plugin
+                sampleRate = getSampleRate(plugin);
                 
-                % Resample/resize impulse responses to match plugin sample rate
-                IRLeft = resample_ir(plugin, newIRLeft, getSampleRate(plugin));
-                IRRight = resample_ir(plugin, newIRRight, getSampleRate(plugin));
-                
-                % Update convolution filters
-                plugin.pFIRFilterLeft.Numerator = IRLeft;
-                plugin.pFIRFilterRight.Numerator = IRRight;
+                if plugin.stereo
+                    % Generate new impulse responses
+                    newIRLeft = genetic_rir( ...
+                        plugin.IR_SAMPLE_RATE, plugin.T60, plugin.ITDG, ...
+                        plugin.EDT, plugin.C80, plugin.BR);
+                    newIRRight = genetic_rir( ...
+                        plugin.IR_SAMPLE_RATE, plugin.T60, plugin.ITDG, ...
+                        plugin.EDT, plugin.C80, plugin.BR);
+
+                    % Resample/resize impulse responses
+                    IRLeft = resample_ir(plugin, newIRLeft, sampleRate);
+                    IRRight = resample_ir(plugin, newIRRight, sampleRate);
+
+                    % Update convolution filters
+                    plugin.pFIRFilterLeft.Numerator = IRLeft;
+                    plugin.pFIRFilterRight.Numerator = IRRight;
+                else
+                    % Generate new impulse response
+                    newIR = genetic_rir( ...
+                        plugin.IR_SAMPLE_RATE, plugin.T60, plugin.ITDG, ...
+                        plugin.EDT, plugin.C80, plugin.BR);
+
+                    % Resample/resize impulse response
+                    IR = resample_ir(plugin, newIR, sampleRate);
+
+                    % Update convolution filters
+                    plugin.pFIRFilterLeft.Numerator = IR;
+                    plugin.pFIRFilterRight.Numerator = IR;
+                end
             end
         end
     end
