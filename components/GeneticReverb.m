@@ -46,8 +46,6 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         BR = 1;
         GAIN = 0;
         MIX = 100;
-
-        pFIR; % DSP Object for partitioned convolution
     end
     
     properties (Constant) % Interface parameters
@@ -88,6 +86,10 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     properties (Nontunable)
         SampleRate = 44100; % Default sample rate
         PartitionSize = 1024; % Default partition size
+    end
+    
+    properties (Access = private)
+        pFIR; % DSP Object for partitioned convolution
     end
     
     % Plugin methods for frequency-domain partitioned convolution [1]
