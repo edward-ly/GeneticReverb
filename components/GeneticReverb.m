@@ -62,7 +62,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         PluginInterface = audioPluginInterface( ...
             'InputChannels', 2, ...
             'OutputChannels', 2, ...
-            'PluginName', 'Genetic Reverb', ... % 'Out Of The Box'
+            'PluginName', 'Genetic Reverb', ...
             audioPluginParameter('T60', ...
                 'DisplayName', 'Decay Time', ...
                 'Label', 's', ...
@@ -105,9 +105,9 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     
     properties (Nontunable)
         % Constant parameters
-        IR_SAMPLE_RATE = 16000;  % Sample rate of generated IRs
-        PARTITION_SIZE = 1024;   % Default partition length of filters
-        BUFFER_LENGTH = 96000;   % Maximum number of samples in IR
+        IR_SAMPLE_RATE = 16000;   % Sample rate of generated IRs
+        PARTITION_SIZE = 1024;    % Default partition length of conv filters
+        BUFFER_LENGTH = 96000;    % Maximum number of samples in IR
     end
     
     properties
@@ -148,7 +148,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         function setupImpl (plugin, ~)
             % Initialize resampler objects:
             % 22.05/44.1/88.2 kHz sample rates are rounded to 22/44/88 kHz for
-            % faster computation times
+            % simplicity
             plugin.pFIR22050 = dsp.FIRRateConverter(11, 8);
             plugin.pFIR32000 = dsp.FIRRateConverter(2, 1);
             plugin.pFIR44100 = dsp.FIRRateConverter(11, 4);
@@ -170,7 +170,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                 'PartitionLength', plugin.PARTITION_SIZE);
         end
 
-        % Initialize / reset discrete-state properties
+        % Initialize/reset system object properties
         function resetImpl (plugin)
             reset(plugin.pFIRFilterLeft);
             reset(plugin.pFIRFilterRight);
