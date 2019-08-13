@@ -52,7 +52,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         BR = 1;           % Bass Ratio
         LGAIN = 0;        % Output gain (left channel)
         RGAIN = 0;        % Output gain (right channel)
-        MIX = 100;        % Dry/Wet Mix
+        MIX = 55;         % Dry/Wet Mix
         STEREO = true;    % Enable stereo effect
         RESAMPLE = true;  % Enable resampling of IR to match audio
     end
@@ -107,7 +107,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         % Constant parameters
         IR_SAMPLE_RATE = 16000;   % Sample rate of generated IRs
         PARTITION_SIZE = 1024;    % Default partition length of conv filters
-        BUFFER_LENGTH = 96000;    % Maximum number of samples in IR
+        BUFFER_LENGTH = 48000;    % Maximum number of samples in IR
     end
     
     properties
