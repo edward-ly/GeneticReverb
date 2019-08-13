@@ -6,7 +6,7 @@ You can also load the generated impulse response WAV file to perform the same re
 
 ## Generating and Running the Plugin
 
-In the MATLAB command window under the `components` directory, first validate the plugin with `validateAudioPlugin GeneticReverb`, then generate the plugin with `generateAudioPlugin GeneticReverb`. You can then copy the `.dll` (Windows) or `.vst` (Mac) file into your VST plugins folder or add the project directory to your DAW's plugin file path.
+In the MATLAB command window under the `components` directory, first validate the plugin with `validateAudioPlugin GeneticReverb`, then generate the plugin with `generateAudioPlugin GeneticReverb` (alternatively, `validateAudioPlugin components/GeneticReverb` and `generateAudioPlugin components/GeneticReverb` in the project root directory). You can then copy the `.dll` (Windows) or `.vst` (Mac) file into your VST plugins folder or add the project directory to your DAW's plugin file path.
 
 ## Running the Script
 
@@ -18,4 +18,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-12 August 2019
+13 August 2019
