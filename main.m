@@ -45,6 +45,8 @@ addpath components
 
 %% Output parameters.
 OUTPUT_DIR = 'output';
+NORMALIZE_IR = true;
+NORMALIZE_AUDIO = true;
 
 %% Genetic algorithm parameters.
 POPULATION_SIZE = 50;
@@ -168,7 +170,7 @@ if SAMPLE_RATE ~= audioSampleRate
 end
 
 % Normalize impulse response.
-irBest = normalize_signal(irBest, 0.99);
+if NORMALIZE_IR, irBest = normalize_signal(irBest, 0.99); end
 
 % Create output folder if it doesn't already exist.
 if ~isfolder(OUTPUT_DIR), mkdir(OUTPUT_DIR); end
@@ -186,7 +188,7 @@ for i = 1:numAudioChannels
 end
 
 % Normalize audio.
-wetSignal = normalize_signal(wetSignal, 0.99, 'all');
+if NORMALIZE_AUDIO, wetSignal = normalize_signal(wetSignal, 0.99, 'all'); end
 
 % Write to WAV file.
 outputFileName = [OUTPUT_DIR filesep replace(fileName, '.wav', '_wet.wav')];
