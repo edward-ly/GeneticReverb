@@ -6,6 +6,10 @@ function out = normalize_signal(in, peak, mode)
 % peak = max value
 % mode = ['all' (default), 'each'] normalize entire signal at once or
 % normalize each channel independently
+    % Require in and peak arguments
+    if nargin < 2, error('Not enough input arguments.'); end
+
+    % Set missing arguments
     if nargin < 3, mode = 'all'; end
     
     [numSamples, numChannels] = size(in);
