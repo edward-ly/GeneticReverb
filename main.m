@@ -47,9 +47,9 @@ addpath components
 OUTPUT_DIR = 'output';
 
 %% Genetic algorithm parameters.
-POPULATION_SIZE = 25;
-SELECTION_SIZE = 5;
-NUM_GENERATIONS = 10;
+POPULATION_SIZE = 50;
+SELECTION_SIZE = 20;
+NUM_GENERATIONS = 50;
 STOP_GENERATIONS = 5;
 FITNESS_THRESHOLD = 1e-3;
 MUTATION_RATE = 0.001;
@@ -64,7 +64,7 @@ BR = 1;      % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
              % frequency to high frequency reverberation)
 
 %% Impulse response parameters.
-SAMPLE_RATE = 16000;
+SAMPLE_RATE = 44100;
 NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
 % ZERO_THRESHOLD = 1e-6;
 % Only one impulse response channel per individual.
