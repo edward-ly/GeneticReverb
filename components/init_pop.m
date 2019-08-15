@@ -18,6 +18,7 @@ function pop = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60)
 %
     % Require all arguments
     if nargin < 4, error('Not enough input arguments.'); end
+    if nargout < 1, error('Not enough output arguments.'); end
 
     pop = zeros(NUM_SAMPLES, POPULATION_SIZE);
 

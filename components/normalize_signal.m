@@ -11,6 +11,9 @@ function out = normalize_signal(in, peak, mode)
 % Output arguments:
 % out = output signal
 %
+    % Require output arguments
+    if nargout < 1, error('Not enough output arguments.'); end
+    
     % Require in and peak arguments
     if nargin < 2, error('Not enough input arguments.'); end
 

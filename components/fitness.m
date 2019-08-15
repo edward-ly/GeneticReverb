@@ -15,6 +15,7 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
 %
     % Require all arguments
     if nargin < 7, error('Not enough input arguments.'); end
+    if nargout < 1, error('Not enough output arguments.'); end
 
     % Calculate relative levels in decibels for each sample.
     irLevels = 10 .* log10(ir .* ir);

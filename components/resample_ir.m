@@ -11,6 +11,7 @@ function out = resample_ir(plugin, in, sampleRate)
 %
     % Require all arguments
     if nargin < 3, error('Not enough input arguments.'); end
+    if nargout < 1, error('Not enough output arguments.'); end
 
     % Initialize constant-length input for resamplers
     input = zeros(plugin.BUFFER_LENGTH, 1);

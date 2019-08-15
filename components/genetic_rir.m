@@ -15,6 +15,7 @@ function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
 %
     % Require all arguments
     if nargin < 6, error('Not enough input arguments.'); end
+    if nargout < 1, error('Not enough output arguments.'); end
 
     % Genetic algorithm parameters
     POPULATION_SIZE = 5;

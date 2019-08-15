@@ -15,6 +15,7 @@ function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES)
 %
     % Require all arguments
     if nargin < 4, error('Not enough input arguments.'); end
+    if nargout < 1, error('Not enough output arguments.'); end
 
     out = in;
     

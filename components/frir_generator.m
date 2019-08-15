@@ -21,6 +21,9 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
 %
     % Require all arguments
     if nargin < 7, error('Not enough input arguments.'); end
+    
+    % Output argument beta_hat is optional
+    if nargout < 1, error('Not enough output arguments.'); end
 
     % Calculate reflection coefficient via Sabine's formula
     if beta > 0
