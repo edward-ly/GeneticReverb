@@ -1,6 +1,18 @@
 function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
-%GENETIC_RIR Function equivalent of main.m script for real-time processing.
+%GENETIC_RIR Generates a random impulse response with the given parameters.
+% Function equivalent of main.m script for real-time processing.
+%
+% Input arguments:
+% SAMPLE_RATE = sample rate of impulse response
+% T60 = T60 decay time (s)
+% ITDG = initial time delay gap (s)
+% EDT = early decay time (s)
+% C80 = clarity (dB)
+% BR = bass ratio
+%
+% Output arguments:
 % out = row vector containing the impulse response
+%
     % Require all arguments
     if nargin < 6, error('Not enough input arguments.'); end
 

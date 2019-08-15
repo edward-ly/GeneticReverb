@@ -1,5 +1,7 @@
 function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
 % FRIR_GENERATOR Generates a room impulse response from the given parameters.
+%
+% Input arguments:
 % c = speed of sound (m/s)
 % fs = sampling frequency of impulse response
 % r = 1 x 3 array specifying the (x,y,z) coordinates of receiver (m)
@@ -7,6 +9,8 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
 % L = 1 x 3 array specifying the (x,y,z) room dimensions (m)
 % beta = T60 reverberation time (s)
 % nSamples = total number of samples in impulse response
+%
+% Output arguments:
 % h = nsample x 1 column vector containing the calculated room impulse response
 % beta_hat = reflection coefficient of the walls based on reverberation time
 %

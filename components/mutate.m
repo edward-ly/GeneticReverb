@@ -1,9 +1,16 @@
 function out = mutate(in, MUTATION_RATE)
 % MUTATE Changes the population's values with some probability.
-% out = output population
+%
+% Input arguments:
 % in = input population
+% MUTATION_RATE = probability of each sample changing value
+%
+% Output arguments:
+% out = output population
+%
 % Current algorithm: for each affected sample, add to its value a random
-% number from the normal distribution (std. dev. 0.1).
+% number from the normal distribution (standard deviation 0.1).
+%
     % Require all arguments
     if nargin < 2, error('Not enough input arguments.'); end
 

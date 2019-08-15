@@ -1,7 +1,18 @@
 function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
 % FITNESS Calculate fitness value of impulse response.
-% ir = impulse response (column vector)
+%
+% Input arguments:
+% ir = column vector containing impulse response
+% SAMPLE_RATE = sample rate of impulse response
+% T60 = T60 decay time (s)
+% ITDG = initial time delay gap (s)
+% EDT = early decay time (s)
+% C80 = clarity (dB)
+% BR = bass ratio
+%
+% Output arguments:
 % f = fitness value
+%
     % Require all arguments
     if nargin < 7, error('Not enough input arguments.'); end
 

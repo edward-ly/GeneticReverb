@@ -1,11 +1,16 @@
 function out = normalize_signal(in, peak, mode)
 % NORMALIZE_SIGNAL Normalizes a signal so that all values are no higher than
 % peak level.
-% out = output signal
+%
+% Input arguments:
 % in = input signal
 % peak = max value
 % mode = ['all' (default), 'each'] normalize entire signal at once or
 % normalize each channel independently
+%
+% Output arguments:
+% out = output signal
+%
     % Require in and peak arguments
     if nargin < 2, error('Not enough input arguments.'); end
 

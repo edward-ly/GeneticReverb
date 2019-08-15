@@ -1,9 +1,18 @@
 function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES)
 % CROSSOVER Generate children and replace least fit individuals.
-% out = output population
+%
+% Input arguments:
 % in = input population
+% SELECTION_SIZE = number of impulse responses to keep per generation
+% POPULATION_SIZE = number of impulse responses
+% NUM_SAMPLES = length in samples of each impulse response
+%
+% Output arguments:
+% out = output population
+%
 % Current algorithm: one-point crossover where the point is random along the
 % length of the impulse response.
+%
     % Require all arguments
     if nargin < 4, error('Not enough input arguments.'); end
 

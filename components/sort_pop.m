@@ -1,9 +1,14 @@
 function [sortedPop, sortedFitness] = sort_pop(pop, fitness)
 % POP_SORT Sort population by fitness value.
-% sortedPop = sorted population
-% sortedFitness = fitness values of sorted population
+%
+% Input arguments:
 % pop = unsorted population
 % fitness = fitness values of unsorted population
+%
+% Output arguments:
+% sortedPop = sorted population
+% sortedFitness = fitness values of sorted population
+%
     % Require all arguments
     if nargin < 2, error('Not enough input arguments.'); end
 
