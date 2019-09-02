@@ -23,8 +23,8 @@
 **/packages
 
 # Ignore VST plugin files (Windows and MacOS).
-**/*.dll
-**/*.vst
+# **/*.dll
+# **/*.vst
 
 # Ignore example and test files.
 **/*example*
