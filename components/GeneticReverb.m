@@ -55,8 +55,9 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         MIX = 55;         % Dry/Wet Mix (%)
         STEREO = true;    % Enable stereo effect
         RESAMPLE = true;  % Enable resampling of IR to match audio
+        SAVE_IR = true;   % Toggle to save IR to file
     end
-    
+
     properties (Constant)
         % Interface parameters
         PluginInterface = audioPluginInterface( ...
@@ -99,16 +100,21 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                 'Mapping', {'enum', 'Mono', 'Stereo'}), ...
             audioPluginParameter('RESAMPLE', ...
                 'DisplayName', 'Resampling', ...
-                'Mapping', {'enum', 'Off', 'On'}))
+                'Mapping', {'enum', 'Off', 'On'}), ...
+            audioPluginParameter('SAVE_IR', ...
+                'DisplayName', 'Save To File', ...
+                'Mapping', {'enum', 'Switch Left', 'Switch Right'}))
     end
-    
+
     properties (Nontunable)
         % Constant parameters
         IR_SAMPLE_RATE = 16000;   % Sample rate of generated IRs
         PARTITION_SIZE = 1024;    % Default partition length of conv filters
         BUFFER_LENGTH = 48000;    % Maximum number of samples in IR
+        OUTPUT_DIR = 'irs';       % Name of directory to save IRs
+        PRECISION = 3;            % Number of sigfigs to record to file
     end
-    
+
     properties
         % System objects for partitioned convolution of audio stream with IR
         pFIRFilterLeft
@@ -122,7 +128,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         pFIR88200     % 16 kHz to 88.2 kHz
         pFIR96000     % 16 kHz to 96 kHz
     end
-    
+
     % Plugin methods for frequency-domain partitioned convolution
     methods (Access = protected)
         % Main process function
@@ -131,10 +137,10 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             outL = step(plugin.pFIRFilterLeft, in(:, 1));
             outR = step(plugin.pFIRFilterRight, in(:, 2));
             out = [outL outR];
-            
+
             % Apply dry/wet mix
             out = in .* (1 - plugin.MIX / 100) + out .* plugin.MIX ./ 100;
-            
+
             % Apply output gain
             LGain = 10 ^ (plugin.LGAIN / 20);
             RGain = 10 ^ (plugin.RGAIN / 20);
@@ -157,7 +163,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
 
             % Initialize buffer
             numerator = zeros(1, plugin.BUFFER_LENGTH);
-            
+
             % Initialize convolution filters
             plugin.pFIRFilterLeft = dsp.FrequencyDomainFIRFilter( ...
                 'Numerator', numerator, ...
@@ -180,22 +186,63 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             reset(plugin.pFIR88200);
             reset(plugin.pFIR96000);
         end
-        
+
         % Generate and load new impulse response when reverb parameters change
         function processTunedPropertiesImpl (plugin)
+            % Detect change in "toggle to save" parameter
+            propChangeSave = isChangedProperty(plugin, 'SAVE_IR');
+
             % Detect changes in reverb parameters
-            propChange = isChangedProperty(plugin, 'T60') || ...
+            propChangeIR = isChangedProperty(plugin, 'T60') || ...
                 isChangedProperty(plugin, 'ITDG') || ...
                 isChangedProperty(plugin, 'EDT') || ...
                 isChangedProperty(plugin, 'C80') || ...
                 isChangedProperty(plugin, 'BR') || ...
                 isChangedProperty(plugin, 'STEREO') || ...
                 isChangedProperty(plugin, 'RESAMPLE');
-            
-            if propChange
-                % Get current sample rate of plugin
-                sampleRate = getSampleRate(plugin);
-                
+
+            % Get current sample rate of plugin
+            sampleRate = getSampleRate(plugin);
+
+            if propChangeSave
+                % Save current impulse responses to file
+                irData = horzcat( ...
+                    plugin.pFIRFilterLeft.Numerator', ...
+                    plugin.pFIRFilterRight.Numerator');
+
+                % Create separate directory for impulse responses
+                if ~isfolder(plugin.OUTPUT_DIR), mkdir(plugin.OUTPUT_DIR); end
+
+                % Save IR parameters and new ID number to file name
+                id = 1;
+                irFileName = [plugin.OUTPUT_DIR filesep 'ir_' ...
+                    'T' num2str(plugin.T60, plugin.PRECISION)  '_' ...
+                    'E' num2str(plugin.EDT, plugin.PRECISION)  '_' ...
+                    'I' num2str(plugin.ITDG, plugin.PRECISION) '_' ...
+                    'C' num2str(plugin.C80, plugin.PRECISION)  '_' ...
+                    'W' num2str(plugin.BR, plugin.PRECISION)   '_' ...
+                    num2str(id) '.wav'];
+
+                % Check if file already exists, and if so, increment id number
+                while isfile(irFileName)
+                    id = id + 1;
+                    irFileName = [plugin.OUTPUT_DIR filesep 'ir_' ...
+                        'T' num2str(plugin.T60, plugin.PRECISION)  '_' ...
+                        'E' num2str(plugin.EDT, plugin.PRECISION)  '_' ...
+                        'I' num2str(plugin.ITDG, plugin.PRECISION) '_' ...
+                        'C' num2str(plugin.C80, plugin.PRECISION)  '_' ...
+                        'W' num2str(plugin.BR, plugin.PRECISION)   '_' ...
+                        num2str(id) '.wav'];
+                end
+
+                if plugin.RESAMPLE
+                    audiowrite(irFileName, irData, sampleRate);
+                else
+                    audiowrite(irFileName, irData, plugin.IR_SAMPLE_RATE);
+                end
+            end
+
+            if propChangeIR
                 if plugin.STEREO
                     % Generate new impulse responses
                     newIRLeft = genetic_rir( ...
