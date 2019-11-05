@@ -17,9 +17,8 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     if nargin < 7, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
 
-    % Calculate relative levels in decibels for each sample.
-    irLevels = 10 .* log10(ir .* ir);
-    [irMaxLevel, irMaxIndex] = max(irLevels);
+    % Get start time of IR (arrival of peak reflection).
+    [~, irMaxIndex] = max(abs(ir));
 
     % ITDG (initial time delay gap)
     % Calculate time difference between first two arrivals.
@@ -28,18 +27,19 @@ function f = fitness(ir, SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     irITDG = (irIndices(2) - irIndices(1)) / SAMPLE_RATE;
 
     % T60
-    % Calculate time of first sample whose level is 60 dB below highest sample.
-    irTestLevels = irLevels(irMaxIndex:end);
-    irT60Sample = find( ...
-        irTestLevels ~= -Inf & irTestLevels - irMaxLevel < -60, 1);
-    if isempty(irT60Sample), f = Inf; return; end
-    irT60 = irT60Sample / SAMPLE_RATE;
+    % Calculate T30 (time from -5 to -35 dB) and multiply by 2.
+    irEDC = schroeder(ir, 'dB');
+    irEDCMaxLevel = irEDC(irMaxIndex);
+    ir5dBSample = find(irEDC - irEDCMaxLevel < -5, 1);
+    if isempty(ir5dBSample), f = Inf; return; end
+    ir35dBSample = find(irEDC - irEDCMaxLevel < -35, 1);
+    if isempty(ir35dBSample), f = Inf; return; end
+    irT60 = (ir35dBSample - ir5dBSample) * 2 / SAMPLE_RATE;
 
-    % EDT (early decay time, a.k.a. T10)
-    irT10Sample = find( ...
-        irTestLevels ~= -Inf & irTestLevels - irMaxLevel < -10, 1);
-    if isempty(irT10Sample), f = Inf; return; end
-    irEDT = irT10Sample / SAMPLE_RATE;
+    % EDT (early decay time, i.e. time from 0 to -10 dB)
+    ir10dBSample = find(irEDC - irEDCMaxLevel < -10, 1);
+    if isempty(ir10dBSample), f = Inf; return; end
+    irEDT = (ir10dBSample - irMaxIndex) / SAMPLE_RATE;
 
     % C80 (clarity)
     sample_80ms = floor(0.08 * SAMPLE_RATE) + irMaxIndex;
