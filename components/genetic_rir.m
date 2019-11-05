@@ -1,5 +1,5 @@
-function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
-%GENETIC_RIR Generates a random impulse response with the given parameters.
+function out = genetic_rir(SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
+% GENETIC_RIR Generates a random impulse response with the given parameters.
 % Function equivalent of main.m script for real-time processing.
 %
 % Input arguments:
@@ -76,8 +76,8 @@ function out = genetic_rir (SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
 
     %-----------------------------------------------------------------------
 
-    % Normalize IR for more consistent gain and to prevent clipping
-    irBest = normalize_signal(irBest, 0.99);
+    % If IR is clipping, normalize IR to prevent it
+    if max(abs(irBest)) >= 1, irBest = normalize_signal(irBest, 0.99); end
 
     % Transform to row vector
     out = irBest';
