@@ -50,10 +50,10 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         EDT = 0.1;        % Early decay time (T10) (s)
         C80 = 0;          % Clarity (dB)
         BR = 1;           % Bass Ratio (Warmth)
-        GAIN = 0;         % Gain of output signal (dB)
-        MIX = 55;         % Dry/Wet Mix (%)
         STEREO = true;    % Enable stereo effect
         RESAMPLE = true;  % Enable resampling of IR to match audio
+        MIX = 50;         % Dry/Wet Mix (%)
+        GAIN = 0;         % Gain of output signal (dB)
         SAVE_IR = true;   % Toggle to save IR to file
     end
 
