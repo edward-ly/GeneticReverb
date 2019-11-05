@@ -76,8 +76,8 @@ function out = genetic_rir(SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
 
     %-----------------------------------------------------------------------
 
-    % If IR is clipping, normalize IR to prevent it
-    if max(abs(irBest)) >= 1, irBest = normalize_signal(irBest, 0.99); end
+    % Normalize IR for more consistent gain and to prevent clipping
+    irBest = normalize_signal(irBest, 0.99);
 
     % Transform to row vector
     out = irBest';
