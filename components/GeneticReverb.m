@@ -209,20 +209,33 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                     plugin.pFIRFilterRight.Numerator');
 
                 % Save IR parameter values and random ID number to file name
+                numChannels = '1ch';
+                if plugin.STEREO, numChannels = '2ch'; end
+                fileSampleRate = plugin.IR_SAMPLE_RATE;
+                if plugin.RESAMPLE, fileSampleRate = sampleRate; end
                 id = randi([intmin('uint32'), intmax('uint32')], 'uint32');
+
                 irFileName = ['ir_' ...
                     'T' sprintf('%.3f', plugin.T60)  '_' ...
                     'E' sprintf('%.3f', plugin.EDT)  '_' ...
                     'I' sprintf('%.3f', plugin.ITDG) '_' ...
                     'C' sprintf('%.3f', plugin.C80)  '_' ...
                     'W' sprintf('%.3f', plugin.BR)   '_' ...
-                    sprintf('%010u', id) '.wav'];
+                    numChannels '_' ...
+                    sprintf('%.0f', fileSampleRate) 'Hz_' ...
+                    sprintf('%010u', id) '.bin'];
 
-                if plugin.RESAMPLE
-                    audiowrite(irFileName, irData, sampleRate);
-                else
-                    audiowrite(irFileName, irData, plugin.IR_SAMPLE_RATE);
-                end
+                % Write to binary file ('audiowrite' function currently not
+                % supported for code generation)
+                fileID = fopen(irFileName, 'w');
+                fwrite(fileID, irData, 'double');
+                fclose(fileID);
+
+                % if plugin.RESAMPLE
+                %     audiowrite(irFileName, irData, sampleRate);
+                % else
+                %     audiowrite(irFileName, irData, plugin.IR_SAMPLE_RATE);
+                % end
             end
 
             if propChangeIR
