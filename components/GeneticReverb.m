@@ -231,15 +231,15 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
 
                     % Reduce gain of IR with higher RMS amplitude so that both
                     % RMS levels are equal
-                    IRLeftRMS = rms(newIRLeft);
-                    IRRightRMS = rms(newIRRight);
-                    if IRLeftRMS > IRRightRMS
-                        newIRLeft = normalize_signal(newIRLeft, ...
-                            max(abs(newIRLeft)) * IRRightRMS / IRLeftRMS);
-                    else
-                        newIRRight = normalize_signal(newIRRight, ...
-                            max(abs(newIRRight)) * IRLeftRMS / IRRightRMS);
-                    end
+                    % IRLeftRMS = rms(newIRLeft);
+                    % IRRightRMS = rms(newIRRight);
+                    % if IRLeftRMS > IRRightRMS
+                    %     newIRLeft = normalize_signal(newIRLeft, ...
+                    %         max(abs(newIRLeft)) * IRRightRMS / IRLeftRMS);
+                    % else
+                    %     newIRRight = normalize_signal(newIRRight, ...
+                    %         max(abs(newIRRight)) * IRLeftRMS / IRRightRMS);
+                    % end
 
                     % Resample/resize impulse responses
                     IRLeft = resample_ir(plugin, newIRLeft, sampleRate);
