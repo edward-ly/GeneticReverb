@@ -238,23 +238,23 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                         plugin.EDT, plugin.C80, plugin.BR);
 
                     % Modify gains of IRs so that RMS levels are equal
-                    IRLeftRMS = rms(newIRLeft);
-                    IRRightRMS = rms(newIRRight);
-                    newIRLeft = newIRLeft .* (1 + (IRRightRMS / IRLeftRMS));
-                    newIRRight = newIRRight .* (1 + (IRLeftRMS / IRRightRMS));
+                    irLeftRMS = rms(newIRLeft);
+                    irRightRMS = rms(newIRRight);
+                    newIRLeft = newIRLeft .* (1 + (irRightRMS / irLeftRMS));
+                    newIRRight = newIRRight .* (1 + (irLeftRMS / irRightRMS));
 
                     % Normalize for consistent output gain and prevent clipping
-                    factor = max([max(abs(newIRLeft)) max(abs(newIRRight))]);
-                    newIRLeft = newIRLeft .* (0.99 / factor);
-                    newIRRight = newIRRight .* (0.99 / factor);
+                    irPeak = max([max(abs(newIRLeft)) max(abs(newIRRight))]);
+                    newIRLeft = newIRLeft .* (0.99 / irPeak);
+                    newIRRight = newIRRight .* (0.99 / irPeak);
 
                     % Resample/resize impulse responses
-                    IRLeft = resample_ir(plugin, newIRLeft, sampleRate);
-                    IRRight = resample_ir(plugin, newIRRight, sampleRate);
+                    irLeft = resample_ir(plugin, newIRLeft, sampleRate);
+                    irRight = resample_ir(plugin, newIRRight, sampleRate);
 
                     % Update convolution filters
-                    plugin.pFIRFilterLeft.Numerator = IRLeft;
-                    plugin.pFIRFilterRight.Numerator = IRRight;
+                    plugin.pFIRFilterLeft.Numerator = irLeft;
+                    plugin.pFIRFilterRight.Numerator = irRight;
                 else
                     % Generate new impulse response
                     newIR = genetic_rir( ...
@@ -265,11 +265,11 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                     newIR = normalize_signal(newIR, 0.99);
 
                     % Resample/resize impulse response
-                    IR = resample_ir(plugin, newIR, sampleRate);
+                    ir = resample_ir(plugin, newIR, sampleRate);
 
                     % Update convolution filters
-                    plugin.pFIRFilterLeft.Numerator = IR;
-                    plugin.pFIRFilterRight.Numerator = IR;
+                    plugin.pFIRFilterLeft.Numerator = ir;
+                    plugin.pFIRFilterRight.Numerator = ir;
                 end
             end
         end
