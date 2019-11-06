@@ -174,7 +174,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             reset(plugin.pFIR96000);
         end
 
-        % Generate and load new impulse response when reverb parameters change
+        % Do something when certain parameters are changed
         function processTunedPropertiesImpl (plugin)
             % Detect change in "toggle to save" parameter
             propChangeSave = isChangedProperty(plugin, 'SAVE_IR');
