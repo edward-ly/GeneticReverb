@@ -55,21 +55,26 @@ STOP_GENERATIONS = 5;
 FITNESS_THRESHOLD = 1e-3;
 MUTATION_RATE = 0.001;
 
-%% User input (reverb fitness) parameters.
-T60 = 1.0;   % Total reverberation time (s)
-ITDG = 0.01; % Initial delay (s)
-EDT = 0.1;   % Early decay time (s)
-C80 = 0;     % Clarity, or relative loudness of early reverberations over late
-             % reverberations (dB)
-BR = 1;      % Warmth vs. brilliance, calculated as "bass ratio" (ratio of low
-             % frequency to high frequency reverberation)
-
 %% Impulse response parameters.
-SAMPLE_RATE = 44100;
-NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
-% ZERO_THRESHOLD = 1e-6;
-% Only one impulse response channel per individual.
-% NUM_CHANNELS = 1;
+% SAMPLE_RATE = Sample rate of impulse response (Hz)
+% T60 = Total reverberation time (s)
+% ITDG = Initial delay (s)
+% EDT = Early decay time (s)
+% C80 = Clarity, or relative loudness of early reverberations over
+%     late reverberations (dB)
+% BR = Warmth vs. brilliance, calculated as "bass ratio" (ratio of
+%     low frequency to high frequency reverberation)
+
+irParams = struct( ...
+    'SAMPLE_RATE', 44100, ...
+    'T60', 1.0, ...
+    'ITDG', 0.01, ...
+    'EDT', 0.1, ...
+    'C80', 0, ...
+    'BR', 1);
+
+% Calculate number of samples to record in impulse response
+NUM_SAMPLES = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
 
 %% Specify an audio file for input.
 [fileName, filePath] = uigetfile( ...
@@ -90,7 +95,7 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 
 % Initialize population.
 fprintf('Initializing population...\n');
-irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60);
+irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, irParams.SAMPLE_RATE, irParams.T60);
 irFitness = Inf(POPULATION_SIZE, 1);
 irBestFitness = Inf;
 currentGen = 0;
@@ -101,8 +106,7 @@ fitnessOverTime = zeros(NUM_GENERATIONS + 1, 1);
 while true
     % Evaluate population.
     for i = 1:POPULATION_SIZE
-        irFitness(i) = fitness( ...
-            irPopulation(:, i), SAMPLE_RATE, T60, ITDG, EDT, C80, BR);
+        irFitness(i) = fitness(irPopulation(:, i), irParams);
     end
 
     % Sort population by fitness value and update best individual.
@@ -149,7 +153,7 @@ end
 
 %% Show impulse response plot.
 figure
-plot((1:NUM_SAMPLES) ./ SAMPLE_RATE, irBest)
+plot((1:NUM_SAMPLES) ./ irParams.SAMPLE_RATE, irBest)
 grid on
 xlabel('Time (s)')
 ylabel('Amplitude')
@@ -158,7 +162,7 @@ ylabel('Amplitude')
 irBest2 = 10 .* log10(irBest .* irBest);
 
 figure
-plot((1:NUM_SAMPLES) ./ SAMPLE_RATE, irBest2)
+plot((1:NUM_SAMPLES) ./ irParams.SAMPLE_RATE, irBest2)
 grid on
 xlabel('Time (s)')
 ylabel('Relative Gain (dB)')
@@ -173,8 +177,8 @@ ylabel('Fitness Value')
 
 %% Save best impulse response as audio file.
 % Resample IR sample rate to match audio sample rate, if necessary.
-if SAMPLE_RATE ~= audioSampleRate
-    irBest = resample(irBest, audioSampleRate, SAMPLE_RATE);
+if irParams.SAMPLE_RATE ~= audioSampleRate
+    irBest = resample(irBest, audioSampleRate, irParams.SAMPLE_RATE);
     NUM_SAMPLES = numel(irBest);
 end
 

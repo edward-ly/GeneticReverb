@@ -1,20 +1,21 @@
-function out = genetic_rir(SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
+function out = genetic_rir(irParams)
 % GENETIC_RIR Generates a random impulse response with the given parameters.
 % Function equivalent of main.m script for real-time processing.
 %
 % Input arguments:
-% SAMPLE_RATE = sample rate of impulse response
-% T60 = T60 decay time (s)
-% ITDG = initial time delay gap (s)
-% EDT = early decay time (s)
-% C80 = clarity (dB)
-% BR = bass ratio
+% irParams = struct containing impulse response parameters
+%     SAMPLE_RATE = sample rate of impulse response
+%     T60 = T60 decay time (s)
+%     ITDG = initial time delay gap (s)
+%     EDT = early decay time (s)
+%     C80 = clarity (dB)
+%     BR = bass ratio
 %
 % Output arguments:
 % out = row vector containing the impulse response
 %
     % Require all arguments
-    if nargin < 6, error('Not enough input arguments.'); end
+    if nargin < 1, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
 
     % Genetic algorithm parameters
@@ -26,12 +27,13 @@ function out = genetic_rir(SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     MUTATION_RATE = 0.001;
 
     % Impulse response parameters
-    NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
+    NUM_SAMPLES = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
 
     %-----------------------------------------------------------------------
 
     % Initialize population
-    irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, SAMPLE_RATE, T60);
+    irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, ...
+        irParams.SAMPLE_RATE, irParams.T60);
     irFitness = Inf(POPULATION_SIZE, 1);
     irBest = zeros(NUM_SAMPLES, 1);
     irBestFitness = Inf;
@@ -41,8 +43,7 @@ function out = genetic_rir(SAMPLE_RATE, T60, ITDG, EDT, C80, BR)
     while true
         % Evaluate population
         for i = 1:POPULATION_SIZE
-            irFitness(i) = fitness( ...
-                irPopulation(:, i), SAMPLE_RATE, T60, ITDG, EDT, C80, BR);
+            irFitness(i) = fitness(irPopulation(:, i), irParams);
         end
 
         % Sort population by fitness value and update best individual
