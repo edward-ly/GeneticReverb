@@ -182,11 +182,11 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             % 22.05/44.1/88.2 kHz sample rates are rounded to 22/44/88 kHz for
             % simplicity
             plugin.pFIR22050 = dsp.FIRRateConverter(11, 8);
-            plugin.pFIR32000 = dsp.FIRRateConverter(2, 1);
+            plugin.pFIR32000 = dsp.FIRInterpolator(2);
             plugin.pFIR44100 = dsp.FIRRateConverter(11, 4);
-            plugin.pFIR48000 = dsp.FIRRateConverter(3, 1);
+            plugin.pFIR48000 = dsp.FIRInterpolator(3);
             plugin.pFIR88200 = dsp.FIRRateConverter(11, 2);
-            plugin.pFIR96000 = dsp.FIRRateConverter(6, 1);
+            plugin.pFIR96000 = dsp.FIRInterpolator(6);
 
             % Initialize convolution filters
             plugin.pFIRFilterLeft22500 = dsp.FrequencyDomainFIRFilter( ...
