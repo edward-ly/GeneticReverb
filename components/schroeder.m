@@ -19,4 +19,3 @@ function out = schroeder(in, mode)
 
     if nargin > 1 && strcmp(mode, 'dB'), out = 10 .* log10(out); end
 end
-
