@@ -14,12 +14,8 @@ function out = resample_ir(plugin, in, sampleRate)
     if nargout < 1, error('Not enough output arguments.'); end
 
     % Initialize constant-length input for resamplers
-    input = zeros(plugin.BUFFER_LENGTH, 1);
-    if length(in) > plugin.BUFFER_LENGTH
-        input = in(1:plugin.BUFFER_LENGTH)';
-    else
-        input(1:length(in)) = in';
-    end
+    input = zeros(240000, 1);  % max length: 1.5 * 10s * 16000Hz
+    input(1:length(in)) = in';
 
     if sampleRate == 44100
         output = step(plugin.pFIR44100, input);
@@ -39,9 +35,9 @@ function out = resample_ir(plugin, in, sampleRate)
     end
 
     % Set output length to buffer length again
-    out = zeros(1, plugin.BUFFER_LENGTH);
-    if length(output) > plugin.BUFFER_LENGTH
-        out = output(1:plugin.BUFFER_LENGTH)';
+    out = zeros(1, plugin.NUM_SAMPLES);
+    if length(output) > plugin.NUM_SAMPLES
+        out = output(1:plugin.NUM_SAMPLES)';
     else
         out(1:length(output)) = output';
     end

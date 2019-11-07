@@ -68,7 +68,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             audioPluginParameter('T60', ...
                 'DisplayName', 'Decay Time', ...
                 'Label', 's', ...
-                'Mapping', {'log', 0.25, 1}), ...
+                'Mapping', {'log', 0.1, 10}), ...
             audioPluginParameter('EDT', ...
                 'DisplayName', 'Early Decay Time', ...
                 'Label', 's', ...
@@ -105,13 +105,24 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         % Constant parameters
         IR_SAMPLE_RATE = 16000;   % Sample rate of generated IRs
         PARTITION_SIZE = 1024;    % Default partition length of conv filters
-        BUFFER_LENGTH = 48000;    % Maximum number of samples in IR
     end
 
     properties
-        % System objects for partitioned convolution of audio stream with IR
-        pFIRFilterLeft
-        pFIRFilterRight
+        % System objects for partitioned convolution of audio stream with
+        % impulse response (identified by numerator length)
+        pFIRFilterLeft22500;   pFIRFilterRight22500;
+        pFIRFilterLeft45000;   pFIRFilterRight45000;
+        pFIRFilterLeft90000;   pFIRFilterRight90000;
+        pFIRFilterLeft180000;  pFIRFilterRight180000;
+        pFIRFilterLeft360000;  pFIRFilterRight360000;
+        pFIRFilterLeft720000;  pFIRFilterRight720000;
+        pFIRFilterLeft1440000; pFIRFilterRight1440000;
+        pFIRFilterLeft2880000; pFIRFilterRight2880000;
+
+        % Track number of required samples in impulse response
+        % (before and after resampling)
+        IR_NUM_SAMPLES = 12000;
+        NUM_SAMPLES = 45000;
 
         % System objects for resampling IR to audio sample rate
         pFIR22050     % 16 kHz to 22.05 kHz
@@ -127,8 +138,34 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         % Main process function
         function out = stepImpl (plugin, in)
             % Calculate next convolution step for both channels
-            outL = step(plugin.pFIRFilterLeft, in(:, 1));
-            outR = step(plugin.pFIRFilterRight, in(:, 2));
+            if plugin.NUM_SAMPLES == 22500
+                outL = step(plugin.pFIRFilterLeft22500, in(:, 1));
+                outR = step(plugin.pFIRFilterRight22500, in(:, 2));
+            elseif plugin.NUM_SAMPLES == 45000
+                outL = step(plugin.pFIRFilterLeft45000, in(:, 1));
+                outR = step(plugin.pFIRFilterRight45000, in(:, 2));
+            elseif plugin.NUM_SAMPLES == 90000
+                outL = step(plugin.pFIRFilterLeft90000, in(:, 1));
+                outR = step(plugin.pFIRFilterRight90000, in(:, 2));
+            elseif plugin.NUM_SAMPLES == 180000
+                outL = step(plugin.pFIRFilterLeft180000, in(:, 1));
+                outR = step(plugin.pFIRFilterRight180000, in(:, 2));
+            elseif plugin.NUM_SAMPLES == 360000
+                outL = step(plugin.pFIRFilterLeft360000, in(:, 1));
+                outR = step(plugin.pFIRFilterRight360000, in(:, 2));
+            elseif plugin.NUM_SAMPLES == 720000
+                outL = step(plugin.pFIRFilterLeft720000, in(:, 1));
+                outR = step(plugin.pFIRFilterRight720000, in(:, 2));
+            elseif plugin.NUM_SAMPLES == 1440000
+                outL = step(plugin.pFIRFilterLeft1440000, in(:, 1));
+                outR = step(plugin.pFIRFilterRight1440000, in(:, 2));
+            elseif plugin.NUM_SAMPLES == 2880000
+                outL = step(plugin.pFIRFilterLeft2880000, in(:, 1));
+                outR = step(plugin.pFIRFilterRight2880000, in(:, 2));
+            else
+                outL = in(:, 1);
+                outR = in(:, 2);
+            end
             out = [outL outR];
 
             % Apply dry/wet mix
@@ -151,24 +188,94 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             plugin.pFIR88200 = dsp.FIRRateConverter(11, 2);
             plugin.pFIR96000 = dsp.FIRRateConverter(6, 1);
 
-            % Initialize buffer
-            numerator = zeros(1, plugin.BUFFER_LENGTH);
-
             % Initialize convolution filters
-            plugin.pFIRFilterLeft = dsp.FrequencyDomainFIRFilter( ...
-                'Numerator', numerator, ...
+            plugin.pFIRFilterLeft22500 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(22500), ...
                 'PartitionForReducedLatency', true, ...
                 'PartitionLength', plugin.PARTITION_SIZE);
-            plugin.pFIRFilterRight = dsp.FrequencyDomainFIRFilter( ...
-                'Numerator', numerator, ...
+            plugin.pFIRFilterLeft45000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(45000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterLeft90000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(90000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterLeft180000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(180000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterLeft360000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(360000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterLeft720000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(720000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterLeft1440000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(1440000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterLeft2880000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(2880000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+
+            plugin.pFIRFilterRight22500 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(22500), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterRight45000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(45000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterRight90000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(90000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterRight180000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(180000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterRight360000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(360000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterRight720000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(720000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterRight1440000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(1440000), ...
+                'PartitionForReducedLatency', true, ...
+                'PartitionLength', plugin.PARTITION_SIZE);
+            plugin.pFIRFilterRight2880000 = dsp.FrequencyDomainFIRFilter( ...
+                'Numerator', init_ir(2880000), ...
                 'PartitionForReducedLatency', true, ...
                 'PartitionLength', plugin.PARTITION_SIZE);
         end
 
         % Initialize/reset system object properties
         function resetImpl (plugin)
-            reset(plugin.pFIRFilterLeft);
-            reset(plugin.pFIRFilterRight);
+            reset(plugin.pFIRFilterLeft22500);
+            reset(plugin.pFIRFilterLeft45000);
+            reset(plugin.pFIRFilterLeft90000);
+            reset(plugin.pFIRFilterLeft180000);
+            reset(plugin.pFIRFilterLeft360000);
+            reset(plugin.pFIRFilterLeft720000);
+            reset(plugin.pFIRFilterLeft1440000);
+            reset(plugin.pFIRFilterLeft2880000);
+
+            reset(plugin.pFIRFilterRight22500);
+            reset(plugin.pFIRFilterRight45000);
+            reset(plugin.pFIRFilterRight90000);
+            reset(plugin.pFIRFilterRight180000);
+            reset(plugin.pFIRFilterRight360000);
+            reset(plugin.pFIRFilterRight720000);
+            reset(plugin.pFIRFilterRight1440000);
+            reset(plugin.pFIRFilterRight2880000);
+
             reset(plugin.pFIR22050);
             reset(plugin.pFIR32000);
             reset(plugin.pFIR44100);
@@ -198,9 +305,49 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
 
             % Generate new impulse responses
             if propChangeIR
-                [plugin.pFIRFilterLeft.Numerator, ...
-                    plugin.pFIRFilterRight.Numerator] = ...
-                    generate_rirs(plugin, sampleRate);
+                % Calculate number of samples needed for impulse response
+                % (before and after resampling)
+                plugin.IR_NUM_SAMPLES = ceil( ...
+                    1.5 * plugin.T60 * plugin.IR_SAMPLE_RATE);
+                plugin.NUM_SAMPLES = ceil( ...
+                    plugin.IR_NUM_SAMPLES * sampleRate / plugin.IR_SAMPLE_RATE);
+
+                % Determine filter with smallest possible buffer length
+                filterIndex = ceil(log2(plugin.NUM_SAMPLES / 22500));
+                if filterIndex < 0, filterIndex = 0; end
+
+                % Extend NUM_SAMPLES to length of an entire buffer
+                plugin.NUM_SAMPLES = 22500 * 2 ^ filterIndex;
+
+                % Generate new impulse responses
+                [irLeft, irRight] = generate_rirs(plugin, sampleRate);
+
+                % Assign new IRs to appropriate filters
+                if plugin.NUM_SAMPLES == 22500
+                    plugin.pFIRFilterLeft22500.Numerator = irLeft(1:22500);
+                    plugin.pFIRFilterRight22500.Numerator = irRight(1:22500);
+                elseif plugin.NUM_SAMPLES == 45000
+                    plugin.pFIRFilterLeft45000.Numerator = irLeft(1:45000);
+                    plugin.pFIRFilterRight45000.Numerator = irRight(1:45000);
+                elseif plugin.NUM_SAMPLES == 90000
+                    plugin.pFIRFilterLeft90000.Numerator = irLeft(1:90000);
+                    plugin.pFIRFilterRight90000.Numerator = irRight(1:90000);
+                elseif plugin.NUM_SAMPLES == 180000
+                    plugin.pFIRFilterLeft180000.Numerator = irLeft(1:180000);
+                    plugin.pFIRFilterRight180000.Numerator = irRight(1:180000);
+                elseif plugin.NUM_SAMPLES == 360000
+                    plugin.pFIRFilterLeft360000.Numerator = irLeft(1:360000);
+                    plugin.pFIRFilterRight360000.Numerator = irRight(1:360000);
+                elseif plugin.NUM_SAMPLES == 720000
+                    plugin.pFIRFilterLeft720000.Numerator = irLeft(1:720000);
+                    plugin.pFIRFilterRight720000.Numerator = irRight(1:720000);
+                elseif plugin.NUM_SAMPLES == 1440000
+                    plugin.pFIRFilterLeft1440000.Numerator = irLeft(1:1440000);
+                    plugin.pFIRFilterRight1440000.Numerator = irRight(1:1440000);
+                elseif plugin.NUM_SAMPLES == 2880000
+                    plugin.pFIRFilterLeft2880000.Numerator = irLeft(1:2880000);
+                    plugin.pFIRFilterRight2880000.Numerator = irRight(1:2880000);
+                end
             end
         end
     end
