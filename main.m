@@ -74,7 +74,8 @@ NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
 
 %% Open an audio file for input.
 [fileName, filePath] = uigetfile('*.wav', 'Open audio file');
-[drySignal, audioSampleRate] = audioread(strcat(filePath, fileName));
+if ~fileName, fprintf('No file selected, exiting...\n'); return; end
+[drySignal, audioSampleRate] = audioread([filePath fileName]);
 [numAudioSamples, numAudioChannels] = size(drySignal);
 
 %% Genetic Algorithm.
