@@ -48,15 +48,16 @@
 classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     properties
         % Public variables
-        T60 = 0.5;        % Total reverberation time (s)
-        ITDG = 0;         % Initial time delay gap (s)
-        EDT = 0.1;        % Early decay time (T10) (s)
-        C80 = 0;          % Clarity (dB)
-        WARMTH = 50;      % Warmth Amount (%)
-        STEREO = true;    % Enable stereo effect
-        MIX = 50;         % Dry/Wet Mix (%)
-        GAIN = 0;         % Gain of output signal (dB)
-        SAVE_IR = true;   % Toggle to save IR to file
+        T60 = 0.5;                % Total reverberation time (s)
+        ITDG = 0;                 % Initial time delay gap (s)
+        EDT = 0.1;                % Early decay time (T10) (s)
+        C80 = 0;                  % Clarity (dB)
+        WARMTH = 50;              % Warmth Amount (%)
+        QUALITY = Quality.low;    % Reverb quality
+        STEREO = true;            % Enable stereo effect
+        MIX = 50;                 % Dry/Wet Mix (%)
+        GAIN = 0;                 % Gain of output signal (dB)
+        SAVE_IR = true;           % Toggle to save IR to file
     end
 
     properties (Constant)
@@ -85,6 +86,9 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                 'DisplayName', 'Warmth', ...
                 'Label', '%', ...
                 'Mapping', {'lin', 0, 100}), ...
+            audioPluginParameter('QUALITY', ...
+                'DisplayName', 'Quality', ...
+                'Mapping', {'enum', 'Low', 'Medium', 'High'}), ...
             audioPluginParameter('STEREO', ...
                 'DisplayName', 'Mono/Stereo', ...
                 'Mapping', {'enum', 'Mono', 'Stereo'}), ...
@@ -298,6 +302,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                 isChangedProperty(plugin, 'EDT') || ...
                 isChangedProperty(plugin, 'C80') || ...
                 isChangedProperty(plugin, 'WARMTH') || ...
+                isChangedProperty(plugin, 'QUALITY') || ...
                 isChangedProperty(plugin, 'STEREO');
 
             % Get current sample rate of plugin
