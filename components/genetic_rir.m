@@ -1,6 +1,6 @@
-function irBest = genetic_rir(gaParams, irParams)
+function [irBest, irBestFitness, fitnessCurve] = ...
+    genetic_rir(gaParams, irParams, verbose)
 % GENETIC_RIR Generates a random impulse response with the given parameters.
-% Function equivalent of main.m script for real-time processing.
 %
 % Input arguments:
 % gaParams = struct containing genetic algorithm parameters
@@ -17,18 +17,28 @@ function irBest = genetic_rir(gaParams, irParams)
 %     EDT = early decay time (s)
 %     C80 = clarity (dB)
 %     BR = bass ratio
+% verbose = print status messages to command window (default: false)
 %
 % Output arguments:
 % irBest = column vector containing the best impulse response
+% irBestFitness = fitness value of impulse response returned
+% fitnessCurve = column vector recording best fitness values after each
+%     generation (optional)
 %
-    % Require all arguments
+    % Require IR and GA arguments
     if nargin < 2, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
+
+    % Set missing input arguments
+    if nargin < 3, verbose = false; end
+
+    %-----------------------------------------------------------------------
 
     % Calculate number of samples to record for impulse response
     numSamples = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
 
     % Initialize population
+    if verbose, fprintf('Initializing population...\n'); end
     irPopulation = init_pop(numSamples, gaParams.POPULATION_SIZE, ...
         irParams.SAMPLE_RATE, irParams.T60);
     irFitness = Inf(gaParams.POPULATION_SIZE, 1);
@@ -36,6 +46,8 @@ function irBest = genetic_rir(gaParams, irParams)
     irBestFitness = Inf;
     currentGen = 0;
     currentStopGen = 0;
+
+    if nargout > 2, fitnessCurve = zeros(gaParams.NUM_GENERATIONS + 1, 1); end
 
     while true
         % Evaluate population
@@ -53,15 +65,34 @@ function irBest = genetic_rir(gaParams, irParams)
             currentStopGen = currentStopGen + 1;
         end
 
+        % Record best fitness value this generation
+        if nargout > 2
+            fitnessCurve(currentGen + 1) = irBestFitness;
+        end
+
+        if verbose
+            fprintf('Generation %d: best fitness value %d\n', ...
+                currentGen, irBestFitness);
+        end
+
         % Stop if fitness value is within threshold
-        if irBestFitness < gaParams.FITNESS_THRESHOLD, break; end
+        if irBestFitness < gaParams.FITNESS_THRESHOLD
+            if verbose, fprintf('Optimal solution found.\n'); end
+            break
+        end
 
         % Stop if fitness value is not updated after some number of generations
-        if currentStopGen >= gaParams.STOP_GENERATIONS, break; end
+        if currentStopGen >= gaParams.STOP_GENERATIONS
+            if verbose, fprintf('Local optimal solution found.\n'); end
+            break
+        end
 
         % Go to next generation (or stop if max number of generations reached)
         currentGen = currentGen + 1;
-        if currentGen > gaParams.NUM_GENERATIONS, break; end
+        if currentGen > gaParams.NUM_GENERATIONS
+            if verbose, fprintf('Maximum number of generations reached.\n'); end
+            break
+        end
 
         % Select best individuals and generate children to replace remaining
         % individuals
