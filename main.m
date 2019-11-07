@@ -4,8 +4,8 @@
 %
 % File: main.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.8.0
-% Last Updated: 15 August 2019
+% Version: 0.9.0
+% Last Updated: 7 November 2019
 %
 % BSD 3-Clause License
 % 
