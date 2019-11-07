@@ -29,6 +29,8 @@ function out = resample_ir(plugin, in, sampleRate)
         output = step(plugin.pFIR88200, input);
     elseif sampleRate == 96000
         output = step(plugin.pFIR96000, input);
+    elseif sampleRate == 192000
+        output = step(plugin.pFIR192000, input);
     else
         % No conversion for unsupported sample rates
         output = in';

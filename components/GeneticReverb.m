@@ -131,6 +131,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         pFIR48000     % 16 kHz to 48 kHz
         pFIR88200     % 16 kHz to 88.2 kHz
         pFIR96000     % 16 kHz to 96 kHz
+        pFIR192000    % 16 kHz to 192 kHz
     end
 
     % Plugin methods for frequency-domain partitioned convolution
@@ -187,6 +188,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             plugin.pFIR48000 = dsp.FIRInterpolator(3);
             plugin.pFIR88200 = dsp.FIRRateConverter(11, 2);
             plugin.pFIR96000 = dsp.FIRInterpolator(6);
+            plugin.pFIR192000 = dsp.FIRInterpolator(12);
 
             % Initialize convolution filters
             plugin.pFIRFilterLeft22500 = dsp.FrequencyDomainFIRFilter( ...
@@ -282,6 +284,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
             reset(plugin.pFIR48000);
             reset(plugin.pFIR88200);
             reset(plugin.pFIR96000);
+            reset(plugin.pFIR192000);
         end
 
         % Do something when certain parameters are changed
