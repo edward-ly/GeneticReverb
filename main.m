@@ -44,7 +44,6 @@ clear; close all;
 addpath components
 
 %% Output parameters.
-OUTPUT_DIR = 'output';
 NORMALIZE_IR = true;
 NORMALIZE_AUDIO = true;
 
