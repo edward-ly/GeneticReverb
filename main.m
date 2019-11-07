@@ -67,6 +67,7 @@ gaParams = struct( ...
 
 %% Impulse response parameters.
 % SAMPLE_RATE = Sample rate of impulse response (Hz)
+% NUM_SAMPLES = Number of samples in IR to record / length of IR
 % T60 = Total reverberation time (s)
 % ITDG = Initial delay (s)
 % EDT = Early decay time (s)
@@ -77,11 +78,14 @@ gaParams = struct( ...
 
 irParams = struct( ...
     'SAMPLE_RATE', 44100, ...
+    'NUM_SAMPLES', 0, ...
     'T60', 1.0, ...
     'ITDG', 0.01, ...
     'EDT', 0.1, ...
     'C80', 0, ...
     'BR', 1);
+
+irParams.NUM_SAMPLES = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
 
 %% Specify an audio file for input.
 [fileName, filePath] = uigetfile( ...
@@ -99,14 +103,11 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 [numAudioSamples, numAudioChannels] = size(drySignal);
 
 %% Generate a new impulse response.
-% Calculate number of samples to record for impulse response
-numSamples = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
-
 [irBest, ~, fitnessCurve] = genetic_rir(gaParams, irParams, true);
 
 %% Show impulse response plot.
 figure
-plot((1:numSamples) ./ irParams.SAMPLE_RATE, irBest)
+plot((1:irParams.NUM_SAMPLES) ./ irParams.SAMPLE_RATE, irBest)
 grid on
 xlabel('Time (s)')
 ylabel('Amplitude')
@@ -115,7 +116,7 @@ ylabel('Amplitude')
 irBest2 = 10 .* log10(irBest .* irBest);
 
 figure
-plot((1:numSamples) ./ irParams.SAMPLE_RATE, irBest2)
+plot((1:irParams.NUM_SAMPLES) ./ irParams.SAMPLE_RATE, irBest2)
 grid on
 xlabel('Time (s)')
 ylabel('Relative Gain (dB)')
@@ -129,6 +130,8 @@ xlabel('Generation')
 ylabel('Fitness Value')
 
 %% Save best impulse response as audio file.
+numSamples = irParams.NUM_SAMPLES;
+
 % Resample IR sample rate to match audio sample rate, if necessary.
 if irParams.SAMPLE_RATE ~= audioSampleRate
     irBest = resample(irBest, audioSampleRate, irParams.SAMPLE_RATE);

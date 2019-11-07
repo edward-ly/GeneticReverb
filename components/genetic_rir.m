@@ -12,6 +12,7 @@ function [irBest, irBestFitness, fitnessCurve] = ...
 %     MUTATION_RATE = mutation probability
 % irParams = struct containing impulse response parameters
 %     SAMPLE_RATE = sample rate of impulse response
+%     NUM_SAMPLES = length of recorded impulse response (samples)
 %     T60 = T60 decay time (s)
 %     ITDG = initial time delay gap (s)
 %     EDT = early decay time (s)
@@ -34,15 +35,12 @@ function [irBest, irBestFitness, fitnessCurve] = ...
 
     %-----------------------------------------------------------------------
 
-    % Calculate number of samples to record for impulse response
-    numSamples = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
-
     % Initialize population
     if verbose, fprintf('Initializing population...\n'); end
-    irPopulation = init_pop(numSamples, gaParams.POPULATION_SIZE, ...
+    irPopulation = init_pop(irParams.NUM_SAMPLES, gaParams.POPULATION_SIZE, ...
         irParams.SAMPLE_RATE, irParams.T60);
     irFitness = Inf(gaParams.POPULATION_SIZE, 1);
-    irBest = zeros(numSamples, 1);
+    irBest = zeros(irParams.NUM_SAMPLES, 1);
     irBestFitness = Inf;
     currentGen = 0;
     currentStopGen = 0;
@@ -97,7 +95,7 @@ function [irBest, irBestFitness, fitnessCurve] = ...
         % Select best individuals and generate children to replace remaining
         % individuals
         irPopulation = crossover(irPopulation, gaParams.SELECTION_SIZE, ...
-            gaParams.POPULATION_SIZE, numSamples);
+            gaParams.POPULATION_SIZE, irParams.NUM_SAMPLES);
 
         % Mutate entire population
         irPopulation = mutate(irPopulation, gaParams.MUTATION_RATE);
