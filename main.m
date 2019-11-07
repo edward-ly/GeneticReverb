@@ -48,12 +48,22 @@ NORMALIZE_IR = true;
 NORMALIZE_AUDIO = true;
 
 %% Genetic algorithm parameters.
-POPULATION_SIZE = 50;
-SELECTION_SIZE = 20;
-NUM_GENERATIONS = 50;
-STOP_GENERATIONS = 5;
-FITNESS_THRESHOLD = 1e-3;
-MUTATION_RATE = 0.001;
+% POPULATION_SIZE = Number of impulse responses in population
+% SELECTION_SIZE = Number of impulse responses to keep in each generation
+% NUM_GENERATIONS = Maximum number of generations to run in the algorithm
+% STOP_GENERATIONS = If there is no new best impulse response after some number
+%     of generations, stop early
+% FITNESS_THRESHOLD = If fitness value is below threshold value, stop early
+% MUTATION_RATE = Probability of each sample in impulse response randomly
+%     changing value in each generation
+
+gaParams = struct( ...
+    'POPULATION_SIZE', 50, ...
+    'SELECTION_SIZE', 20, ...
+    'NUM_GENERATIONS', 50, ...
+    'STOP_GENERATIONS', 5, ...
+    'FITNESS_THRESHOLD', 1e-3, ...
+    'MUTATION_RATE', 0.001);
 
 %% Impulse response parameters.
 % SAMPLE_RATE = Sample rate of impulse response (Hz)
@@ -73,9 +83,6 @@ irParams = struct( ...
     'C80', 0, ...
     'BR', 1);
 
-% Calculate number of samples to record in impulse response
-numSamples = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
-
 %% Specify an audio file for input.
 [fileName, filePath] = uigetfile( ...
     {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
@@ -93,19 +100,23 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Genetic Algorithm.
 
+% Calculate number of samples to record for impulse response
+numSamples = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
+
 % Initialize population.
 fprintf('Initializing population...\n');
-irPopulation = init_pop(numSamples, POPULATION_SIZE, irParams.SAMPLE_RATE, irParams.T60);
-irFitness = Inf(POPULATION_SIZE, 1);
+irPopulation = init_pop(numSamples, gaParams.POPULATION_SIZE, ...
+    irParams.SAMPLE_RATE, irParams.T60);
+irFitness = Inf(gaParams.POPULATION_SIZE, 1);
 irBestFitness = Inf;
 currentGen = 0;
 currentStopGen = 0;
 
-fitnessOverTime = zeros(NUM_GENERATIONS + 1, 1);
+fitnessOverTime = zeros(gaParams.NUM_GENERATIONS + 1, 1);
 
 while true
     % Evaluate population.
-    for i = 1:POPULATION_SIZE
+    for i = 1:gaParams.POPULATION_SIZE
         irFitness(i) = fitness(irPopulation(:, i), irParams);
     end
 
@@ -124,31 +135,31 @@ while true
         currentGen, irBestFitness);
 
     % Stop if fitness value is within threshold.
-    if irBestFitness < FITNESS_THRESHOLD
+    if irBestFitness < gaParams.FITNESS_THRESHOLD
         fprintf('Optimal solution found.\n');
         break
     end
 
     % Stop if fitness value is not updated after some number of generations.
-    if currentStopGen >= STOP_GENERATIONS
+    if currentStopGen >= gaParams.STOP_GENERATIONS
         fprintf('Local optimal solution found.\n');
         break
     end
 
     % Go to next generation (or stop if max number of generations reached).
     currentGen = currentGen + 1;
-    if currentGen > NUM_GENERATIONS
+    if currentGen > gaParams.NUM_GENERATIONS
         fprintf('Maximum number of generations reached.\n');
         break
     end
 
     % Select best individuals and generate children to replace remaining
     % individuals.
-    irPopulation = crossover(irPopulation, SELECTION_SIZE, POPULATION_SIZE, ...
-        numSamples);
+    irPopulation = crossover(irPopulation, gaParams.SELECTION_SIZE, ...
+        gaParams.POPULATION_SIZE, numSamples);
 
     % Mutate entire population.
-    irPopulation = mutate(irPopulation, MUTATION_RATE);
+    irPopulation = mutate(irPopulation, gaParams.MUTATION_RATE);
 end
 
 %% Show impulse response plot.
@@ -169,7 +180,7 @@ ylabel('Relative Gain (dB)')
 
 %% Show best fitness value over generations.
 figure
-plot(0:NUM_GENERATIONS, fitnessOverTime)
+plot(0:gaParams.NUM_GENERATIONS, fitnessOverTime)
 grid on
 axis([-inf inf 0 inf])
 xlabel('Generation')
