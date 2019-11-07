@@ -98,69 +98,11 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 [drySignal, audioSampleRate] = audioread([filePath fileName]);
 [numAudioSamples, numAudioChannels] = size(drySignal);
 
-%% Genetic Algorithm.
-
+%% Generate a new impulse response.
 % Calculate number of samples to record for impulse response
 numSamples = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
 
-% Initialize population.
-fprintf('Initializing population...\n');
-irPopulation = init_pop(numSamples, gaParams.POPULATION_SIZE, ...
-    irParams.SAMPLE_RATE, irParams.T60);
-irFitness = Inf(gaParams.POPULATION_SIZE, 1);
-irBestFitness = Inf;
-currentGen = 0;
-currentStopGen = 0;
-
-fitnessOverTime = zeros(gaParams.NUM_GENERATIONS + 1, 1);
-
-while true
-    % Evaluate population.
-    for i = 1:gaParams.POPULATION_SIZE
-        irFitness(i) = fitness(irPopulation(:, i), irParams);
-    end
-
-    % Sort population by fitness value and update best individual.
-    [irPopulation, irFitness] = sort_pop(irPopulation, irFitness);
-    if irFitness(1) < irBestFitness
-        irBestFitness = irFitness(1);
-        irBest = irPopulation(:, 1);
-        currentStopGen = 0;
-    else
-        currentStopGen = currentStopGen + 1;
-    end
-    fitnessOverTime(currentGen + 1) = irBestFitness;
-
-    fprintf('Generation %d: best fitness value %d\n', ...
-        currentGen, irBestFitness);
-
-    % Stop if fitness value is within threshold.
-    if irBestFitness < gaParams.FITNESS_THRESHOLD
-        fprintf('Optimal solution found.\n');
-        break
-    end
-
-    % Stop if fitness value is not updated after some number of generations.
-    if currentStopGen >= gaParams.STOP_GENERATIONS
-        fprintf('Local optimal solution found.\n');
-        break
-    end
-
-    % Go to next generation (or stop if max number of generations reached).
-    currentGen = currentGen + 1;
-    if currentGen > gaParams.NUM_GENERATIONS
-        fprintf('Maximum number of generations reached.\n');
-        break
-    end
-
-    % Select best individuals and generate children to replace remaining
-    % individuals.
-    irPopulation = crossover(irPopulation, gaParams.SELECTION_SIZE, ...
-        gaParams.POPULATION_SIZE, numSamples);
-
-    % Mutate entire population.
-    irPopulation = mutate(irPopulation, gaParams.MUTATION_RATE);
-end
+[irBest, ~, fitnessCurve] = genetic_rir(gaParams, irParams, true);
 
 %% Show impulse response plot.
 figure
@@ -180,7 +122,7 @@ ylabel('Relative Gain (dB)')
 
 %% Show best fitness value over generations.
 figure
-plot(0:gaParams.NUM_GENERATIONS, fitnessOverTime)
+plot(0:gaParams.NUM_GENERATIONS, fitnessCurve)
 grid on
 axis([-inf inf 0 inf])
 xlabel('Generation')
