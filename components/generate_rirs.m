@@ -37,8 +37,8 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
 
     if plugin.STEREO
         % Generate new impulse responses
-        newIRLeft = genetic_rir(gaParams, irParams);
-        newIRRight = genetic_rir(gaParams, irParams);
+        newIRLeft = genetic_rir(gaParams, irParams)';
+        newIRRight = genetic_rir(gaParams, irParams)';
 
         % Modify gains of IRs so that RMS levels are equal
         irLeftRMS = rms(newIRLeft);
@@ -56,7 +56,7 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         irRight = resample_ir(plugin, newIRRight, sampleRate);
     else
         % Generate new impulse response
-        newIR = genetic_rir(gaParams, irParams);
+        newIR = genetic_rir(gaParams, irParams)';
 
         % Normalize for consistent output gain and prevent clipping
         newIR = normalize_signal(newIR, 0.99);

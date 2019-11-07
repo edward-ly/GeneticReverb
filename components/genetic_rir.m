@@ -1,4 +1,4 @@
-function out = genetic_rir(gaParams, irParams)
+function irBest = genetic_rir(gaParams, irParams)
 % GENETIC_RIR Generates a random impulse response with the given parameters.
 % Function equivalent of main.m script for real-time processing.
 %
@@ -19,7 +19,7 @@ function out = genetic_rir(gaParams, irParams)
 %     BR = bass ratio
 %
 % Output arguments:
-% out = row vector containing the impulse response
+% irBest = column vector containing the best impulse response
 %
     % Require all arguments
     if nargin < 2, error('Not enough input arguments.'); end
@@ -27,8 +27,6 @@ function out = genetic_rir(gaParams, irParams)
 
     % Calculate number of samples to record for impulse response
     numSamples = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
-
-    %-----------------------------------------------------------------------
 
     % Initialize population
     irPopulation = init_pop(numSamples, gaParams.POPULATION_SIZE, ...
@@ -73,9 +71,4 @@ function out = genetic_rir(gaParams, irParams)
         % Mutate entire population
         irPopulation = mutate(irPopulation, gaParams.MUTATION_RATE);
     end
-
-    %-----------------------------------------------------------------------
-
-    % Transform to row vector
-    out = irBest';
 end
