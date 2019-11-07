@@ -27,7 +27,7 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         'C80', plugin.C80, ...
         'BR', pBassRatio);
 
-    irParams.NUM_SAMPLES = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
+    irParams.NUM_SAMPLES = round(1.5 * irParams.T60 * irParams.SAMPLE_RATE);
 
     % Struct for GA parameters
     gaParams = struct( ...
