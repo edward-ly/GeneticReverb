@@ -74,7 +74,7 @@ irParams = struct( ...
     'BR', 1);
 
 % Calculate number of samples to record in impulse response
-NUM_SAMPLES = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
+numSamples = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
 
 %% Specify an audio file for input.
 [fileName, filePath] = uigetfile( ...
@@ -95,7 +95,7 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 
 % Initialize population.
 fprintf('Initializing population...\n');
-irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, irParams.SAMPLE_RATE, irParams.T60);
+irPopulation = init_pop(numSamples, POPULATION_SIZE, irParams.SAMPLE_RATE, irParams.T60);
 irFitness = Inf(POPULATION_SIZE, 1);
 irBestFitness = Inf;
 currentGen = 0;
@@ -145,7 +145,7 @@ while true
     % Select best individuals and generate children to replace remaining
     % individuals.
     irPopulation = crossover(irPopulation, SELECTION_SIZE, POPULATION_SIZE, ...
-        NUM_SAMPLES);
+        numSamples);
 
     % Mutate entire population.
     irPopulation = mutate(irPopulation, MUTATION_RATE);
@@ -153,7 +153,7 @@ end
 
 %% Show impulse response plot.
 figure
-plot((1:NUM_SAMPLES) ./ irParams.SAMPLE_RATE, irBest)
+plot((1:numSamples) ./ irParams.SAMPLE_RATE, irBest)
 grid on
 xlabel('Time (s)')
 ylabel('Amplitude')
@@ -162,7 +162,7 @@ ylabel('Amplitude')
 irBest2 = 10 .* log10(irBest .* irBest);
 
 figure
-plot((1:NUM_SAMPLES) ./ irParams.SAMPLE_RATE, irBest2)
+plot((1:numSamples) ./ irParams.SAMPLE_RATE, irBest2)
 grid on
 xlabel('Time (s)')
 ylabel('Relative Gain (dB)')
@@ -179,7 +179,7 @@ ylabel('Fitness Value')
 % Resample IR sample rate to match audio sample rate, if necessary.
 if irParams.SAMPLE_RATE ~= audioSampleRate
     irBest = resample(irBest, audioSampleRate, irParams.SAMPLE_RATE);
-    NUM_SAMPLES = numel(irBest);
+    numSamples = numel(irBest);
 end
 
 % Normalize impulse response.
@@ -193,7 +193,7 @@ audiowrite([outFilePath irFileName], irBest, audioSampleRate);
 
 % Apply impulse response via convolution. Each column/channel of the impulse
 % response will filter the corresponding column/channel in the audio.
-wetSignal = zeros(numAudioSamples + NUM_SAMPLES - 1, numAudioChannels);
+wetSignal = zeros(numAudioSamples + numSamples - 1, numAudioChannels);
 for i = 1:numAudioChannels
     wetSignal(:, i) = conv(irBest, drySignal(:, i));
 end

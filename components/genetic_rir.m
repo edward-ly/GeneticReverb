@@ -27,15 +27,15 @@ function out = genetic_rir(irParams)
     MUTATION_RATE = 0.001;
 
     % Impulse response parameters
-    NUM_SAMPLES = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
+    numSamples = round(2 * irParams.T60 * irParams.SAMPLE_RATE);
 
     %-----------------------------------------------------------------------
 
     % Initialize population
-    irPopulation = init_pop(NUM_SAMPLES, POPULATION_SIZE, ...
+    irPopulation = init_pop(numSamples, POPULATION_SIZE, ...
         irParams.SAMPLE_RATE, irParams.T60);
     irFitness = Inf(POPULATION_SIZE, 1);
-    irBest = zeros(NUM_SAMPLES, 1);
+    irBest = zeros(numSamples, 1);
     irBestFitness = Inf;
     currentGen = 0;
     currentStopGen = 0;
@@ -69,7 +69,7 @@ function out = genetic_rir(irParams)
         % Select best individuals and generate children to replace remaining
         % individuals
         irPopulation = crossover(irPopulation, SELECTION_SIZE, ...
-            POPULATION_SIZE, NUM_SAMPLES);
+            POPULATION_SIZE, numSamples);
 
         % Mutate entire population
         irPopulation = mutate(irPopulation, MUTATION_RATE);
