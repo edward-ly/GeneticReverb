@@ -73,13 +73,14 @@ NUM_SAMPLES = round(2 * T60 * SAMPLE_RATE);
 % NUM_CHANNELS = 1;
 
 %% Specify an audio file for input.
-[fileName, filePath] = uigetfile('*.wav', 'Open audio file');
+[fileName, filePath] = uigetfile( ...
+    {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
 if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Specify location to save audio files.
 newFileName = replace(fileName, '.wav', '_wet.wav');
 [outFileName, outFilePath] = uiputfile( ...
-    '*.wav', 'Save Audio As...', newFileName);
+    {'*.wav', 'WAV Files (*.wav)'}, 'Save Audio As...', newFileName);
 if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Read input audio file.
@@ -182,8 +183,8 @@ end
 if NORMALIZE_IR, irBest = normalize_signal(irBest, 0.99); end
 
 % Write to WAV file.
-irFileName = [outFilePath 'ir_' datestr(now, 'yyyymmdd_HHMMSSFFF') '.wav'];
-audiowrite(irFileName, irBest, audioSampleRate);
+irFileName = ['ir_' datestr(now, 'yyyymmdd_HHMMSSFFF') '.wav'];
+audiowrite([outFilePath irFileName], irBest, audioSampleRate);
 
 %% Apply impulse response to input audio signal.
 
@@ -201,4 +202,5 @@ if NORMALIZE_AUDIO, wetSignal = normalize_signal(wetSignal, 0.99, 'all'); end
 audiowrite([outFilePath outFileName], wetSignal, audioSampleRate);
 
 %% END OF SCRIPT
-fprintf('Done.\n');
+fprintf('Saved impulse response to %s%s\n', outFilePath, irFileName);
+fprintf('Saved output audio to %s%s\n', outFilePath, outFileName);
