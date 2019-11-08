@@ -45,8 +45,8 @@ addpath components
 if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Perform the conversion
-[success, newFileName] = bin_to_wav(filePath, fileName);
-if success
+[fileCreated, newFileName] = bin_to_wav(filePath, fileName);
+if fileCreated
     fprintf('Saved data to %s%s\n', filePath, newFileName);
 else
     fprintf('%s%s\nWAV file already exists, exiting...\n', filePath, newFileName);
