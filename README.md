@@ -12,9 +12,9 @@ This plugin was selected as a finalist in the [MATLAB Plugin Student Competition
 
 ## Generating and Running the Plugin
 
-First ensure that the `GeneticReverb.m` class file is visible to MATLAB by adding the `components` directory to the MATLAB path or directly changing to the `components` directory, running `addpath components` or `cd components`, respectively, in the MATLAB command window. Then validate the plugin with `validateAudioPlugin GeneticReverb` and generate the plugin with `generateAudioPlugin GeneticReverb`. You can then copy the `.dll` (Windows) or `.vst` (Mac) file into your DAW's VST plugins directory.
+First ensure that the `GeneticReverb.m` class file is visible to MATLAB by adding the `components` directory to the MATLAB path or directly changing to the `components` directory, running `addpath components` or `cd components`, respectively, in the MATLAB command window. Then validate the plugin with `validateAudioPlugin GeneticReverb` and generate the plugin with `generateAudioPlugin GeneticReverb`. You can then copy the `.dll` (Windows) or `.vst` (Mac) file into your DAW's VST plugins directory (or specify the directory when generating the plugin with `generateAudioPlugin GeneticReverb -outdir <folder>`).
 
-> Note: running `validateAudioPlugin GeneticReverb` will generate and save hundreds of binary files in the current directory as part of the validation. You can safely delete these files (or convert them to audio files and peruse them to your liking, see below).
+> Note: Running `validateAudioPlugin GeneticReverb` will generate and save hundreds of binary files in the current directory as part of the validation. You can safely delete these files (or convert them to audio files and peruse them to your liking, see below).
 
 ### Plugin Parameters
 
