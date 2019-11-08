@@ -35,24 +35,23 @@
 % OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-%% Choose a binary file for input.
-[fileName, filePath] = uigetfile('*.bin', 'Open binary file');
+%% Choose a binary file for input
+[fileName, filePath] = uigetfile( ...
+    {'*.bin', 'BIN Files (*.bin)'}, 'Open Binary File...');
 if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 
-%% Open and read binary file.
+%% Open and read binary file
 binID = fopen([filePath fileName]);
 ir = fread(binID, 'double');
 ir = reshape(ir, [], 2); % reshape into 2 columns (channels)
 fclose(binID);
 
-%% Get sample rate from filename.
+%% Get sample rate from filename
 fileNameParams = split(fileName, '_');
 sampleRate = fileNameParams(contains(fileNameParams, 'Hz'));
 sampleRate = double(erase(string(sampleRate), 'Hz'));
 
-%% Write IR to audio file.
+%% Write IR to audio file
 newFileName = replace(fileName, '.bin', '.wav');
 audiowrite([filePath newFileName], ir, sampleRate);
-
-%% END OF SCRIPT
 fprintf('Saved to %s%s\n', filePath, newFileName);
