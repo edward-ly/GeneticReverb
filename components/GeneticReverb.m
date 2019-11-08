@@ -48,9 +48,9 @@
 classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     properties
         % Public variables
-        T60 = 0.5;                % Total reverberation time (s)
-        ITDG = 0;                 % Initial time delay gap (s)
+        T60 = 1;                  % Total reverberation time (s)
         EDT = 0.1;                % Early decay time (T10) (s)
+        ITDG = 0;                 % Initial time delay gap (s)
         C80 = 0;                  % Clarity (dB)
         WARMTH = 50;              % Warmth Amount (%)
         QUALITY = Quality.low;    % Reverb quality
