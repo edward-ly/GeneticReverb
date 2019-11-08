@@ -18,7 +18,8 @@ function [fileCreated, newFileName] = bin_to_wav(filePath, fileName)
 
     % Open and read current binary file
     binID = fopen([filePath fileName]);
-    if binID == -1, error('Unable to open file \"%s%s\".'); end
+    if binID == -1, error( ...
+            'Unable to open file \"%s%s\".', filePath, fileName); end
     ir = fread(binID, 'double');
     ir = reshape(ir, [], 2); % reshape into 2 columns (channels)
     fclose(binID);
@@ -26,7 +27,9 @@ function [fileCreated, newFileName] = bin_to_wav(filePath, fileName)
     % Get sample rate from filename
     fileNameParams = split(fileName, '_');
     sampleRate = fileNameParams(contains(fileNameParams, 'Hz'));
-    if isempty(sampleRate), error('Unable to retrieve sample rate.'); end
+    if isempty(sampleRate), error( ...
+            'Unable to retrieve sample rate from file \"%s%s\".', ...
+            filePath, fileName); end
     sampleRate = double(erase(string(sampleRate), 'Hz'));
 
     % Write IR to audio file
