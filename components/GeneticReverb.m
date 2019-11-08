@@ -351,10 +351,12 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                     plugin.pFIRFilterRight720000.Numerator = irRight(1:720000);
                 elseif plugin.NUM_SAMPLES == 1440000
                     plugin.pFIRFilterLeft1440000.Numerator = irLeft(1:1440000);
-                    plugin.pFIRFilterRight1440000.Numerator = irRight(1:1440000);
+                    plugin.pFIRFilterRight1440000.Numerator = ...
+                        irRight(1:1440000);
                 elseif plugin.NUM_SAMPLES == 2880000
                     plugin.pFIRFilterLeft2880000.Numerator = irLeft(1:2880000);
-                    plugin.pFIRFilterRight2880000.Numerator = irRight(1:2880000);
+                    plugin.pFIRFilterRight2880000.Numerator = ...
+                        irRight(1:2880000);
                 end
             end
         end
