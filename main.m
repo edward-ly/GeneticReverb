@@ -7,6 +7,14 @@
 % Version: 0.9.1
 % Last Updated: 8 November 2019
 %
+% Usage: Adjust parameter values to your liking, then click on "Editor > Run" or
+% run `main` in the MATLAB command window under the project root directory. Two
+% file dialog windows will then appear in succession, one for selecting the
+% input (dry) audio file and one for specifying the location and name of the
+% output (wet) audio file. Another audio file containing the impulse response
+% generated will also be saved in the same location.
+%
+%
 % BSD 3-Clause License
 % 
 % Copyright (c) 2019, Edward Ly
