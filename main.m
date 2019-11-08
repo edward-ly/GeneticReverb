@@ -44,8 +44,9 @@ clear; close all;
 addpath components
 
 %% Output parameters.
-NORMALIZE_IR = true;
-NORMALIZE_AUDIO = true;
+NORMALIZE_IR = true;       % Normalize generated impulse response
+NORMALIZE_AUDIO = true;    % Normalize audio after applying reverb
+VERBOSE = true;            % Display genetic algorithm status messages
 
 %% Genetic algorithm parameters.
 % POPULATION_SIZE = Number of impulse responses in population
@@ -103,33 +104,9 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 [numAudioSamples, numAudioChannels] = size(drySignal);
 
 %% Generate a new impulse response.
-[irBest, ~, fitnessCurve] = genetic_rir(gaParams, irParams, true);
+[irBest, ~, fitnessCurve] = genetic_rir(gaParams, irParams, VERBOSE);
 
-%% Show impulse response plot.
-figure
-plot((1:irParams.NUM_SAMPLES) ./ irParams.SAMPLE_RATE, irBest)
-grid on
-xlabel('Time (s)')
-ylabel('Amplitude')
-
-%% Show impulse response plot in decibels.
-irBest2 = 10 .* log10(irBest .* irBest);
-
-figure
-plot((1:irParams.NUM_SAMPLES) ./ irParams.SAMPLE_RATE, irBest2)
-grid on
-xlabel('Time (s)')
-ylabel('Relative Gain (dB)')
-
-%% Show best fitness value over generations.
-figure
-plot(0:gaParams.NUM_GENERATIONS, fitnessCurve)
-grid on
-axis([-inf inf 0 inf])
-xlabel('Generation')
-ylabel('Fitness Value')
-
-%% Save best impulse response as audio file.
+%% Impulse response post-processing.
 numSamples = irParams.NUM_SAMPLES;
 
 % Resample IR sample rate to match audio sample rate, if necessary.
@@ -141,14 +118,9 @@ end
 % Normalize impulse response.
 if NORMALIZE_IR, irBest = normalize_signal(irBest, 0.99); end
 
-% Write to WAV file.
-irFileName = ['ir_' datestr(now, 'yyyymmdd_HHMMSSFFF') '.wav'];
-audiowrite([outFilePath irFileName], irBest, audioSampleRate);
-
-%% Apply impulse response to input audio signal.
-
-% Apply impulse response via convolution. Each column/channel of the impulse
-% response will filter the corresponding column/channel in the audio.
+% Apply impulse response to input audio signal via convolution. Each
+% column/channel of the impulse response will filter the corresponding
+% column/channel in the audio.
 wetSignal = zeros(numAudioSamples + numSamples - 1, numAudioChannels);
 for i = 1:numAudioChannels
     wetSignal(:, i) = conv(irBest, drySignal(:, i));
@@ -157,9 +129,35 @@ end
 % Normalize audio.
 if NORMALIZE_AUDIO, wetSignal = normalize_signal(wetSignal, 0.99, 'all'); end
 
-% Write to WAV file.
-audiowrite([outFilePath outFileName], wetSignal, audioSampleRate);
-
-%% END OF SCRIPT
+%% Save best impulse response to WAV file.
+irFileName = ['ir_' datestr(now, 'yyyymmdd_HHMMSSFFF') '.wav'];
+audiowrite([outFilePath irFileName], irBest, audioSampleRate);
 fprintf('Saved impulse response to %s%s\n', outFilePath, irFileName);
+
+%% Save reverb audio to WAV file.
+audiowrite([outFilePath outFileName], wetSignal, audioSampleRate);
 fprintf('Saved output audio to %s%s\n', outFilePath, outFileName);
+
+%% Show output impulse response plot.
+figure
+plot((1:numSamples) ./ audioSampleRate, irBest)
+grid on
+xlabel('Time (s)')
+ylabel('Amplitude')
+
+%% Show impulse response plot in decibels.
+irBest2 = 10 .* log10(irBest .* irBest);
+
+figure
+plot((1:numSamples) ./ audioSampleRate, irBest2)
+grid on
+xlabel('Time (s)')
+ylabel('Relative Gain (dB)')
+
+%% Show best fitness value over time (in generations).
+figure
+plot(0:gaParams.NUM_GENERATIONS, fitnessCurve)
+grid on
+axis([-inf inf 0 inf])
+xlabel('Generation')
+ylabel('Fitness Value')
