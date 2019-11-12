@@ -10,8 +10,8 @@ function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES)
 % Output arguments:
 % out = output population
 %
-% Current algorithm: one-point crossover where the point is random along the
-% length of the impulse response.
+% Current algorithm: three-point crossover where the points are random (and
+% distinct) along the length of the impulse response.
 %
     % Require all arguments
     if nargin < 4, error('Not enough input arguments.'); end
@@ -21,9 +21,11 @@ function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES)
     
     for i = (SELECTION_SIZE + 1):POPULATION_SIZE
         parents = randperm(SELECTION_SIZE, 2);
-        point = ceil(rand * (NUM_SAMPLES - 1));
+        points = sort(randperm(NUM_SAMPLES, 3));
 
-        out(1:point, i) = in(1:point, parents(1));
-        out((point + 1):end, i) = in((point + 1):end, parents(2));
+        out(:, i) = in(:, parents(1));
+        for j = 1:length(points)
+            out(points(j):end, i) = in(points(j):end, parents(mod(j, 2) + 1));
+        end
     end
 end
