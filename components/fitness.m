@@ -1,4 +1,4 @@
-function f = fitness(ir, params)
+function [f, loss] = fitness(ir, params)
 % FITNESS Calculate fitness value of impulse response.
 %
 % Input arguments:
@@ -14,12 +14,15 @@ function f = fitness(ir, params)
 %
 % Output arguments:
 % f = fitness value of impulse response
+% loss = struct containing error/difference values for each parameter (optional)
 %
     % Require all arguments
     if nargin < 2, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
 
     %% Useful information for parameter calculations
+    loss = params;
+
     % Copy sample rate to new variable (to shorten name)
     sampleRate = params.SAMPLE_RATE;
 
@@ -74,15 +77,15 @@ function f = fitness(ir, params)
     
     %% Calculate fitness value
     % Calculate mean squared error
-    T60diff  = irT60  - params.T60;
-    ITDGdiff = irITDG - params.ITDG;
-    EDTdiff  = irEDT  - params.EDT;
-    C80diff  = irC80  - params.C80;
-    BRdiff   = irBR   - params.BR;
-    f = (T60diff * T60diff) + ...
-        (ITDGdiff * ITDGdiff) + ...
-        (EDTdiff * EDTdiff) + ...
-        (C80diff * C80diff) + ...
-        (BRdiff * BRdiff);
+    loss.T60  = irT60  - params.T60;
+    loss.ITDG = irITDG - params.ITDG;
+    loss.EDT  = irEDT  - params.EDT;
+    loss.C80  = irC80  - params.C80;
+    loss.BR   = irBR   - params.BR;
+    f = (loss.T60 * loss.T60) + ...
+        (loss.ITDG * loss.ITDG) + ...
+        (loss.EDT * loss.EDT) + ...
+        (loss.C80 * loss.C80) + ...
+        (loss.BR * loss.BR);
     f = f / 5;
 end

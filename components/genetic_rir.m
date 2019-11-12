@@ -1,4 +1,4 @@
-function [irBest, irBestFitness, fitnessCurve] = ...
+function [irBest, irBestFitness, fitnessCurve, loss] = ...
     genetic_rir(gaParams, irParams, verbose)
 % GENETIC_RIR Generates a random impulse response with the given parameters.
 %
@@ -25,6 +25,7 @@ function [irBest, irBestFitness, fitnessCurve] = ...
 % irBestFitness = fitness value of impulse response returned
 % fitnessCurve = column vector recording best fitness values after each
 %     generation (optional)
+% loss = struct containing error/difference values for each parameter (optional)
 %
     % Require IR and GA arguments
     if nargin < 2, error('Not enough input arguments.'); end
@@ -46,18 +47,22 @@ function [irBest, irBestFitness, fitnessCurve] = ...
     currentStopGen = 0;
 
     if nargout > 2, fitnessCurve = zeros(gaParams.NUM_GENERATIONS + 1, 1); end
+    if nargout > 3, irLoss = repmat(irParams, gaParams.POPULATION_SIZE, 1); end
 
     while true
         % Evaluate population
         for i = 1:gaParams.POPULATION_SIZE
-            irFitness(i) = fitness(irPopulation(:, i), irParams);
+            [irFitness(i), irLoss(i)] = fitness(irPopulation(:, i), irParams);
         end
 
         % Sort population by fitness value and update best individual
-        [irPopulation, irFitness] = sort_pop(irPopulation, irFitness);
+        [irPopulation, irFitness, irLoss] = ...
+            sort_pop(irPopulation, irFitness, irLoss);
+
         if irFitness(1) < irBestFitness
             irBestFitness = irFitness(1);
             irBest = irPopulation(:, 1);
+            if nargout > 3, loss = irLoss(1); end
             currentStopGen = 0;
         else
             currentStopGen = currentStopGen + 1;

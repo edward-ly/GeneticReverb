@@ -1,13 +1,15 @@
-function [sortedPop, sortedFitness] = sort_pop(pop, fitness)
+function [sortedPop, sortedFitness, sortedLoss] = sort_pop(pop, fitness, loss)
 % POP_SORT Sort population by fitness value.
 %
 % Input arguments:
 % pop = unsorted population
 % fitness = fitness values of unsorted population
+% loss = vector of structs containing detailed error values
 %
 % Output arguments:
 % sortedPop = sorted population
 % sortedFitness = fitness values of sorted population
+% sortedLoss = detailed error values of sorted population
 %
     % Require all arguments
     if nargin < 2, error('Not enough input arguments.'); end
@@ -17,7 +19,9 @@ function [sortedPop, sortedFitness] = sort_pop(pop, fitness)
 
     [sortedFitness, indices] = sort(fitness);
     sortedPop = pop;
+    sortedLoss = loss;
     for i = 1:numel(indices)
         sortedPop(:, i) = pop(:, indices(i));
+        sortedLoss(i) = loss(indices(i));
     end
 end
