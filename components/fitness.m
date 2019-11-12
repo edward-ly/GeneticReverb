@@ -63,16 +63,18 @@ function [f, loss] = fitness(ir, params)
 
     % BR (bass ratio)
     % Find amount of energy in 125 - 500Hz and 500Hz - 2000Hz bands and
-    % calculate the ratio of the two
+    % calculate the ratio between the two
     irfft = abs(fft(ir));
-    freq = (0:length(irfft)-1) * sampleRate / length(irfft);
     f125 = ceil(125 * length(irfft) / sampleRate) + 1;
     f500 = ceil(500 * length(irfft) / sampleRate);
     f2000 = floor(2000 * length(irfft) / sampleRate) + 1;
-    lowContent = freq(f125:f500);
-    highContent = freq((f500 + 1):f2000);
+    lowContent = irfft(f125:f500);
+    highContent = irfft((f500 + 1):f2000);
     lowEnergy = sum(lowContent .* lowContent);
     highEnergy = sum(highContent .* highContent);
+    % Divide highEnergy by 4 to compensate for the fact that there are twice as
+    % many frequency bins
+    highEnergy = highEnergy / 4;
     irBR = lowEnergy / highEnergy;
     
     %% Calculate fitness value
