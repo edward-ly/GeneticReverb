@@ -18,7 +18,7 @@ First ensure that the `GeneticReverb.m` class file is visible to MATLAB by addin
 
 ### Plugin Parameters
 
-Listed below are the current user parameters of the plugin. Changing the value of any of the impulse response parameters triggers the genetic algorithm in the plugin, using the new parameter values to generate a new impulse response. Due to the spike in CPU usage that this can cause, you may experience a short delay before the genetic algorithm is completed and the impulse response is able to be mixed with the input signal.
+Listed below are the current user parameters of the plugin. You can change the impulse response parameters freely before generating the impulse responses using the "Generate Room" switch. Due to the spike in CPU usage that this can cause, you may experience a delay before the genetic algorithm is completed and the impulse response is able to be mixed with the input signal.
 
 - Impulse Response Parameters
   - **Decay Time** - Specifies the amount of time it takes for the impulse response to decay -60 dB from the initial amplitude.
@@ -32,6 +32,7 @@ Listed below are the current user parameters of the plugin. Changing the value o
   - **Dry/Wet** - Adjusts the balance between the dry input signal and the wet processed signal.
   - **Output Gain** - Adjusts the gain of the mixed dry/wet signal before being sent out the plugin.
 - Special Parameters
+  - **Generate Room** - Toggling the switch triggers the genetic algorithm in the plugin, using the current parameter values to generate new impulse responses.
   - **Toggle To Save** - Toggling the switch triggers the plugin to save the current impulse response as a binary (`.bin`) file in the same directory as the plugin. Useful if the plugin generates an impulse response you like and want to save it for later.
 
 > Note 1: Make sure that the plugin is placed in a directory where it has write access; otherwise, no files will be generated at all.
@@ -48,4 +49,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-9 November 2019
+12 November 2019
