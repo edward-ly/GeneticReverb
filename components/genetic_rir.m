@@ -47,7 +47,7 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
     currentStopGen = 0;
 
     if nargout > 2, fitnessCurve = zeros(gaParams.NUM_GENERATIONS + 1, 1); end
-    if nargout > 3, irLoss = repmat(irParams, gaParams.POPULATION_SIZE, 1); end
+    irLoss = repmat(irParams, gaParams.POPULATION_SIZE, 1);
 
     while true
         % Evaluate population
@@ -62,7 +62,7 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
         if irFitness(1) < irBestFitness
             irBestFitness = irFitness(1);
             irBest = irPopulation(:, 1);
-            if nargout > 3, loss = irLoss(1); end
+            loss = irLoss(1);
             currentStopGen = 0;
         else
             currentStopGen = currentStopGen + 1;
