@@ -79,11 +79,11 @@ function [f, loss] = fitness(ir, params)
     
     %% Calculate fitness value
     % Calculate mean squared error
-    loss.T60  = irT60  - params.T60;
-    loss.ITDG = irITDG - params.ITDG;
-    loss.EDT  = irEDT  - params.EDT;
-    loss.C80  = irC80  - params.C80;
-    loss.BR   = irBR   - params.BR;
+    loss.T60  = irT60(1)  - params.T60;
+    loss.ITDG = irITDG(1) - params.ITDG;
+    loss.EDT  = irEDT(1)  - params.EDT;
+    loss.C80  = irC80(1)  - params.C80;
+    loss.BR   = irBR(1)   - params.BR;
     f = (loss.T60 * loss.T60) + ...
         (loss.ITDG * loss.ITDG) + ...
         (loss.EDT * loss.EDT) + ...
