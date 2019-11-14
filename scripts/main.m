@@ -50,7 +50,7 @@
 clear; close all;
 
 % Add paths to any external functions used
-addpath components
+addpath ../components
 
 %% Output Parameters
 NORMALIZE_IR = true;       % Normalize generated impulse response

@@ -41,7 +41,7 @@
 clear; close all;
 
 % Add paths to any external functions used
-addpath components
+addpath ../components
 
 %% Output Parameters
 NUM_IRS = 100;                 % Number of impulse responses to generate per iteration
