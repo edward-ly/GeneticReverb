@@ -29,6 +29,8 @@
 # **/*.dll
 # **/*.vst
 
-# Ignore example and test files.
-**/*example*
-**/*test*
+# Ignore test files (in test folder).
+**/test/*
+
+# Ignore text files.
+**/*.txt
