@@ -22,4 +22,3 @@ function params = rand_ir_params(T60)
 
     params.NUM_SAMPLES = ceil(1.5 * params.T60 * params.SAMPLE_RATE);
 end
-

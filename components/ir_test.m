@@ -55,4 +55,3 @@ function [times, fitnesses, lossesStruct] = ir_test(gaParams, T60, NUM_IRS)
 
     fprintf('\n');
 end
-
