@@ -7,7 +7,7 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
 %     POPULATION_SIZE = IR population count
 %     SELECTION_SIZE = IR selection count
 %     NUM_GENERATIONS = no. of gens
-%     STOP_GENERATIONS = no. of gens before stopping if no new IR found
+%     PLATEAU_LENGTH = no. of gens before stopping if no new IR found
 %     FITNESS_THRESHOLD = fitness value threshold
 %     MUTATION_RATE = mutation probability
 % irParams = struct containing impulse response parameters
@@ -44,7 +44,7 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
     irBest = zeros(irParams.NUM_SAMPLES, 1);
     irBestFitness = Inf;
     currentGen = 0;
-    currentStopGen = 0;
+    currentPlatLen = 0;
 
     if nargout > 2, fitnessCurve = zeros(gaParams.NUM_GENERATIONS + 1, 1); end
     irLoss = repmat(irParams, gaParams.POPULATION_SIZE, 1);
@@ -63,9 +63,9 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
             irBestFitness = irFitness(1);
             irBest = irPopulation(:, 1);
             loss = irLoss(1);
-            currentStopGen = 0;
+            currentPlatLen = 0;
         else
-            currentStopGen = currentStopGen + 1;
+            currentPlatLen = currentPlatLen + 1;
         end
 
         % Record best fitness value this generation
@@ -85,7 +85,7 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
         end
 
         % Stop if fitness value is not updated after some number of generations
-        if currentStopGen >= gaParams.STOP_GENERATIONS
+        if currentPlatLen >= gaParams.PLATEAU_LENGTH
             if verbose, fprintf('Local optimal solution found.\n'); end
             break
         end
