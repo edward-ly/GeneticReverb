@@ -34,3 +34,6 @@
 
 # Ignore text files.
 **/*.txt
+
+# Ignore libsndfile library.
+**/libsndfile*
