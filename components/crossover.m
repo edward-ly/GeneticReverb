@@ -25,7 +25,13 @@ function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES)
 
         out(:, i) = in(:, parents(1));
         for j = 1:length(points)
-            out(points(j):end, i) = in(points(j):end, parents(mod(j, 2) + 1));
+            if j == length(points)
+                out(points(j):end, i) = ...
+                    in(points(j):end, parents(mod(j, 2) + 1));
+            else
+                out(points(j):(points(j+1)-1), i) = ...
+                    in(points(j):(points(j+1)-1), parents(mod(j, 2) + 1));
+            end
         end
     end
 end
