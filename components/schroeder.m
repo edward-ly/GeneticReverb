@@ -5,8 +5,8 @@ function [out, outdB] = schroeder(in)
 % in = column vector(s) containing impulse responses
 %
 % Output arguments:
-% out = vector containing energy decay curve
-% outdB = vector containing energy decay curve in decibels
+% out = column vector(s) containing energy decay curve(s) of each IR
+% outdB = column vector(s) containing energy decay curve(s) in decibels
 %
     % Require input argument and one output argument
     if nargin < 1, error('Not enough input arguments.'); end
