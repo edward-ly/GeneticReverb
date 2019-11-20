@@ -65,8 +65,7 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         newIRs(:, 2) = newIRs(:, 2) .* (1 + (newIRsRMS(1) / newIRsRMS(2)));
 
         % Normalize for consistent output gain and prevent clipping
-        irPeak = max(max(abs(newIRs)));
-        newIRs = newIRs .* (0.99 / irPeak);
+        newIRs = normalize_signal(newIRs, 0.99);
 
         % Resample/resize impulse responses, assign to output
         irLeft = resample_ir(plugin, newIRs(:, 1), sampleRate)';
