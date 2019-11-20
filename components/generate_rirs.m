@@ -57,7 +57,7 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     if plugin.STEREO
         % Generate new impulse responses in parallel
         newIRs = zeros(irParams.NUM_SAMPLES, 2);
-        parfor i = 1:2, newIRs(:, i) = genetic_rir(gaParams, irParams); end
+        for i = 1:2, newIRs(:, i) = genetic_rir(gaParams, irParams); end
 
         % Modify gains of IRs so that RMS levels are equal
         newIRsRMS = rms(newIRs);
