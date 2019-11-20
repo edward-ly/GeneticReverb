@@ -1,5 +1,7 @@
 # Genetic Reverb
 
+[![View Genetic Reverb - Genetic Algorithm-based VST Reverb Plugin on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/72437-genetic-reverb-genetic-algorithm-based-vst-reverb-plugin)
+
 A VST 2 audio effect plugin written in MATLAB that uses a genetic algorithm to generate a random impulse response describing the reverberation of an artificial room, and uses the impulse response to apply convolution reverb to a signal in real-time. A MATLAB script version (`main.m`) is also available, which accepts a WAV audio file as input instead. The input is combined with the impulse response via convolution, applying the reverb effect to the pre-recorded audio.
 
 Since no two impulse responses will ever be the same, both the script and the plugin are also able to save the generated impulse responses to new files as well. You can then load the generated impulse response files into other programs such as my simple [IR Reverb](https://github.com/edward-ly/reverb-pd) Pure Data patch or the [Convolution Reverb](https://www.ableton.com/en/packs/convolution-reverb/) device in [Ableton Live](https://www.ableton.com/en/) to perform the same reverb effect.
@@ -43,10 +45,6 @@ Listed below are the current user parameters of the plugin. You can change the i
 
 See [LICENSE](./LICENSE) for details.
 
-## External Links
-
-- [Genetic Reverb - MATLAB Central File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/72437-genetic-reverb)
-
 ## Last Updated
 
-14 November 2019
+20 November 2019
