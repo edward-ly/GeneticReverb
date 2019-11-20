@@ -3,11 +3,11 @@ function out = resample_ir(plugin, in, sampleRate)
 %
 % Input arguments:
 % plugin = plugin object containing resampler system objects and buffer length
-% in = row vector containing the input impulse response
+% in = column vector containing the input impulse response
 % sampleRate = new sample rate
 %
 % Output arguments:
-% out = row vector containing the resampled impulse response
+% out = column vector containing the resampled impulse response
 %
     % Require all arguments
     if nargin < 3, error('Not enough input arguments.'); end
@@ -15,7 +15,7 @@ function out = resample_ir(plugin, in, sampleRate)
 
     % Initialize constant-length input for resamplers
     input = zeros(240000, 1);  % max length: 1.5 * 10s * 16000Hz
-    input(1:length(in)) = in';
+    input(1:length(in)) = in;
 
     if sampleRate == 44100
         output = step(plugin.pFIR44100, input);
@@ -33,14 +33,14 @@ function out = resample_ir(plugin, in, sampleRate)
         output = step(plugin.pFIR192000, input);
     else
         % No conversion for unsupported sample rates
-        output = in';
+        output = in;
     end
 
     % Set output length to buffer length again
-    out = zeros(1, plugin.NUM_SAMPLES);
+    out = zeros(plugin.NUM_SAMPLES, 1);
     if length(output) > plugin.NUM_SAMPLES
-        out = output(1:plugin.NUM_SAMPLES)';
+        out = output(1:plugin.NUM_SAMPLES);
     else
-        out(1:length(output)) = output';
+        out(1:length(output)) = output;
     end
 end
