@@ -2,7 +2,7 @@ function [out, outdB] = schroeder(in)
 % SCHROEDER Calculates the energy decay (Schroeder) curve of impulse response.
 %
 % Input arguments:
-% in = vector containing impulse response energy
+% in = column vector(s) containing impulse responses
 %
 % Output arguments:
 % out = vector containing energy decay curve
@@ -13,8 +13,8 @@ function [out, outdB] = schroeder(in)
     if nargout < 1, error('Not enough output arguments.'); end
 
     out = in .* in;
-    for i = (length(in) - 1):-1:1
-        out(i) = out(i) + out(i + 1);
+    for i = (size(in, 1) - 1):-1:1
+        out(i, :) = out(i, :) + out(i + 1, :);
     end
 
     if nargout > 1, outdB = 10 .* log10(out); end
