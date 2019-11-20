@@ -3,13 +3,13 @@ function out = normalize_signal(in, peak, mode)
 % peak level.
 %
 % Input arguments:
-% in = input signal
+% in = column vector(s) containing input signal(s)
 % peak = max value
 % mode = ['all' (default), 'each'] normalize entire signal at once or
 % normalize each channel independently
 %
 % Output arguments:
-% out = output signal
+% out = column vector(s) containing output signal(s)
 %
     % Require output arguments
     if nargout < 1, error('Not enough output arguments.'); end
@@ -22,7 +22,7 @@ function out = normalize_signal(in, peak, mode)
     
     [numSamples, numChannels] = size(in);
     if numChannels == 1 || strcmp(mode, 'all')
-        out = peak .* in ./ max(max(abs(in)));
+        out = peak .* in ./ max(abs(in), [], 'all');
         return
     end
     
