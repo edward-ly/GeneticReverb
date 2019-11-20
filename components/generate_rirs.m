@@ -55,24 +55,22 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     end
 
     if plugin.STEREO
-        % Generate new impulse responses
-        newIRLeft = genetic_rir(gaParams, irParams)';
-        newIRRight = genetic_rir(gaParams, irParams)';
+        % Generate new impulse responses in parallel
+        newIRs = zeros(irParams.NUM_SAMPLES, 2);
+        parfor i = 1:2, newIRs(:, i) = genetic_rir(gaParams, irParams); end
 
         % Modify gains of IRs so that RMS levels are equal
-        irLeftRMS = rms(newIRLeft);
-        irRightRMS = rms(newIRRight);
-        newIRLeft = newIRLeft .* (1 + (irRightRMS / irLeftRMS));
-        newIRRight = newIRRight .* (1 + (irLeftRMS / irRightRMS));
+        newIRsRMS = rms(newIRs);
+        newIRs(:, 1) = newIRs(:, 1) .* (1 + (newIRsRMS(2) / newIRsRMS(1)));
+        newIRs(:, 2) = newIRs(:, 2) .* (1 + (newIRsRMS(1) / newIRsRMS(2)));
 
         % Normalize for consistent output gain and prevent clipping
-        irPeak = max([max(abs(newIRLeft)) max(abs(newIRRight))]);
-        newIRLeft = newIRLeft .* (0.99 / irPeak);
-        newIRRight = newIRRight .* (0.99 / irPeak);
+        irPeak = max(max(abs(newIRs)));
+        newIRs = newIRs .* (0.99 / irPeak);
 
         % Resample/resize impulse responses, assign to output
-        irLeft = resample_ir(plugin, newIRLeft, sampleRate);
-        irRight = resample_ir(plugin, newIRRight, sampleRate);
+        irLeft = resample_ir(plugin, newIRs(:, 1)', sampleRate);
+        irRight = resample_ir(plugin, newIRs(:, 2)', sampleRate);
     else
         % Generate new impulse response
         newIR = genetic_rir(gaParams, irParams)';
