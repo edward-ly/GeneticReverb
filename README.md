@@ -12,11 +12,21 @@ A video explaining and demonstrating (an older version of) the plugin is below:
 
 This plugin was selected as a finalist in the [MATLAB Plugin Student Competition](http://www.aes.org/students/awards/mpsc/) at the [147th AES Convention in New York, 2019](http://www.aes.org/events/147/).
 
-## Generating and Running the Plugin
+## Generating the Plugin
+
+### Dependencies
+
+- [MATLAB](https://www.mathworks.com/) (version R2018b or later)
+  - Audio Toolbox
+  - DSP System Toolbox
+- (Windows) Microsoft Visual C++ 2017 (or higher)
+- (Mac) Xcode 9.x (or higher)
 
 First ensure that the `GeneticReverb.m` class file is visible to MATLAB by adding the `components` directory to the MATLAB path or directly changing to the `components` directory, running `addpath components` or `cd components`, respectively, in the MATLAB command window. Then validate the plugin with `validateAudioPlugin GeneticReverb` and generate the plugin with `generateAudioPlugin GeneticReverb`. You can then copy the `.dll` (Windows) or `.vst` (Mac) file into your DAW's VST plugins directory (or specify the directory when generating the plugin with `generateAudioPlugin GeneticReverb -outdir <folder>`).
 
 > Note: Running `validateAudioPlugin GeneticReverb` will generate and save hundreds of binary files in the current directory as part of the validation. You can safely delete these files (or convert them to audio files and peruse them to your liking, see below).
+
+## Running the Plugin
 
 ### Plugin Parameters
 
@@ -47,4 +57,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-20 November 2019
+21 November 2019
