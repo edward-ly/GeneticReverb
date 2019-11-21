@@ -59,12 +59,14 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         newIRs = zeros(irParams.NUM_SAMPLES, 2);
         for i = 1:2, newIRs(:, i) = genetic_rir(gaParams, irParams); end
 
-        % Modify gains of IRs so that RMS levels are equal
-        newIRsRMS = rms(newIRs);
-        newIRs(:, 1) = newIRs(:, 1) .* (1 + (newIRsRMS(2) / newIRsRMS(1)));
-        newIRs(:, 2) = newIRs(:, 2) .* (1 + (newIRsRMS(1) / newIRsRMS(2)));
+        if plugin.NORMALIZE
+            % Modify gains of IRs so that RMS levels are equal
+            newIRsRMS = rms(newIRs);
+            newIRs(:, 1) = newIRs(:, 1) .* (1 + (newIRsRMS(2) / newIRsRMS(1)));
+            newIRs(:, 2) = newIRs(:, 2) .* (1 + (newIRsRMS(1) / newIRsRMS(2)));
+        end
 
-        % Normalize for consistent output gain and prevent clipping
+        % Normalize for consistent output gain and/or to prevent clipping
         newIRs = normalize_signal(newIRs, 0.99);
 
         % Resample/resize impulse responses, assign to output
@@ -74,7 +76,7 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         % Generate new impulse response
         newIR = genetic_rir(gaParams, irParams);
 
-        % Normalize for consistent output gain and prevent clipping
+        % Normalize for consistent output gain and/or to prevent clipping
         newIR = normalize_signal(newIR, 0.99);
 
         % Resample/resize impulse response
