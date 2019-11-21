@@ -18,10 +18,6 @@ function [sortedPop, sortedFitness, sortedLoss] = sort_pop(pop, fitness, loss)
     if nargout < 1, error('Not enough output arguments.'); end
 
     [sortedFitness, indices] = sort(fitness);
-    sortedPop = pop;
-    sortedLoss = loss;
-    for i = 1:numel(indices)
-        sortedPop(:, i) = pop(:, indices(i));
-        sortedLoss(i) = loss(indices(i));
-    end
+    sortedPop = pop(:, indices);
+    sortedLoss = loss(indices);
 end
