@@ -26,8 +26,8 @@
 **/packages
 
 # Ignore VST plugin files (Windows and MacOS).
-# **/*.dll
-# **/*.vst
+**/*.dll
+**/*.vst
 
 # Ignore test files (in test folder).
 **/test/*
