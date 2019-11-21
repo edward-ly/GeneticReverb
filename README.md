@@ -22,7 +22,7 @@ This plugin was selected as a finalist in the [MATLAB Plugin Student Competition
 - (Windows) Microsoft Visual C++ 2017 (or higher)
 - (Mac) Xcode 9.x (or higher)
 
-First ensure that the `GeneticReverb.m` class file is visible to MATLAB by adding the `components` directory to the MATLAB path or directly changing to the `components` directory, running `addpath components` or `cd components`, respectively, in the MATLAB command window. Then validate the plugin with `validateAudioPlugin GeneticReverb` and generate the plugin with `generateAudioPlugin GeneticReverb`. You can then copy the `.dll` (Windows) or `.vst` (Mac) file into your DAW's VST plugins directory (or specify the directory when generating the plugin with `generateAudioPlugin GeneticReverb -outdir <folder>`).
+First ensure that the `GeneticReverb.m` class file is visible to MATLAB by adding the `components` directory to the MATLAB path or directly changing to the `components` directory, running `addpath components` or `cd components`, respectively, in the MATLAB command window. Then validate the plugin with `validateAudioPlugin GeneticReverb` and generate the plugin with `generateAudioPlugin GeneticReverb`. You can then copy the `.dll` (Windows) or `.vst` (Mac) file into your DAW's VST plugins directory (or specify the directory when generating the plugin with `generateAudioPlugin -outdir <folder> GeneticReverb`).
 
 > Note: Running `validateAudioPlugin GeneticReverb` will generate and save hundreds of binary files in the current directory as part of the validation. You can safely delete these files (or convert them to audio files and peruse them to your liking, see below).
 
@@ -40,6 +40,7 @@ Listed below are the current user parameters of the plugin. You can change the i
   - **Warmth** - Controls the low-frequency (125-500 Hz) to mid-frequency (500-2000 Hz) content ratio in the impulse response. A value of 50% represents a 1:1 ratio, and increasing or decreasing this value makes the impulse response more "warm" or "brilliant", respectively.
   - **Quality** - Adjusts the quality of the reverb by changing the amount of time given to the genetic algorithm to produce an impulse response (more specifically, changing the maximum number of generations allowed in the algorithm).
   - **Mono/Stereo** - Setting this to "mono" mode means that the genetic algorithm will generate only one impulse response to be used for both the left and right audio channels, while "stereo" mode makes the genetic algorithm generate two instead, one for each stereo channel to create a binaural effect.
+  - **Normalize** - In "stereo" mode, turning this on will adjust the gain of one of the impulse responses so that both impulse responses have equal gain (according to average RMS amplitude). Otherwise, there may be some cases where one impulse response is much louder/quieter than the other.
 - Post-Processing Parameters
   - **Dry/Wet** - Adjusts the balance between the dry input signal and the wet processed signal.
   - **Output Gain** - Adjusts the gain of the mixed dry/wet signal before being sent out the plugin.
