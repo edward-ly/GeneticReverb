@@ -12,6 +12,8 @@ A video explaining and demonstrating (an older version of) the plugin is below:
 
 This plugin was selected as a finalist in the [MATLAB Plugin Student Competition](http://www.aes.org/students/awards/mpsc/) at the [147th AES Convention in New York, 2019](http://www.aes.org/events/147/).
 
+I also used the plugin to create an entire demo track, which you can listen to and download here: [https://soundcloud.com/9646/inner-space](https://soundcloud.com/9646/inner-space).
+
 ## Generating the Plugin
 
 ### Dependencies
@@ -58,4 +60,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-21 November 2019
+22 December 2019
