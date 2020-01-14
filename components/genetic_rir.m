@@ -38,8 +38,7 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
 
     % Initialize population
     if verbose, fprintf('Initializing population...\n'); end
-    irPopulation = init_pop(irParams.NUM_SAMPLES, gaParams.POPULATION_SIZE, ...
-        irParams.SAMPLE_RATE, irParams.T60);
+    irPopulation = init_pop(gaParams, irParams);
     irFitness = Inf(gaParams.POPULATION_SIZE, 1);
     irBest = zeros(irParams.NUM_SAMPLES, 1);
     irBestFitness = Inf;
