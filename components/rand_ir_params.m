@@ -16,7 +16,7 @@ function params = rand_ir_params(T60)
         'NUM_SAMPLES', 0, ...
         'T60', T60, ...
         'EDT', 0.01 * (100 ^ rand), ...   % 0.01 to 1 s (log)
-        'ITDG', rand * 0.5, ...           % 0 to 0.5 s (lin)
+        'ITDG', 0.001 * (100 ^ rand), ... % 0.001 to 0.1 s (log)
         'C80', rand * 10 - 5, ...         % -5 to 5 dB (lin)
         'BR', 0.25 * (16 ^ rand));        % 0.25 to 4 (log)
 
