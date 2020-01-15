@@ -32,8 +32,8 @@ function pop = init_pop(gaParams, irParams)
     sampleDensity = repmat(sampleDensity, n, 1);
 
     decayAmount = rand(1, popSize) .^ 2 * 2 + 1.5; % {'pow', 2, 1.5, 3.5}
+    decayAmount = repmat(decayAmount, n, 1);
     decayTime = round(0.0425 * decayAmount * fs);
-    decayTime = repmat(decayTime, n, 1);
 
     index = (-1:-1:(-1 * n))' / beta;
     index = repmat(index, 1, popSize) ./ decayTime;
@@ -45,7 +45,7 @@ function pop = init_pop(gaParams, irParams)
 
     ITDGsample = round(irParams.ITDG * fs);
     sampleOccurences(1:ITDGsample, :) = 0; % no reflections before ITDG time
-    sampleOccurences(ITDGsample + 1, :) = 1; % ensure reflection at ITDG time
+    sampleOccurences(ITDGsample + 1, :) = 1; % make reflection at ITDG time
 
     pop = randn(n, popSize) * 0.2;
     pop = pop .* sampleOccurences .* decayRate;
