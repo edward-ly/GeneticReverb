@@ -21,6 +21,7 @@ I also used the plugin to create an entire demo track, which you can listen to a
 - [MATLAB](https://www.mathworks.com/) (version R2018b or later)
   - Audio Toolbox
   - DSP System Toolbox
+  - Signal Processing Toolbox
 - (Windows) Microsoft Visual C++ 2017 (or higher)
 - (Mac) Xcode 9.x (or higher)
 
@@ -36,7 +37,6 @@ Listed below are the current user parameters of the plugin. You can change the i
 
 - Impulse Response Parameters
   - **Decay Time** - Specifies the amount of time it takes for the impulse response to decay 60 dB from the initial amplitude.
-  - **Early Decay Time** - Specifies the amount of time it takes for the impulse response to decay 10 dB from the initial amplitude.
   - **Intimacy** - Specifies the amount of time between the arrival of the initial sound and the arrival of the next reflected sound. Higher intimacy values are typically associated with larger rooms.
   - **Clarity** - Specifies the difference in energy levels (in decibels) of early reflections compared to late reflections. Higher values increase the prominence of early reflections and thus increase the impulse response's rate of decay.
   - **Warmth** - Controls the low-frequency (125-500 Hz) to mid-frequency (500-2000 Hz) content ratio in the impulse response. A value of 50% represents a 1:1 ratio, and increasing or decreasing this value makes the impulse response more "warm" or "brilliant", respectively.
@@ -60,4 +60,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-22 December 2019
+15 January 2020
