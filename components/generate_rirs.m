@@ -14,8 +14,8 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     if nargout < 2, error('Not enough output arguments.'); end
 
     % Pre-process parameter values
-    % Map warmth values of 0-100% to bass ratio {'log', 0.25, 4}
-    pBassRatio = 0.25 * 16 ^ (plugin.WARMTH / 100);
+    % Bass ratio should be 1 (flat response)
+    pBassRatio = 1.0;
     % Convert ITDG to seconds
     pITDG = plugin.ITDG / 1000.0;
     % EDT should be equal to 1/6 of T60
