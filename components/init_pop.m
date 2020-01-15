@@ -35,10 +35,10 @@ function pop = init_pop(gaParams, irParams)
     decayAmount = repmat(decayAmount, n, 1);
     decayTime = round(0.0425 * decayAmount * fs);
 
-    index = (-1:-1:(-1 * n))' / beta;
+    index = (-1:-1:(-1 * n))';
     index = repmat(index, 1, popSize) ./ decayTime;
 
-    decayRate = decayAmount .^ index;
+    decayRate = decayAmount .^ (index / beta);
 
     sampleProbability = 1 - sampleDensity .^ (0.035 * index);
     sampleOccurences = rand(n, popSize) < sampleProbability;
