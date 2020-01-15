@@ -53,7 +53,6 @@ clear; close all;
 addpath ../components
 
 %% Output Parameters
-NORMALIZE_IR = true;       % Normalize generated impulse response
 NORMALIZE_AUDIO = true;    % Normalize audio after applying reverb
 VERBOSE = true;            % Display genetic algorithm status messages
 SHOW_FIGURES = true;       % Display figures plotting IR and output audio
@@ -125,9 +124,6 @@ if irParams.SAMPLE_RATE ~= audioSampleRate
     irBest = resample(irBest, audioSampleRate, irParams.SAMPLE_RATE);
     numSamples = numel(irBest);
 end
-
-% Normalize impulse response
-if NORMALIZE_IR, irBest = normalize_signal(irBest, 0.99); end
 
 % Apply impulse response to input audio signal via convolution. Each
 % column/channel of the impulse response will filter the corresponding
