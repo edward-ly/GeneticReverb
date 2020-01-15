@@ -17,4 +17,3 @@ function ir = init_ir(length)
     ir = zeros(1, length);
     ir(1) = 1;
 end
-
