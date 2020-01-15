@@ -26,22 +26,19 @@ function [f, loss] = fitness(ir, params)
     % Copy sample rate to new variable (to shorten name)
     sampleRate = params.SAMPLE_RATE;
 
-    % Get start time of IR (arrival of peak reflection)
-    [~, irMaxIndex] = max(abs(ir));
-
     % Calculate Schroeder curve of impulse response
     [irEDC, irEDCdB] = schroeder(ir);
 
     %% Parameter calculations
     % ITDG (initial time delay gap)
     % Calculate time difference between first two arrivals
-    irIndices = find(ir, 2);
-    if numel(irIndices) < 2, f = Inf; return; end
-    irITDG = (irIndices(2) - irIndices(1)) / sampleRate;
+    % irIndices = find(ir, 2);
+    % if numel(irIndices) < 2, f = Inf; return; end
+    % irITDG = (irIndices(2) - 1) / sampleRate;
 
     % T60
     % Calculate T30 (time from -5 to -35 dB) and multiply by 2
-    irEDCMaxLevel = irEDCdB(irMaxIndex);
+    irEDCMaxLevel = irEDCdB(1);
     ir5dBSample = find(irEDCdB - irEDCMaxLevel < -5, 1);
     if isempty(ir5dBSample), f = Inf; return; end
     ir35dBSample = find(irEDCdB - irEDCMaxLevel < -35, 1);
@@ -51,12 +48,12 @@ function [f, loss] = fitness(ir, params)
     % EDT (early decay time, i.e. time from 0 to -10 dB)
     ir10dBSample = find(irEDCdB - irEDCMaxLevel < -10, 1);
     if isempty(ir10dBSample), f = Inf; return; end
-    irEDT = (ir10dBSample - irMaxIndex) / sampleRate;
+    irEDT = (ir10dBSample - 1) / sampleRate;
 
     % C80 (clarity)
-    sample_80ms = floor(0.08 * sampleRate) + irMaxIndex;
+    sample_80ms = round(0.08 * sampleRate) + 1;
     if sample_80ms >= numel(ir), f = Inf; return; end
-    earlyEnergy = irEDC(irMaxIndex) - irEDC(sample_80ms);
+    earlyEnergy = irEDC(1) - irEDC(sample_80ms);
     lateEnergy  = irEDC(sample_80ms);
     if lateEnergy <= 0, f = Inf; return; end
     irC80 = 10 * log10(earlyEnergy / lateEnergy);
@@ -80,14 +77,12 @@ function [f, loss] = fitness(ir, params)
     %% Calculate fitness value
     % Calculate mean squared error
     loss.T60  = irT60(1)  - params.T60;
-    loss.ITDG = irITDG(1) - params.ITDG;
     loss.EDT  = irEDT(1)  - params.EDT;
     loss.C80  = irC80(1)  - params.C80;
     loss.BR   = irBR(1)   - params.BR;
     f = (loss.T60 * loss.T60) + ...
-        (loss.ITDG * loss.ITDG) + ...
         (loss.EDT * loss.EDT) + ...
         (loss.C80 * loss.C80) + ...
         (loss.BR * loss.BR);
-    f = f / 5;
+    f = f / 4.0;
 end
