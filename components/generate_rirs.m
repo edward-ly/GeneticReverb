@@ -63,15 +63,18 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         newIRs = zeros(irParams.NUM_SAMPLES, 2);
         for i = 1:2, newIRs(:, i) = genetic_rir(gaParams, irParams); end
 
+        % Apply low-shelf EQ
+        newIRs = shelf_filt(newIRs, plugin.WARMTH, plugin.IR_SAMPLE_RATE);
+
         if plugin.NORMALIZE
             % Modify gains of IRs so that RMS levels are equal
             newIRsRMS = rms(newIRs);
             newIRs(:, 1) = newIRs(:, 1) .* (1 + (newIRsRMS(2) / newIRsRMS(1)));
             newIRs(:, 2) = newIRs(:, 2) .* (1 + (newIRsRMS(1) / newIRsRMS(2)));
-
-            % Normalize to prevent clipping
-            newIRs = normalize_signal(newIRs, 0.99);
         end
+
+        % Normalize to prevent clipping
+        newIRs = normalize_signal(newIRs, 0.99);
 
         % Resample/resize impulse responses, assign to output
         irLeft = resample_ir(plugin, newIRs(:, 1), sampleRate)';
@@ -79,6 +82,12 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     else
         % Generate new impulse response
         newIR = genetic_rir(gaParams, irParams);
+
+        % Apply low-shelf EQ
+        newIR = shelf_filt(newIR, plugin.WARMTH, plugin.IR_SAMPLE_RATE);
+
+        % Normalize to prevent clipping
+        newIR = normalize_signal(newIR, 0.99);
 
         % Resample/resize impulse response
         ir = resample_ir(plugin, newIR, sampleRate)';
