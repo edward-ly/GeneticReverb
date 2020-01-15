@@ -29,13 +29,11 @@ function [times, fitnesses, lossesStruct] = ir_test(gaParams, T60, NUM_IRS)
         'BR', 0);
     lossesStruct = repmat(irParams, NUM_IRS, 1);
 
-    for i = 1:NUM_IRS
+    parfor i = 1:NUM_IRS
         timer = tic;
         [~, fitnesses(i), ~, lossesStruct(i)] = ...
             genetic_rir(gaParams, rand_ir_params(T60), false);
         times(i) = toc(timer);
-
-        if mod(i, ceil(NUM_IRS / 20)) == 0, fprintf('.'); end
     end
 
     losses = struct( ...
@@ -51,5 +49,5 @@ function [times, fitnesses, lossesStruct] = ir_test(gaParams, T60, NUM_IRS)
         losses.BR(i)   = lossesStruct(i).BR;
     end
 
-    fprintf('\n');
+    fprintf('....................\n');
 end
