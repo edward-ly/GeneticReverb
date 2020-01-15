@@ -7,7 +7,6 @@ function [f, loss] = fitness(ir, params)
 %     SAMPLE_RATE = sample rate of impulse response
 %     NUM_SAMPLES = length of recorded impulse response (samples)
 %     T60 = T60 decay time (s)
-%     ITDG = initial time delay gap (s)
 %     EDT = early decay time (s)
 %     C80 = clarity (dB)
 %     BR = bass ratio
@@ -30,12 +29,6 @@ function [f, loss] = fitness(ir, params)
     [irEDC, irEDCdB] = schroeder(ir);
 
     %% Parameter calculations
-    % ITDG (initial time delay gap)
-    % Calculate time difference between first two arrivals
-    % irIndices = find(ir, 2);
-    % if numel(irIndices) < 2, f = Inf; return; end
-    % irITDG = (irIndices(2) - 1) / sampleRate;
-
     % T60
     % Calculate T30 (time from -5 to -35 dB) and multiply by 2
     irEDCMaxLevel = irEDCdB(1);
@@ -69,8 +62,8 @@ function [f, loss] = fitness(ir, params)
     highContent = irfft((f500 + 1):f2000);
     lowEnergy = sum(lowContent .* lowContent);
     highEnergy = sum(highContent .* highContent);
-    % Divide highEnergy by 4 to compensate for the fact that there are twice as
-    % many frequency bins
+    % Divide highEnergy by 4 to compensate for the fact that the highFrequency
+    % bin is 4 times as wide
     highEnergy = highEnergy / 4;
     irBR = lowEnergy / highEnergy;
     
