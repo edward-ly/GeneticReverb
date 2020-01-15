@@ -105,4 +105,9 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
         ITDG = round(irParams.ITDG * irParams.SAMPLE_RATE);
         irPopulation = mutate(irPopulation, gaParams.MUTATION_RATE, ITDG);
     end
+
+    if verbose
+        fprintf('Diff: T60 = %f, EDT = %f, C80 = %f, BR = %f\n', ...
+            loss.T60, loss.EDT, loss.C80, loss.BR);
+    end
 end
