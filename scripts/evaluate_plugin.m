@@ -44,12 +44,12 @@ clear; close all;
 addpath ../components
 
 %% Output Parameters
-NUM_IRS = 10;                 % Number of impulse responses to generate per iteration
-VERBOSE = false;               % Display genetic algorithm status messages
-T60s = [0.625, 1.25, 2.5 5.0]; % List of T60 values to test
+NUM_IRS = 100;                  % Number of IRs to generate per iteration
+VERBOSE = false;                % Display genetic algorithm status messages
+T60s = [0.625, 1.25, 2.5, 5.0]; % List of T60 values to test
 
 %% Genetic Algorithm Parameters
-% Settings are the same as in plugin
+% Settings should be the same as in plugin
 
 gaParamsHigh = struct( ...
     'POPULATION_SIZE', 50, ...
