@@ -44,7 +44,7 @@ clear; close all;
 addpath ../components
 
 %% Output Parameters
-NUM_IRS = 100;                 % Number of impulse responses to generate per iteration
+NUM_IRS = 10;                 % Number of impulse responses to generate per iteration
 VERBOSE = false;               % Display genetic algorithm status messages
 T60s = [0.625, 1.25, 2.5 5.0]; % List of T60 values to test
 
@@ -91,7 +91,6 @@ for i = 1:length(T60s)
     fprintf('Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
     fprintf('T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
     fprintf('EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf('ITDG Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.ITDG]), max([losses.ITDG]), mean([losses.ITDG]), std([losses.ITDG]));
     fprintf('C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
     fprintf('BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
 
@@ -101,7 +100,6 @@ for i = 1:length(T60s)
     fprintf(fileID, 'Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
     fprintf(fileID, 'T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
     fprintf(fileID, 'EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf(fileID, 'ITDG Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.ITDG]), max([losses.ITDG]), mean([losses.ITDG]), std([losses.ITDG]));
     fprintf(fileID, 'C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
     fprintf(fileID, 'BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
     fprintf(fileID, '\n');
@@ -117,7 +115,6 @@ for i = 1:length(T60s)
     fprintf('Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
     fprintf('T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
     fprintf('EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf('ITDG Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.ITDG]), max([losses.ITDG]), mean([losses.ITDG]), std([losses.ITDG]));
     fprintf('C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
     fprintf('BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
 
@@ -127,7 +124,6 @@ for i = 1:length(T60s)
     fprintf(fileID, 'Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
     fprintf(fileID, 'T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
     fprintf(fileID, 'EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf(fileID, 'ITDG Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.ITDG]), max([losses.ITDG]), mean([losses.ITDG]), std([losses.ITDG]));
     fprintf(fileID, 'C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
     fprintf(fileID, 'BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
     fprintf(fileID, '\n');
@@ -143,7 +139,6 @@ for i = 1:length(T60s)
     fprintf('Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
     fprintf('T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
     fprintf('EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf('ITDG Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.ITDG]), max([losses.ITDG]), mean([losses.ITDG]), std([losses.ITDG]));
     fprintf('C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
     fprintf('BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
 
@@ -153,7 +148,6 @@ for i = 1:length(T60s)
     fprintf(fileID, 'Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
     fprintf(fileID, 'T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
     fprintf(fileID, 'EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf(fileID, 'ITDG Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.ITDG]), max([losses.ITDG]), mean([losses.ITDG]), std([losses.ITDG]));
     fprintf(fileID, 'C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
     fprintf(fileID, 'BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
     fprintf(fileID, '\n');
