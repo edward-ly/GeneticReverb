@@ -2,7 +2,7 @@
 %
 % File: evaluate_plugin.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.2.0
+% Version: 0.3.0
 % Last Updated: 15 January 2020
 %
 %
