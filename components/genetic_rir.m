@@ -102,6 +102,7 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
             gaParams.POPULATION_SIZE, irParams.NUM_SAMPLES);
 
         % Mutate entire population
-        irPopulation = mutate(irPopulation, gaParams.MUTATION_RATE);
+        ITDG = round(irParams.ITDG * irParams.SAMPLE_RATE);
+        irPopulation = mutate(irPopulation, gaParams.MUTATION_RATE, ITDG);
     end
 end
