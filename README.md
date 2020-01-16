@@ -49,9 +49,7 @@ Listed below are the current user parameters of the plugin. You can change the i
   - **Generate Room** - Toggling the switch triggers the genetic algorithm in the plugin, using the current parameter values to generate new impulse responses.
   - **Toggle To Save** - Toggling the switch triggers the plugin to save the current impulse response as a binary (`.bin`) file in the same directory as the plugin. Useful if the plugin generates an impulse response you like and want to save it for later.
 
-> Note 1: Make sure that the plugin is placed in a directory where it has write access in that directory; otherwise, no files will be generated at all.
-
-> Note 2: Due to limitations with MATLAB code generation, the plugin is unable to save impulse responses directly as audio files at this time, but you can convert the binary files that the plugin creates to WAV files with the provided `bin2wav` or `bins2wav` MATLAB scripts.
+> Note: Due to limitations with MATLAB code generation, the plugin is unable to save impulse responses directly as audio files at this time, but you can convert the binary files that the plugin creates to WAV files with the provided `bin2wav` or `bins2wav` MATLAB scripts. In addition, saving will not work unless you specify the full path to the desired directory via the `SAVE_IR_PATH` property value in `components/GeneticReverb.m`. Make sure that the plugin has write access to the specified directory as well.
 
 ## License
 
