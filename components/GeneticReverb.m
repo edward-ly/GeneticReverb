@@ -151,6 +151,9 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         % Constant parameters
         IR_SAMPLE_RATE = 16000;   % Sample rate of generated IRs
         PARTITION_SIZE = 1024;    % Default partition length of conv filters
+
+        % Specify full file path to directory where IRs will be saved here
+        SAVE_IR_PATH = 'C:\Users\Edward\Downloads\';
     end
 
     properties
