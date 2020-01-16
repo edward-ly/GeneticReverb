@@ -66,12 +66,10 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         % Apply low-shelf EQ
         newIRs = shelf_filt(newIRs, plugin.WARMTH, plugin.IR_SAMPLE_RATE);
 
-        if plugin.NORMALIZE
-            % Modify gains of IRs so that RMS levels are equal
-            newIRsRMS = rms(newIRs);
-            newIRs(:, 1) = newIRs(:, 1) .* (1 + (newIRsRMS(2) / newIRsRMS(1)));
-            newIRs(:, 2) = newIRs(:, 2) .* (1 + (newIRsRMS(1) / newIRsRMS(2)));
-        end
+        % Modify gains of IRs so that RMS levels are equal
+        newIRsRMS = rms(newIRs);
+        newIRs(:, 1) = newIRs(:, 1) .* (1 + (newIRsRMS(2) / newIRsRMS(1)));
+        newIRs(:, 2) = newIRs(:, 2) .* (1 + (newIRsRMS(1) / newIRsRMS(2)));
 
         % Normalize to prevent clipping
         newIRs = normalize_signal(newIRs, 0.99);
