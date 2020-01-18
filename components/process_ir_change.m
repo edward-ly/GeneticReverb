@@ -56,4 +56,3 @@ function process_ir_change(plugin, sampleRate)
             irRight(1:2880000);
     end
 end
-
