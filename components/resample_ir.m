@@ -13,6 +13,8 @@ function out = resample_ir(plugin, in, sampleRate)
     if nargin < 3, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
 
+    % =========================================================================
+
     % Initialize constant-length input for resamplers
     input = zeros(240000, 1);  % max length: 1.5 * 10s * 16000Hz
     input(1:length(in)) = in;

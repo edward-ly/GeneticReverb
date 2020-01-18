@@ -12,6 +12,8 @@ function out = shelf_filt(in, warmth, sampleRate)
     % Require input arguments
     if nargin < 2, error('Not enough input arguments.'); end
 
+    % =========================================================================
+
     % Do nothing if slope == 0
     if warmth == 50, out = in; return; end
 

@@ -13,6 +13,8 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     if nargin < 2, error('Not enough input arguments.'); end
     if nargout < 2, error('Not enough output arguments.'); end
 
+    % =========================================================================
+
     % Pre-process parameter values
     % Bass ratio should be 1 (flat response)
     pBassRatio = 1.0;

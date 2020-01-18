@@ -16,6 +16,8 @@ function [times, fitnesses, lossesStruct] = ir_test(gaParams, T60, NUM_IRS)
     if nargin < 3, error('Not enough input arguments.'); end
     if nargout < 3, error('Not enough output arguments.'); end
 
+    % =========================================================================
+
     times = zeros(NUM_IRS, 1);
     fitnesses = zeros(NUM_IRS, 1);
     % Define irParams struct

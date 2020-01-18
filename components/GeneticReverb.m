@@ -189,7 +189,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     % Plugin methods for frequency-domain partitioned convolution
     methods (Access = protected)
         % Main process function
-        function out = stepImpl (plugin, in)
+        function out = stepImpl(plugin, in)
             % Calculate next convolution step for both channels
             if plugin.NUM_SAMPLES == 22500
                 outL = step(plugin.pFIRFilterLeft22500, in(:, 1));
@@ -230,7 +230,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         end
 
         % DSP initialization / setup
-        function setupImpl (plugin, ~)
+        function setupImpl(plugin, ~)
             % Initialize resampler objects:
             % 22.05/44.1/88.2 kHz sample rates are rounded to 22/44/88 kHz for
             % simplicity
@@ -309,15 +309,12 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
                 'PartitionForReducedLatency', true, ...
                 'PartitionLength', plugin.PARTITION_SIZE);
 
-            % Get current sample rate of plugin
-            sampleRate = getSampleRate(plugin);
-
             % Generate an initial IR with initial settings
-            process_ir_change(plugin, sampleRate);
+            process_ir_change(plugin, getSampleRate(plugin));
         end
 
         % Initialize/reset system object properties
-        function resetImpl (plugin)
+        function resetImpl(plugin)
             reset(plugin.pFIRFilterLeft22500);
             reset(plugin.pFIRFilterLeft45000);
             reset(plugin.pFIRFilterLeft90000);
@@ -346,7 +343,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         end
 
         % Do something when certain parameters are changed
-        function processTunedPropertiesImpl (plugin)
+        function processTunedPropertiesImpl(plugin)
             % Detect change in "toggle to save" parameter
             propChangeSave = isChangedProperty(plugin, 'SAVE_IR');
 

@@ -15,11 +15,13 @@ function [f, loss] = fitness(ir, params)
 % f = fitness value of impulse response
 % loss = struct containing error/difference values for each parameter (optional)
 %
-    % Require all arguments
+    % Require all input arguments and fitness value output
     if nargin < 2, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
 
-    %% Useful information for parameter calculations
+    % =========================================================================
+
+    % Initialize loss output
     loss = params;
 
     % Copy sample rate to new variable (to shorten name)
@@ -28,7 +30,8 @@ function [f, loss] = fitness(ir, params)
     % Calculate Schroeder curve of impulse response
     [irEDC, irEDCdB] = schroeder(ir);
 
-    %% Parameter calculations
+    % =========================================================================
+
     % T60
     % Calculate T30 (time from -5 to -35 dB) and multiply by 2
     irEDCMaxLevel = irEDCdB(1);
@@ -67,8 +70,9 @@ function [f, loss] = fitness(ir, params)
     highEnergy = highEnergy / 4;
     irBR = lowEnergy / highEnergy;
     
-    %% Calculate fitness value
-    % Calculate mean squared error
+    % =========================================================================
+
+    % Calculate mean squared error fitness value
     loss.T60  = irT60(1)  - params.T60;
     loss.EDT  = irEDT(1)  - params.EDT;
     loss.C80  = irC80(1)  - params.C80;

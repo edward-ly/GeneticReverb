@@ -34,7 +34,7 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
     % Set missing input arguments
     if nargin < 3, verbose = false; end
 
-    %-----------------------------------------------------------------------
+    % =========================================================================
 
     % Initialize population
     if verbose, fprintf('Initializing population...\n'); end

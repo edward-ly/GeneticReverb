@@ -8,6 +8,8 @@ function save_irs(plugin, sampleRate)
     % Require all arguments
     if nargin < 2, error('Not enough input arguments.'); end
 
+    % =========================================================================
+
     if plugin.NUM_SAMPLES == 22500
         irData = horzcat( ...
             plugin.pFIRFilterLeft22500.Numerator', ...

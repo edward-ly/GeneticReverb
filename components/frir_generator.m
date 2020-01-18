@@ -19,11 +19,11 @@ function [h, beta_hat] = frir_generator(c, fs, r, s, L, beta, nSamples)
 % [1] Stephen G. McGovern, Fast image method for impulse response calculations
 % of box-shaped rooms, Applied Acoustics 70 (2009), 182-189.
 %
-    % Require all arguments
+    % Require input arguments and IR output
     if nargin < 7, error('Not enough input arguments.'); end
-    
-    % Output argument beta_hat is optional
     if nargout < 1, error('Not enough output arguments.'); end
+
+    % =========================================================================
 
     % Calculate reflection coefficient via Sabine's formula
     if beta > 0

@@ -12,6 +12,8 @@ function [out, outdB] = schroeder(in)
     if nargin < 1, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
 
+    % =========================================================================
+
     out = in .* in;
     for i = (size(in, 1) - 1):-1:1
         out(i, :) = out(i, :) + out(i + 1, :);

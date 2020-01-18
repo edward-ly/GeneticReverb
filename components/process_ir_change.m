@@ -8,6 +8,8 @@ function process_ir_change(plugin, sampleRate)
     % Require all arguments
     if nargin < 2, error('Not enough input arguments.'); end
 
+    % =========================================================================
+
     % Calculate number of samples needed for impulse response
     % (before and after resampling)
     plugin.IR_NUM_SAMPLES = ceil( ...

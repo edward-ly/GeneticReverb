@@ -18,6 +18,8 @@ function pop = init_pop_old(gaParams, irParams)
     if nargin < 2, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
 
+    % =========================================================================
+
     pop = zeros(irParams.NUM_SAMPLES, gaParams.POPULATION_SIZE);
 
     c = 340;                    % Sound velocity (m/s)

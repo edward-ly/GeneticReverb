@@ -11,7 +11,7 @@ function out = normalize_signal(in, peak, mode)
 % Output arguments:
 % out = column vector(s) containing output signal(s)
 %
-    % Require output arguments
+    % Require output argument
     if nargout < 1, error('Not enough output arguments.'); end
     
     % Require in and peak arguments
@@ -19,7 +19,9 @@ function out = normalize_signal(in, peak, mode)
 
     % Set missing arguments
     if nargin < 3, mode = 'all'; end
-    
+
+    % =========================================================================
+
     [numSamples, numChannels] = size(in);
     if numChannels == 1 || strcmp(mode, 'all')
         out = peak .* in ./ max(abs(in), [], 'all');

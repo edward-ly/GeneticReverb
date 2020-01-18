@@ -17,6 +17,8 @@ function [sortedPop, sortedFitness, sortedLoss] = sort_pop(pop, fitness, loss)
     % Output argument sortedFitness is optional
     if nargout < 1, error('Not enough output arguments.'); end
 
+    % =========================================================================
+
     [sortedFitness, indices] = sort(fitness);
     sortedPop = pop(:, indices);
     sortedLoss = loss(indices);
