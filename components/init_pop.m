@@ -28,19 +28,17 @@ function pop = init_pop(gaParams, irParams)
 
     % =========================================================================
 
-    sampleDensity = rand(1, popSize) .^ 2 * 2 + 1.5; % {'pow', 2, 1.5, 3.5}
+    sampleDensity = rand(1, popSize) * 0.3 + 0.6; % {'lin', 0.6, 0.9}
     sampleDensity = repmat(sampleDensity, n, 1);
 
-    decayAmount = rand(1, popSize) .^ 2 * 2 + 1.5; % {'pow', 2, 1.5, 3.5}
-    decayAmount = repmat(decayAmount, n, 1);
-    decayTime = round(0.0425 * decayAmount * fs);
+    decayRate = rand(1, popSize) * 2e-4 + 2e-4; % {'lin', 2e-4, 4e-4}
+    decayRate = repmat(decayRate, n, 1);
 
-    index = (-1:-1:(-1 * n))';
-    index = repmat(index, 1, popSize) ./ decayTime;
+    t = repmat((1:n)', 1, popSize) ./ fs;
 
-    decayRate = decayAmount .^ (index / beta);
+    decayAmount = decayRate .^ (t / beta);
 
-    sampleProbability = 1 - sampleDensity .^ (0.035 * index);
+    sampleProbability = 1 - sampleDensity .^ t;
     sampleOccurences = rand(n, popSize) < sampleProbability;
 
     ITDGsample = round(irParams.ITDG * fs);
@@ -48,6 +46,6 @@ function pop = init_pop(gaParams, irParams)
     sampleOccurences(ITDGsample + 1, :) = 1; % make reflection at ITDG time
 
     pop = randn(n, popSize) * 0.2;
-    pop = pop .* sampleOccurences .* decayRate;
+    pop = pop .* sampleOccurences .* decayAmount;
     pop(1, :) = 0.99; % normalize first reflection at t = 0
 end
