@@ -123,7 +123,7 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 numSamples = irParams.NUM_SAMPLES;
 
 % Apply extra warmth/brilliance depending on amount
-irBest = shelf_filt(irBest, WARMTH_AMOUNT, numSamples);
+% irBest = shelf_filt(irBest, WARMTH_AMOUNT, numSamples);
 
 % Normalize impulse response
 irBest = normalize_signal(irBest, 0.99);

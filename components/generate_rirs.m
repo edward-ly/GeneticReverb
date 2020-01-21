@@ -16,8 +16,8 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     % =========================================================================
 
     % Pre-process parameter values
-    % Bass ratio should be 1 (flat response)
-    pBassRatio = 1.0;
+    % Convert warmth value to bass ratio {'log', 0.5, 2}
+    pBassRatio = 0.5 * 4 ^ (plugin.WARMTH / 100);
     % Convert ITDG to seconds
     pITDG = plugin.ITDG / 1000.0;
     % EDT should be equal to 1/6 of T60
@@ -66,7 +66,7 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         for i = 1:2, newIRs(:, i) = genetic_rir(gaParams, irParams); end
 
         % Apply low-shelf EQ
-        newIRs = shelf_filt(newIRs, plugin.WARMTH, plugin.IR_SAMPLE_RATE);
+        % newIRs = shelf_filt(newIRs, plugin.WARMTH, plugin.IR_SAMPLE_RATE);
 
         % Modify gains of IRs so that RMS levels are equal
         newIRsRMS = rms(newIRs);
@@ -84,7 +84,7 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         newIR = genetic_rir(gaParams, irParams);
 
         % Apply low-shelf EQ
-        newIR = shelf_filt(newIR, plugin.WARMTH, plugin.IR_SAMPLE_RATE);
+        % newIR = shelf_filt(newIR, plugin.WARMTH, plugin.IR_SAMPLE_RATE);
 
         % Normalize to prevent clipping
         newIR = normalize_signal(newIR, 0.99);
