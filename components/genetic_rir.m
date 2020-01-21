@@ -39,20 +39,19 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
     % Initialize population
     if verbose, fprintf('Initializing population...\n'); end
     irPopulation = init_pop(gaParams, irParams);
-    irFitness = Inf(gaParams.POPULATION_SIZE, 1);
     irBest = zeros(irParams.NUM_SAMPLES, 1);
     irBestFitness = Inf;
     currentGen = 0;
     currentPlatLen = 0;
 
     if nargout > 2, fitnessCurve = zeros(gaParams.NUM_GENERATIONS + 1, 1); end
-    irLoss = repmat(irParams, gaParams.POPULATION_SIZE, 1);
+    loss = struct('T60', 0, 'EDT', 0, 'C80', 0, 'BR', 0);
+    stddev = struct('T60', 0, 'EDT', 0, 'C80', 0, 'BR', 0);
 
     while true
         % Evaluate population
-        for i = 1:gaParams.POPULATION_SIZE
-            [irFitness(i), irLoss(i)] = fitness(irPopulation(:, i), irParams);
-        end
+        [irFitness, irLoss, stddev] = ...
+            fitness(irPopulation, irParams, gaParams.POPULATION_SIZE, stddev);
 
         % Sort population by fitness value and update best individual
         [irPopulation, irFitness, irLoss] = ...
@@ -61,7 +60,11 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
         if irFitness(1) < irBestFitness
             irBestFitness = irFitness(1);
             irBest = irPopulation(:, 1);
-            loss = irLoss(1);
+            loss = struct( ...
+                'T60', irLoss.T60(1), ...
+                'EDT', irLoss.EDT(1), ...
+                'C80', irLoss.C80(1), ...
+                'BR', irLoss.BR(1));
             currentPlatLen = 0;
         else
             currentPlatLen = currentPlatLen + 1;
@@ -107,7 +110,9 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
     end
 
     if verbose
-        fprintf('Diff: T60 = %f, EDT = %f, C80 = %f, BR = %f\n', ...
+        fprintf('Z-Diff: T60 = %f, EDT = %f, C80 = %f, BR = %f\n', ...
             loss.T60, loss.EDT, loss.C80, loss.BR);
+        fprintf('Dev: T60 = %f, EDT = %f, C80 = %f, BR = %f\n', ...
+            stddev.T60, stddev.EDT, stddev.C80, stddev.BR);
     end
 end
