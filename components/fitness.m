@@ -29,7 +29,11 @@ function [f, loss, outDev] = fitness(irPop, params, popSize, inDev)
         'T60', zeros(1, popSize), ...
         'EDT', zeros(1, popSize), ...
         'C80', zeros(1, popSize), ...
-        'BR', zeros(1, popSize));
+        'BR', zeros(1, popSize), ...
+        'zT60', zeros(1, popSize), ...
+        'zEDT', zeros(1, popSize), ...
+        'zC80', zeros(1, popSize), ...
+        'zBR', zeros(1, popSize));
 
     % Copy sample rate to new variable (to shorten name)
     sampleRate = params.SAMPLE_RATE;
@@ -105,9 +109,13 @@ function [f, loss, outDev] = fitness(irPop, params, popSize, inDev)
     % Calculate fitness value
     % Convert all values to z-scores with means equal to plugin parameter
     % values, then add magnitudes of z-scores together
-    loss.T60  = (irT60 - params.T60) ./ outDev.T60;
-    loss.EDT  = (irEDT - params.EDT) ./ outDev.EDT;
-    loss.C80  = (irC80 - params.C80) ./ outDev.C80;
-    loss.BR   = (irBR - params.BR) ./ outDev.BR;
-    f = abs(loss.T60) + abs(loss.EDT) + abs(loss.C80) + abs(loss.BR);
+    loss.T60  = irT60 - params.T60;
+    loss.EDT  = irEDT - params.EDT;
+    loss.C80  = irC80 - params.C80;
+    loss.BR   = irBR - params.BR;
+    loss.zT60  = loss.T60 ./ outDev.T60;
+    loss.zEDT  = loss.EDT ./ outDev.EDT;
+    loss.zC80  = loss.C80 ./ outDev.C80;
+    loss.zBR   = loss.BR ./ outDev.BR;
+    f = abs(loss.zT60) + abs(loss.zEDT) + abs(loss.zC80) + abs(loss.zBR);
 end

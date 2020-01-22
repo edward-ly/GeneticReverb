@@ -25,4 +25,8 @@ function [sortedPop, sortedFitness, sortedLoss] = sort_pop(pop, fitness, loss)
     sortedLoss.EDT = loss.EDT(indices);
     sortedLoss.C80 = loss.C80(indices);
     sortedLoss.BR = loss.BR(indices);
+    sortedLoss.zT60 = loss.zT60(indices);
+    sortedLoss.zEDT = loss.zEDT(indices);
+    sortedLoss.zC80 = loss.zC80(indices);
+    sortedLoss.zBR = loss.zBR(indices);
 end
