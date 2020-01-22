@@ -81,6 +81,28 @@ fileID = fopen(['results_' timestamp '.txt'], 'w');
 fprintf(fileID, 'Test Date/Time = %s\n', timestamp);
 fprintf(fileID, 'Group Size = %d\n\n', NUM_IRS);
 
+%% Generate and Evaluate New Impulse Responses (Initial Settings)
+[times, fitnesses, losses] = ir_test_init(gaParamsLow, 1, NUM_IRS);
+
+% Show Data Statistics
+fprintf('Summary (Initial Settings):\n');
+fprintf('Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
+fprintf('Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
+fprintf('T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
+fprintf('EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
+fprintf('C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
+fprintf('BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
+
+% Write Data to File
+fprintf(fileID, 'Summary (Initial Settings):\n');
+fprintf(fileID, 'Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
+fprintf(fileID, 'Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
+fprintf(fileID, 'T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
+fprintf(fileID, 'EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
+fprintf(fileID, 'C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
+fprintf(fileID, 'BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
+fprintf(fileID, '\n');
+
 %% Generate and Evaluate New Impulse Responses (Low Settings)
 for i = 1:length(T60s)
     [times, fitnesses, losses] = ir_test(gaParamsLow, T60s(i), NUM_IRS);
