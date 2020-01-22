@@ -59,12 +59,9 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     end
 
     if plugin.STEREO
-        % Generate new impulse responses in parallel
+        % Generate new impulse responses
         newIRs = zeros(irParams.NUM_SAMPLES, 2);
         for i = 1:2, newIRs(:, i) = genetic_rir(gaParams, irParams); end
-
-        % Apply low-shelf EQ
-        % newIRs = shelf_filt(newIRs, plugin.WARMTH, plugin.IR_SAMPLE_RATE);
 
         % Modify gains of IRs so that RMS levels are equal
         newIRsRMS = rms(newIRs);
@@ -80,9 +77,6 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     else
         % Generate new impulse response
         newIR = genetic_rir(gaParams, irParams);
-
-        % Apply low-shelf EQ
-        % newIR = shelf_filt(newIR, plugin.WARMTH, plugin.IR_SAMPLE_RATE);
 
         % Normalize to prevent clipping
         newIR = normalize_signal(newIR, 0.99);

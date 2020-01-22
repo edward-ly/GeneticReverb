@@ -86,7 +86,7 @@ gaParams = struct( ...
 % C80 = Clarity, or relative loudness of early reverberations over
 %     late reverberations (dB)
 % BR = Warmth vs. brilliance, calculated as "bass ratio" (ratio of
-%     low frequency to high frequency reverberation)
+%     low frequency to high frequency content) (dB)
 
 irParams = struct( ...
     'SAMPLE_RATE', 44100, ...
@@ -121,9 +121,6 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Impulse Response Post-Processing
 numSamples = irParams.NUM_SAMPLES;
-
-% Apply extra warmth/brilliance depending on amount
-% irBest = shelf_filt(irBest, WARMTH_AMOUNT, numSamples);
 
 % Normalize impulse response
 irBest = normalize_signal(irBest, 0.99);
