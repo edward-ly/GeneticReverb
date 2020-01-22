@@ -9,8 +9,8 @@ function out = shelf_filt(in, warmth, sampleRate)
 % Output arguments:
 % out = column vector/matrix containing filtered impulse response(s)
 %
-    % Require input arguments
-    if nargin < 2, error('Not enough input arguments.'); end
+    % Require all input arguments
+    if nargin < 3, error('Not enough input arguments.'); end
 
     % =========================================================================
 
