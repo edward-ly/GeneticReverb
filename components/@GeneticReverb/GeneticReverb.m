@@ -51,7 +51,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         T60 = 1;                  % Total reverberation time (s)
         WARMTH = 0;               % Warmth Amount (dB)
         ITDG = 10;                % Initial time delay gap (ms)
-        C80 = 0;                  % Clarity (dB)
+        C80 = 3.75;               % Clarity (dB)
 
         STEREO = true;            % Enable stereo effect
         QUALITY = Quality.low;    % Reverb quality
