@@ -51,7 +51,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         T60 = 1;                  % Total reverberation time (s)
         WARMTH = 0;               % Warmth Amount (dB)
         ITDG = 10;                % Initial time delay gap (ms)
-        C80 = 4;                  % Clarity (dB)
+        C80 = 3;                  % Clarity (dB)
 
         L_DELAY = 10;             % Left channel predelay (ms)
         R_DELAY = 10;             % Right channel predelay (ms)
