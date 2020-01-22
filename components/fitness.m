@@ -47,14 +47,30 @@ function [f, loss, outDev] = fitness(irPop, params, popSize, inDev)
     ir5dBSamples = zeros(1, popSize);
     ir10dBSamples = zeros(1, popSize);
     ir35dBSamples = zeros(1, popSize);
+
     for i = 1:popSize
         ir5dBSample = find(irEDCdB(:, i) - irEDCMaxLevel(i) < -5, 1);
-        if isempty(ir5dBSample), ir5dBSamples(i) = -Inf; else, ir5dBSamples(i) = ir5dBSample; end
+        if isempty(ir5dBSample)
+            ir5dBSamples(i) = -Inf;
+        else
+            ir5dBSamples(i) = ir5dBSample;
+        end
+
         ir10dBSample = find(irEDCdB(:, i) - irEDCMaxLevel(i) < -10, 1);
-        if isempty(ir10dBSample), ir10dBSamples(i) = Inf; else, ir10dBSamples(i) = ir10dBSample; end
+        if isempty(ir10dBSample)
+            ir10dBSamples(i) = Inf;
+        else
+            ir10dBSamples(i) = ir10dBSample;
+        end
+
         ir35dBSample = find(irEDCdB(:, i) - irEDCMaxLevel(i) < -35, 1);
-        if isempty(ir35dBSample), ir35dBSamples(i) = Inf; else, ir35dBSamples(i) = ir35dBSample; end
+        if isempty(ir35dBSample)
+            ir35dBSamples(i) = Inf;
+        else
+            ir35dBSamples(i) = ir35dBSample;
+        end
     end
+
     irT60 = (ir35dBSamples - ir5dBSamples) .* 2 ./ sampleRate;
     irEDT = (ir10dBSamples - 1) ./ sampleRate;
 
