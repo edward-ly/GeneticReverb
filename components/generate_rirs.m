@@ -87,4 +87,12 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         % Assign IR to both channels
         irLeft = ir; irRight = ir;
     end
+
+    % Calculate number of predelay samples
+    delayLeft = round(plugin.L_DELAY * sampleRate / 1000);
+    delayRight = round(plugin.R_DELAY * sampleRate / 1000);
+
+    % Apply predelay
+    irLeft = [zeros(1, delayLeft), irLeft(1:(end - delayLeft))];
+    irRight = [zeros(1, delayRight), irRight(1:(end - delayRight))];
 end
