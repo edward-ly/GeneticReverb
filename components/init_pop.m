@@ -28,7 +28,7 @@ function pop = init_pop(gaParams, irParams)
 
     % =========================================================================
 
-    sampleDensity = rand(1, popSize) * 0.3 + 0.6; % {'lin', 0.6, 0.9}
+    sampleDensity = rand(1, popSize) * 0.5 + 0.2; % {'lin', 0.2, 0.7}
     sampleDensity = repmat(sampleDensity, n, 1);
 
     decayRate = rand(1, popSize) * 2e-4 + 2e-4; % {'lin', 2e-4, 4e-4}
@@ -47,5 +47,5 @@ function pop = init_pop(gaParams, irParams)
 
     pop = randn(n, popSize) * 0.2;
     pop = pop .* sampleOccurences .* decayAmount;
-    pop(1, :) = 0.99; % normalize first reflection at t = 0
+    pop(1, :) = 1; % normalize first reflection at t = 0
 end
