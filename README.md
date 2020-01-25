@@ -21,7 +21,7 @@ I also used the plugin to create an entire demo track, which you can listen to a
 - [MATLAB](https://www.mathworks.com/) (version R2018b or later)
   - Audio Toolbox
   - DSP System Toolbox
-  - Signal Processing Toolbox
+  <!-- - Signal Processing Toolbox -->
 - (Windows) Microsoft Visual C++ 2017 (or higher)
 - (Mac) Xcode 9.x (or higher)
 
@@ -58,4 +58,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-23 January 2020
+25 January 2020
