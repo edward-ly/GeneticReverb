@@ -9,6 +9,7 @@
 # Ignore MATLAB audio plugin test bench files.
 **/audioplugin
 **/codegen
+**/testbench*
 
 # Ignore MATLAB autosave files.
 **/*.asv
