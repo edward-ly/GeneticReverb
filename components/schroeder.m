@@ -14,10 +14,6 @@ function [out, outdB] = schroeder(in)
 
     % =========================================================================
 
-    out = in .* in;
-    for i = (size(in, 1) - 1):-1:1
-        out(i, :) = out(i, :) + out(i + 1, :);
-    end
-
+    out = cumsum(in .^ 2, 'reverse');
     if nargout > 1, outdB = 10 .* log10(out); end
 end
