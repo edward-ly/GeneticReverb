@@ -22,18 +22,13 @@ function out = normalize_signal(in, peak, mode)
 
     % =========================================================================
 
-    [numSamples, numChannels] = size(in);
-    if numChannels == 1 || strcmp(mode, 'all')
+    if strcmp(mode, 'all')
         out = peak .* in ./ max(abs(in), [], 'all');
         return
     end
     
     if strcmp(mode, 'each')
-        out = zeros(numSamples, numChannels);
-
-        for i = 1:numChannels
-            out(:, i) = peak .* in(:, i) ./ max(abs(in(:, i)));
-        end
+        out = peak .* in ./ max(abs(in));
         return
     end
 
