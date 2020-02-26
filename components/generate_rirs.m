@@ -18,8 +18,8 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     % Pre-process parameter values
     % Convert ITDG to seconds
     pITDG = plugin.ITDG / 1000.0;
-    % EDT should be equal to 1/6 of T60
-    pEDT = plugin.T60 / 6.0;
+    % Convert EDT to seconds
+    pEDT = plugin.EDT * plugin.T60 / 100.0;
 
     % Struct for IR parameters
     irParams = struct( ...
