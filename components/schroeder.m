@@ -18,6 +18,6 @@ function [out, outdB] = schroeder(in)
 
     if nargout > 1
         outdB = 10 .* log10(out);
-        outdB = outdB - outdB(1, :);  % Normalize to 0 dB maximum
+        outdB = bsxfun(@minus, outdB, outdB(1, :)); % Normalize to 0 dB maximum
     end
 end
