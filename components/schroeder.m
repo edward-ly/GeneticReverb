@@ -15,5 +15,9 @@ function [out, outdB] = schroeder(in)
     % =========================================================================
 
     out = cumsum(in .^ 2, 'reverse');
-    if nargout > 1, outdB = 10 .* log10(out); end
+
+    if nargout > 1
+        outdB = 10 .* log10(out);
+        outdB = outdB - outdB(1, :);  % Normalize to 0 dB maximum
+    end
 end

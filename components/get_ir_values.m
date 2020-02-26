@@ -30,9 +30,8 @@ function irValues = get_ir_values(ir, numSamples, sampleRate)
     [~, irInitSample] = max(abs(filteredIR));
     filteredIR(1:irInitSample) = 0;
 
-    % Calculate Schroeder curve of impulse response, set initial sample to 0 dB
+    % Calculate Schroeder curve of impulse response
     [irEDC, irEDCdB] = schroeder(filteredIR);
-    irEDCdB = irEDCdB - max(irEDCdB);
 
     % =========================================================================
 
