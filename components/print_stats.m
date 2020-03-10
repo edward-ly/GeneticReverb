@@ -32,10 +32,13 @@ function print_stats(NUM_IRS, times, fitnesses, losses, conditions, quality, T60
     fprintf('BR Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
         min([losses.BR]), median([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
 
-    [counts, groups] = groupcounts(conditions);
+    counts = [sum(strcmp(conditions, 'Generations')), ...
+        sum(strcmp(conditions, 'Plateau')), ...
+        sum(strcmp(conditions, 'Threshold'))];
+
     fprintf('\nTerminating conditions:\n');
-    for i = 1:size(groups)
-        fprintf('%s: %i (%.1f%%)\n', groups(i), counts(i), counts(i) * 100 / NUM_IRS);
-    end
+    fprintf('Generations: %i (%.0f%%)\n', counts(1), counts(1) * 100 / NUM_IRS);
+    fprintf('Plateau: %i (%.0f%%)\n', counts(2), counts(2) * 100 / NUM_IRS);
+    fprintf('Threshold: %i (%.0f%%)\n', counts(3), counts(3) * 100 / NUM_IRS);
     fprintf('\n');
 end
