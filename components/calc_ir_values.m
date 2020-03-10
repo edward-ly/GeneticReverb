@@ -1,5 +1,5 @@
-function irValues = get_ir_values(ir, numSamples, sampleRate)
-% GET_IR_VALUES Returns the acoustics parameter values of an impulse response.
+function irValues = calc_ir_values(ir, numSamples, sampleRate)
+% CALC_IR_VALUES Returns the acoustics parameter values of an impulse response.
 %
 % Input arguments:
 % ir = column vector containing impulse response

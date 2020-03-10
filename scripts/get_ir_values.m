@@ -1,9 +1,9 @@
 % Script to calculate the acoustics parameter values of an impulse response.
 %
-% File: evaluate_ir.m
+% File: get_ir_values.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.1.0
-% Last Updated: 18 February 2020
+% Version: 0.1.1
+% Last Updated: 10 March 2020
 %
 % BSD 3-Clause License
 %
@@ -54,5 +54,5 @@ if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 fprintf('Analyzing impulse response in file "%s%s"...\n', filePath, fileName);
 for i = 1:numAudioChannels
     fprintf('Channel %i:\n', i);
-    get_ir_values(drySignal(:, i), numAudioSamples, audioSampleRate)
+    calc_ir_values(drySignal(:, i), numAudioSamples, audioSampleRate)
 end
