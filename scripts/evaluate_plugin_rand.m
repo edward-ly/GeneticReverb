@@ -44,7 +44,7 @@ clear; close all;
 addpath ../components
 
 %% Output Parameters
-NUM_IRS = 10;                  % Number of IRs to generate per iteration
+NUM_IRS = 250;                  % Number of IRs to generate per iteration
 VERBOSE = false;                % Display genetic algorithm status messages
 T60s = [0.625, 1.25, 2.5, 5.0]; % List of T60 values to test
 
@@ -137,34 +137,3 @@ print_stats(NUM_IRS, timesHigh4, fitnessesHigh4, lossesHigh4, conditionsHigh4, '
 
 %% Close Log File
 diary off
-
-%% PRINT_STATS Write statistics to command window
-function print_stats(NUM_IRS, times, fitnesses, losses, conditions, quality, T60)
-    if nargin < 6, error('Not enough input arguments.'); end
-
-    fprintf('....................\n');
-    if nargin < 7
-        fprintf('Summary (%s Settings):\n', quality);
-    else
-        fprintf('Summary (%s Settings, T60 = %f):\n', quality, T60);
-    end
-    fprintf('Run Time: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-        min(times), median(times), max(times), mean(times), std(times));
-    fprintf('Fitness: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-        min(fitnesses), median(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
-    fprintf('T60 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-        min([losses.T60]), median([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
-    fprintf('EDT Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-        min([losses.EDT]), median([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf('C80 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-        min([losses.C80]), median([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
-    fprintf('BR Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-        min([losses.BR]), median([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
-
-    [counts, groups] = groupcounts(conditions);
-    fprintf('\nTerminating conditions:\n');
-    for i = 1:size(groups)
-        fprintf('%s: %i (%.1f%%)\n', groups(i), counts(i), counts(i) * 100 / NUM_IRS);
-    end
-    fprintf('\n');
-end
