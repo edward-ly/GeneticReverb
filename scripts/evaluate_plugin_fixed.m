@@ -43,7 +43,7 @@ clear; close all;
 addpath ../components
 
 %% Script Parameters
-NUM_IRS = 100;                  % Number of IRs to generate
+NUM_IRS = 250;                  % Number of IRs to generate per iteration
 VERBOSE = false;                % Display genetic algorithm status messages
 
 %% Genetic Algorithm Parameters
@@ -57,7 +57,7 @@ gaParamsHigh = struct( ...
     'FITNESS_THRESHOLD', 0.1, ...
     'MUTATION_RATE', 0.001);
 
-gaParamsMedium = struct( ...
+gaParamsMed = struct( ...
     'POPULATION_SIZE', 20, ...
     'SELECTION_SIZE', 8, ...
     'NUM_GENERATIONS', 10, ...
@@ -94,7 +94,7 @@ fprintf('Acoustics values of impulse response in file "%s%s"...\n', ...
 
 irValues = calc_ir_values(drySignal(:, 1), numAudioSamples, audioSampleRate) %#ok<*NOPTS>
 
-%% Define irParams Struct
+%% Initialize irParams Struct
 irParams = struct( ...
     'SAMPLE_RATE', audioSampleRate, ...
     'NUM_SAMPLES', numAudioSamples, ...
@@ -104,80 +104,18 @@ irParams = struct( ...
     'C80', irValues.C80, ...
     'BR', irValues.BR);
 
-%% Generate and Evaluate New Impulse Responses (Low Settings)
+%% Generate and Evaluate New Impulse Responses
+% Low Settings
 [timesLow, fitnessesLow, lossesLow, conditionsLow] = ir_test_fixed(irParams, gaParamsLow, NUM_IRS);
+print_stats(NUM_IRS, timesLow, fitnessesLow, lossesLow, conditionsLow, 'Low');
 
-% Show Data Statistics
-fprintf('Summary (Low Settings):\n');
-fprintf('Run Time: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min(timesLow), median(timesLow), max(timesLow), mean(timesLow), std(timesLow));
-fprintf('Fitness: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min(fitnessesLow), median(fitnessesLow), max(fitnessesLow), mean(fitnessesLow), std(fitnessesLow));
-fprintf('T60 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesLow.T60]), median([lossesLow.T60]), max([lossesLow.T60]), mean([lossesLow.T60]), std([lossesLow.T60]));
-fprintf('EDT Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesLow.EDT]), median([lossesLow.EDT]), max([lossesLow.EDT]), mean([lossesLow.EDT]), std([lossesLow.EDT]));
-fprintf('C80 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesLow.C80]), median([lossesLow.C80]), max([lossesLow.C80]), mean([lossesLow.C80]), std([lossesLow.C80]));
-fprintf('BR Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesLow.BR]), median([lossesLow.BR]), max([lossesLow.BR]), mean([lossesLow.BR]), std([lossesLow.BR]));
+% Medium Settings
+[timesMed, fitnessesMed, lossesMed, conditionsMed] = ir_test_fixed(irParams, gaParamsMed, NUM_IRS);
+print_stats(NUM_IRS, timesMed, fitnessesMed, lossesMed, conditionsMed, 'Medium');
 
-[countsLow, groupsLow] = groupcounts(conditionsLow);
-fprintf('\nTerminating conditions:\n');
-for i = 1:size(groupsLow)
-    fprintf('%s: %i (%.1f%%)\n', groupsLow(i), countsLow(i), countsLow(i) * 100 / NUM_IRS);
-end
-fprintf('\n');
-
-%% Generate and Evaluate New Impulse Responses (Medium Settings)
-[timesMed, fitnessesMed, lossesMed, conditionsMed] = ir_test_fixed(irParams, gaParamsMedium, NUM_IRS);
-
-% Show Data Statistics
-fprintf('Summary (Medium Settings):\n');
-fprintf('Run Time: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min(timesMed), median(timesMed), max(timesMed), mean(timesMed), std(timesMed));
-fprintf('Fitness: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min(fitnessesMed), median(fitnessesMed), max(fitnessesMed), mean(fitnessesMed), std(fitnessesMed));
-fprintf('T60 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesMed.T60]), median([lossesMed.T60]), max([lossesMed.T60]), mean([lossesMed.T60]), std([lossesMed.T60]));
-fprintf('EDT Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesMed.EDT]), median([lossesMed.EDT]), max([lossesMed.EDT]), mean([lossesMed.EDT]), std([lossesMed.EDT]));
-fprintf('C80 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesMed.C80]), median([lossesMed.C80]), max([lossesMed.C80]), mean([lossesMed.C80]), std([lossesMed.C80]));
-fprintf('BR Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesMed.BR]), median([lossesMed.BR]), max([lossesMed.BR]), mean([lossesMed.BR]), std([lossesMed.BR]));
-
-[countsMed, groupsMed] = groupcounts(conditionsMed);
-fprintf('\nTerminating conditions:\n');
-for i = 1:size(groupsMed)
-    fprintf('%s: %i (%.1f%%)\n', groupsMed(i), countsMed(i), countsMed(i) * 100 / NUM_IRS);
-end
-fprintf('\n');
-
-%% Generate and Evaluate New Impulse Responses (High Settings)
+% High Settings
 [timesHigh, fitnessesHigh, lossesHigh, conditionsHigh] = ir_test_fixed(irParams, gaParamsHigh, NUM_IRS);
-
-% Show Data Statistics
-fprintf('Summary (High Settings):\n');
-fprintf('Run Time: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min(timesHigh), median(timesHigh), max(timesHigh), mean(timesHigh), std(timesHigh));
-fprintf('Fitness: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min(fitnessesHigh), median(fitnessesHigh), max(fitnessesHigh), mean(fitnessesHigh), std(fitnessesHigh));
-fprintf('T60 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesHigh.T60]), median([lossesHigh.T60]), max([lossesHigh.T60]), mean([lossesHigh.T60]), std([lossesHigh.T60]));
-fprintf('EDT Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesHigh.EDT]), median([lossesHigh.EDT]), max([lossesHigh.EDT]), mean([lossesHigh.EDT]), std([lossesHigh.EDT]));
-fprintf('C80 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesHigh.C80]), median([lossesHigh.C80]), max([lossesHigh.C80]), mean([lossesHigh.C80]), std([lossesHigh.C80]));
-fprintf('BR Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
-    min([lossesHigh.BR]), median([lossesHigh.BR]), max([lossesHigh.BR]), mean([lossesHigh.BR]), std([lossesHigh.BR]));
-
-[countsHigh, groupsHigh] = groupcounts(conditionsHigh);
-fprintf('\nTerminating conditions:\n');
-for i = 1:size(groupsHigh)
-    fprintf('%s: %i (%.1f%%)\n', groupsHigh(i), countsHigh(i), countsHigh(i) * 100 / NUM_IRS);
-end
-fprintf('\n');
+print_stats(NUM_IRS, timesHigh, fitnessesHigh, lossesHigh, conditionsHigh, 'High');
 
 %% Close Log File
 diary off
