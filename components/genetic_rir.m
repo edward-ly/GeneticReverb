@@ -1,4 +1,4 @@
-function [irBest, irBestFitness, fitnessCurve, loss] = ...
+function [irBest, irBestFitness, fitnessCurve, loss, condition] = ...
     genetic_rir(gaParams, irParams, verbose)
 % GENETIC_RIR Generates a random impulse response with the given parameters.
 %
@@ -26,6 +26,8 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
 % fitnessCurve = column vector recording best fitness values after each
 %     generation (optional)
 % loss = struct containing error/difference values for each parameter (optional)
+% condition = ['threshold', 'plateau', 'limit'] terminating condition that was
+% reached when genetic algorithm ends
 %
     % Require IR and GA arguments
     if nargin < 2, error('Not enough input arguments.'); end
@@ -88,12 +90,14 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
         % Stop if fitness value is within threshold
         if irBestFitness < gaParams.FITNESS_THRESHOLD
             if verbose, fprintf('Optimal solution found.\n'); end
+            condition = "Threshold";
             break
         end
 
         % Stop if fitness value is not updated after some number of generations
         if currentPlatLen >= gaParams.PLATEAU_LENGTH
             if verbose, fprintf('Local optimal solution found.\n'); end
+            condition = "Plateau";
             break
         end
 
@@ -101,6 +105,7 @@ function [irBest, irBestFitness, fitnessCurve, loss] = ...
         currentGen = currentGen + 1;
         if currentGen > gaParams.NUM_GENERATIONS
             if verbose, fprintf('Maximum number of generations reached.\n'); end
+            condition = "Generations";
             break
         end
 
