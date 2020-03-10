@@ -2,8 +2,8 @@
 %
 % File: evaluate_plugin.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.4.1
-% Last Updated: 23 January 2020
+% Version: 0.5.0
+% Last Updated: 10 March 2020
 %
 %
 % BSD 3-Clause License
@@ -44,7 +44,7 @@ clear; close all;
 addpath ../components
 
 %% Output Parameters
-NUM_IRS = 250;                  % Number of IRs to generate per iteration
+NUM_IRS = 10;                  % Number of IRs to generate per iteration
 VERBOSE = false;                % Display genetic algorithm status messages
 T60s = [0.625, 1.25, 2.5, 5.0]; % List of T60 values to test
 
@@ -59,7 +59,7 @@ gaParamsHigh = struct( ...
     'FITNESS_THRESHOLD', 0.1, ...
     'MUTATION_RATE', 0.001);
 
-gaParamsMedium = struct( ...
+gaParamsMed = struct( ...
     'POPULATION_SIZE', 20, ...
     'SELECTION_SIZE', 8, ...
     'NUM_GENERATIONS', 10, ...
@@ -77,103 +77,94 @@ gaParamsLow = struct( ...
 
 %% Open new file to write results
 timestamp = datestr(now, 'yyyymmdd_HHMMSSFFF');
-fileID = fopen(['results_' timestamp '.txt'], 'w');
-fprintf(fileID, 'Test Date/Time = %s\n', timestamp);
-fprintf(fileID, 'Group Size = %d\n\n', NUM_IRS);
+outFileName = ['results_' timestamp '.txt'];
+diary(outFileName)
+fprintf('Test Date/Time = %s\n', timestamp);
+fprintf('Group Size = %d\n\n', NUM_IRS);
 
-%% Generate and Evaluate New Impulse Responses (Initial Settings)
-[times, fitnesses, losses] = ir_test_init(gaParamsLow, 1, NUM_IRS);
+%% Generate and Evaluate New Impulse Responses
+% Initial Settings
+[times, fitnesses, losses, conditions] = ir_test_init(gaParamsLow, 1, NUM_IRS);
+print_stats(NUM_IRS, times, fitnesses, losses, conditions, 'Initial');
 
-% Show Data Statistics
-fprintf('Summary (Initial Settings):\n');
-fprintf('Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
-fprintf('Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
-fprintf('T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
-fprintf('EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-fprintf('C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
-fprintf('BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
+% Low Settings, T60 = 0.625s
+[timesLow1, fitnessesLow1, lossesLow1, conditionsLow1] = ir_test_rand(gaParamsLow, T60s(1), NUM_IRS);
+print_stats(NUM_IRS, timesLow1, fitnessesLow1, lossesLow1, conditionsLow1, 'Low', T60s(1));
 
-% Write Data to File
-fprintf(fileID, 'Summary (Initial Settings):\n');
-fprintf(fileID, 'Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
-fprintf(fileID, 'Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
-fprintf(fileID, 'T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
-fprintf(fileID, 'EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-fprintf(fileID, 'C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
-fprintf(fileID, 'BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
-fprintf(fileID, '\n');
+% Low Settings, T60 = 1.25s
+[timesLow2, fitnessesLow2, lossesLow2, conditionsLow2] = ir_test_rand(gaParamsLow, T60s(2), NUM_IRS);
+print_stats(NUM_IRS, timesLow2, fitnessesLow2, lossesLow2, conditionsLow2, 'Low', T60s(2));
 
-%% Generate and Evaluate New Impulse Responses (Low Settings)
-for i = 1:length(T60s)
-    [times, fitnesses, losses] = ir_test(gaParamsLow, T60s(i), NUM_IRS);
+% Low Settings, T60 = 2.5s
+[timesLow3, fitnessesLow3, lossesLow3, conditionsLow3] = ir_test_rand(gaParamsLow, T60s(3), NUM_IRS);
+print_stats(NUM_IRS, timesLow3, fitnessesLow3, lossesLow3, conditionsLow3, 'Low', T60s(3));
 
-    % Show Data Statistics
-    fprintf('Summary (Low Settings, T60 = %fs):\n', T60s(i));
-    fprintf('Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
-    fprintf('Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
-    fprintf('T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
-    fprintf('EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf('C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
-    fprintf('BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
+% Low Settings, T60 = 5s
+[timesLow4, fitnessesLow4, lossesLow4, conditionsLow4] = ir_test_rand(gaParamsLow, T60s(4), NUM_IRS);
+print_stats(NUM_IRS, timesLow4, fitnessesLow4, lossesLow4, conditionsLow4, 'Low', T60s(4));
 
-    % Write Data to File
-    fprintf(fileID, 'Summary (Low Settings, T60 = %fs):\n', T60s(i));
-    fprintf(fileID, 'Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
-    fprintf(fileID, 'Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
-    fprintf(fileID, 'T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
-    fprintf(fileID, 'EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf(fileID, 'C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
-    fprintf(fileID, 'BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
-    fprintf(fileID, '\n');
+% Medium Settings, T60 = 0.625s
+[timesMed1, fitnessesMed1, lossesMed1, conditionsMed1] = ir_test_rand(gaParamsMed, T60s(1), NUM_IRS);
+print_stats(NUM_IRS, timesMed1, fitnessesMed1, lossesMed1, conditionsMed1, 'Medium', T60s(1));
+
+% Medium Settings, T60 = 1.25s
+[timesMed2, fitnessesMed2, lossesMed2, conditionsMed2] = ir_test_rand(gaParamsMed, T60s(2), NUM_IRS);
+print_stats(NUM_IRS, timesMed2, fitnessesMed2, lossesMed2, conditionsMed2, 'Medium', T60s(2));
+
+% Medium Settings, T60 = 2.5s
+[timesMed3, fitnessesMed3, lossesMed3, conditionsMed3] = ir_test_rand(gaParamsMed, T60s(3), NUM_IRS);
+print_stats(NUM_IRS, timesMed3, fitnessesMed3, lossesMed3, conditionsMed3, 'Medium', T60s(3));
+
+% Medium Settings, T60 = 5s
+[timesMed4, fitnessesMed4, lossesMed4, conditionsMed4] = ir_test_rand(gaParamsMed, T60s(4), NUM_IRS);
+print_stats(NUM_IRS, timesMed4, fitnessesMed4, lossesMed4, conditionsMed4, 'Medium', T60s(4));
+
+% High Settings, T60 = 0.625s
+[timesHigh1, fitnessesHigh1, lossesHigh1, conditionsHigh1] = ir_test_rand(gaParamsHigh, T60s(1), NUM_IRS);
+print_stats(NUM_IRS, timesHigh1, fitnessesHigh1, lossesHigh1, conditionsHigh1, 'High', T60s(1));
+
+% High Settings, T60 = 1.25s
+[timesHigh2, fitnessesHigh2, lossesHigh2, conditionsHigh2] = ir_test_rand(gaParamsHigh, T60s(2), NUM_IRS);
+print_stats(NUM_IRS, timesHigh2, fitnessesHigh2, lossesHigh2, conditionsHigh2, 'High', T60s(2));
+
+% High Settings, T60 = 2.5s
+[timesHigh3, fitnessesHigh3, lossesHigh3, conditionsHigh3] = ir_test_rand(gaParamsHigh, T60s(3), NUM_IRS);
+print_stats(NUM_IRS, timesHigh3, fitnessesHigh3, lossesHigh3, conditionsHigh3, 'High', T60s(3));
+
+% High Settings, T60 = 5s
+[timesHigh4, fitnessesHigh4, lossesHigh4, conditionsHigh4] = ir_test_rand(gaParamsHigh, T60s(4), NUM_IRS);
+print_stats(NUM_IRS, timesHigh4, fitnessesHigh4, lossesHigh4, conditionsHigh4, 'High', T60s(4));
+
+%% Close Log File
+diary off
+
+%% PRINT_STATS Write statistics to command window
+function print_stats(NUM_IRS, times, fitnesses, losses, conditions, quality, T60)
+    if nargin < 6, error('Not enough input arguments.'); end
+
+    fprintf('....................\n');
+    if nargin < 7
+        fprintf('Summary (%s Settings):\n', quality);
+    else
+        fprintf('Summary (%s Settings, T60 = %f):\n', quality, T60);
+    end
+    fprintf('Run Time: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
+        min(times), median(times), max(times), mean(times), std(times));
+    fprintf('Fitness: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
+        min(fitnesses), median(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
+    fprintf('T60 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
+        min([losses.T60]), median([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
+    fprintf('EDT Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
+        min([losses.EDT]), median([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
+    fprintf('C80 Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
+        min([losses.C80]), median([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
+    fprintf('BR Absolute Deviation: min = %f, med = %f, max = %f, mean = %f, std = %f\n', ...
+        min([losses.BR]), median([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
+
+    [counts, groups] = groupcounts(conditions);
+    fprintf('\nTerminating conditions:\n');
+    for i = 1:size(groups)
+        fprintf('%s: %i (%.1f%%)\n', groups(i), counts(i), counts(i) * 100 / NUM_IRS);
+    end
+    fprintf('\n');
 end
-
-%% Generate and Evaluate New Impulse Responses (Medium Settings)
-for i = 1:length(T60s)
-    [times, fitnesses, losses] = ir_test(gaParamsMedium, T60s(i), NUM_IRS);
-
-    % Show Data Statistics
-    fprintf('Summary (Medium Settings, T60 = %fs):\n', T60s(i));
-    fprintf('Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
-    fprintf('Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
-    fprintf('T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
-    fprintf('EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf('C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
-    fprintf('BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
-
-    % Write Data to File
-    fprintf(fileID, 'Summary (Medium Settings, T60 = %fs):\n', T60s(i));
-    fprintf(fileID, 'Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
-    fprintf(fileID, 'Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
-    fprintf(fileID, 'T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
-    fprintf(fileID, 'EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf(fileID, 'C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
-    fprintf(fileID, 'BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
-    fprintf(fileID, '\n');
-end
-
-%% Generate and Evaluate New Impulse Responses (High Settings)
-for i = 1:length(T60s)
-    [times, fitnesses, losses] = ir_test(gaParamsHigh, T60s(i), NUM_IRS);
-
-    % Show Data Statistics
-    fprintf('Summary (High Settings, T60 = %fs):\n', T60s(i));
-    fprintf('Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
-    fprintf('Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
-    fprintf('T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
-    fprintf('EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf('C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
-    fprintf('BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
-
-    % Write Data to File
-    fprintf(fileID, 'Summary (High Settings, T60 = %fs):\n', T60s(i));
-    fprintf(fileID, 'Run Time: min = %f, max = %f, mean = %f, std = %f\n', min(times), max(times), mean(times), std(times));
-    fprintf(fileID, 'Fitness: min = %f, max = %f, mean = %f, std = %f\n', min(fitnesses), max(fitnesses), mean(fitnesses), std(fitnesses));
-    fprintf(fileID, 'T60 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.T60]), max([losses.T60]), mean([losses.T60]), std([losses.T60]));
-    fprintf(fileID, 'EDT Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.EDT]), max([losses.EDT]), mean([losses.EDT]), std([losses.EDT]));
-    fprintf(fileID, 'C80 Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.C80]), max([losses.C80]), mean([losses.C80]), std([losses.C80]));
-    fprintf(fileID, 'BR Error: min = %f, max = %f, mean = %f, std = %f\n', min([losses.BR]), max([losses.BR]), mean([losses.BR]), std([losses.BR]));
-    fprintf(fileID, '\n');
-end
-
-%% Close File
-fclose(fileID);

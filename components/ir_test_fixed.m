@@ -52,6 +52,4 @@ function [times, fitnesses, lossesStruct, conditions] = ...
         losses.zC80(i) = lossesStruct(i).zC80;
         losses.zBR(i)  = lossesStruct(i).zBR;
     end
-
-    fprintf('\n....................\n');
 end
