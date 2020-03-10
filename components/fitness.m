@@ -108,13 +108,13 @@ function [f, loss, outDev] = fitness(irPop, params, popSize, inDev)
     % Calculate fitness value
     % Convert all values to z-scores with means equal to plugin parameter
     % values, then add magnitudes of z-scores together
-    loss.T60  = irT60 - params.T60;
-    loss.EDT  = irEDT - params.EDT;
-    loss.C80  = irC80 - params.C80;
-    loss.BR   = irBR - params.BR;
+    loss.T60  = abs(irT60 - params.T60);
+    loss.EDT  = abs(irEDT - params.EDT);
+    loss.C80  = abs(irC80 - params.C80);
+    loss.BR   = abs(irBR - params.BR);
     loss.zT60  = loss.T60 ./ outDev.T60;
     loss.zEDT  = loss.EDT ./ outDev.EDT;
     loss.zC80  = loss.C80 ./ outDev.C80;
     loss.zBR   = loss.BR ./ outDev.BR;
-    f = abs(loss.zT60) + abs(loss.zEDT) + abs(loss.zC80) + abs(loss.zBR);
+    f = loss.zT60 + loss.zEDT + loss.zC80 + loss.zBR;
 end
