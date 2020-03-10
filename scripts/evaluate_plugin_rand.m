@@ -137,3 +137,330 @@ print_stats(NUM_IRS, timesHigh4, fitnessesHigh4, lossesHigh4, conditionsHigh4, '
 
 %% Close Log File
 diary off
+
+%% Generate and Save Figures
+% Suppress Warnings
+warning('off', 'MATLAB:handle_graphics:Layout:NoPositionSetInTiledChartLayout')
+
+% Comparison of Run Times
+figure('Position', [360 18 1280 960])
+t1 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+title(t1, 'Comparison of Run Times', 'FontSize', 12)
+xlabel(t1, 'Quality')
+ylabel(t1, 'Run Time (s)')
+
+t11 = nexttile;
+boxplot([timesLow1 timesMed1 timesHigh1], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 0.625s')
+y11 = ylim;
+
+t12 = nexttile;
+boxplot([timesLow2 timesMed2 timesHigh2], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 1.25s')
+y12 = ylim;
+
+t13 = nexttile;
+boxplot([timesLow3 timesMed3 timesHigh3], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 2.5s')
+y13 = ylim;
+
+t14 = nexttile;
+boxplot([timesLow4 timesMed4 timesHigh4], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 5s')
+y14 = ylim;
+
+linkaxes([t11 t12 t13 t14], 'y')
+t11.YLim = [0 max([y11(2) y12(2) y13(2) y14(2)])];
+
+savefig(['results_' timestamp '_figure_time.fig'])
+
+% Comparison of Fitness Values
+figure('Position', [360 18 1280 960])
+t2 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+title(t2, 'Comparison of Fitness Values', 'FontSize', 12)
+xlabel(t2, 'Quality')
+ylabel(t2, 'Fitness Value')
+
+t21 = nexttile;
+boxplot([fitnessesLow1 fitnessesMed1 fitnessesHigh1], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 0.625s')
+y21 = ylim;
+
+t22 = nexttile;
+boxplot([fitnessesLow2 fitnessesMed2 fitnessesHigh2], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 1.25s')
+y22 = ylim;
+
+t23 = nexttile;
+boxplot([fitnessesLow3 fitnessesMed3 fitnessesHigh3], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 2.5s')
+y23 = ylim;
+
+t24 = nexttile;
+boxplot([fitnessesLow4 fitnessesMed4 fitnessesHigh4], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 5s')
+y24 = ylim;
+
+linkaxes([t21 t22 t23 t24], 'y')
+t21.YLim = [0 max([y21(2) y22(2) y23(2) y24(2)])];
+
+savefig(['results_' timestamp '_figure_fitness.fig'])
+
+% Comparison of T60 Error Values
+figure('Position', [360 18 1280 960])
+t3 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+title(t3, 'Comparison of T60 Error Values', 'FontSize', 12)
+xlabel(t3, 'Quality')
+ylabel(t3, 'Absolute Deviation of T60 (s)')
+
+t31 = nexttile;
+boxplot([[lossesLow1.T60]' [lossesMed1.T60]' [lossesHigh1.T60]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 0.625s')
+y31 = ylim;
+
+t32 = nexttile;
+boxplot([[lossesLow2.T60]' [lossesMed2.T60]' [lossesHigh2.T60]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 1.25s')
+y32 = ylim;
+
+t33 = nexttile;
+boxplot([[lossesLow3.T60]' [lossesMed3.T60]' [lossesHigh3.T60]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 2.5s')
+y33 = ylim;
+
+t34 = nexttile;
+boxplot([[lossesLow4.T60]' [lossesMed4.T60]' [lossesHigh4.T60]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 5s')
+y34 = ylim;
+
+linkaxes([t31 t32 t33 t34], 'y')
+t31.YLim = [0 max([y31(2) y32(2) y33(2) y34(2)])];
+
+savefig(['results_' timestamp '_figure_T60.fig'])
+
+% Comparison of EDT Error Values
+figure('Position', [360 18 1280 960])
+t4 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+title(t4, 'Comparison of EDT Error Values', 'FontSize', 12)
+xlabel(t4, 'Quality')
+ylabel(t4, 'Absolute Deviation of EDT (s)')
+
+t41 = nexttile;
+boxplot([[lossesLow1.EDT]' [lossesMed1.EDT]' [lossesHigh1.EDT]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 0.625s')
+y41 = ylim;
+
+t42 = nexttile;
+boxplot([[lossesLow2.EDT]' [lossesMed2.EDT]' [lossesHigh2.EDT]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 1.25s')
+y42 = ylim;
+
+t43 = nexttile;
+boxplot([[lossesLow3.EDT]' [lossesMed3.EDT]' [lossesHigh3.EDT]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 2.5s')
+y43 = ylim;
+
+t44 = nexttile;
+boxplot([[lossesLow4.EDT]' [lossesMed4.EDT]' [lossesHigh4.EDT]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 5s')
+y44 = ylim;
+
+linkaxes([t41 t42 t43 t44], 'y')
+t41.YLim = [0 max([y41(2) y42(2) y43(2) y44(2)])];
+
+savefig(['results_' timestamp '_figure_EDT.fig'])
+
+% Comparison of C80 Error Values
+figure('Position', [360 18 1280 960])
+t5 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+title(t5, 'Comparison of C80 Error Values', 'FontSize', 12)
+xlabel(t5, 'Quality')
+ylabel(t5, 'Absolute Deviation of C80 (dB)')
+
+t51 = nexttile;
+boxplot([[lossesLow1.C80]' [lossesMed1.C80]' [lossesHigh1.C80]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 0.625s')
+y51 = ylim;
+
+t52 = nexttile;
+boxplot([[lossesLow2.C80]' [lossesMed2.C80]' [lossesHigh2.C80]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 1.25s')
+y52 = ylim;
+
+t53 = nexttile;
+boxplot([[lossesLow3.C80]' [lossesMed3.C80]' [lossesHigh3.C80]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 2.5s')
+y53 = ylim;
+
+t54 = nexttile;
+boxplot([[lossesLow4.C80]' [lossesMed4.C80]' [lossesHigh4.C80]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 5s')
+y54 = ylim;
+
+linkaxes([t51 t52 t53 t54], 'y')
+t51.YLim = [0 max([y51(2) y52(2) y53(2) y54(2)])];
+
+savefig(['results_' timestamp '_figure_C80.fig'])
+
+% Comparison of BR Error Values
+figure('Position', [360 18 1280 960])
+t6 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+title(t6, 'Comparison of BR Error Values', 'FontSize', 12)
+xlabel(t6, 'Quality')
+ylabel(t6, 'Absolute Deviation of BR (dB)')
+
+t61 = nexttile;
+boxplot([[lossesLow1.EDT]' [lossesMed1.EDT]' [lossesHigh1.EDT]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 0.625s')
+y61 = ylim;
+
+t62 = nexttile;
+boxplot([[lossesLow2.EDT]' [lossesMed2.EDT]' [lossesHigh2.EDT]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 1.25s')
+y62 = ylim;
+
+t63 = nexttile;
+boxplot([[lossesLow3.EDT]' [lossesMed3.EDT]' [lossesHigh3.EDT]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 2.5s')
+y63 = ylim;
+
+t64 = nexttile;
+boxplot([[lossesLow4.EDT]' [lossesMed4.EDT]' [lossesHigh4.EDT]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('T60 = 5s')
+y64 = ylim;
+
+linkaxes([t61 t62 t63 t64], 'y')
+t61.YLim = [0 max([y61(2) y62(2) y63(2) y64(2)])];
+
+savefig(['results_' timestamp '_figure_BR.fig'])
+
+% Comparison of Terminating Condition Occurrences
+countsLow1 = [sum(strcmp(conditionsLow1, 'Generations')), ...
+    sum(strcmp(conditionsLow1, 'Plateau')), ...
+    sum(strcmp(conditionsLow1, 'Threshold'))];
+countsMed1 = [sum(strcmp(conditionsMed1, 'Generations')), ...
+    sum(strcmp(conditionsMed1, 'Plateau')), ...
+    sum(strcmp(conditionsMed1, 'Threshold'))];
+countsHigh1 = [sum(strcmp(conditionsHigh1, 'Generations')), ...
+    sum(strcmp(conditionsHigh1, 'Plateau')), ...
+    sum(strcmp(conditionsHigh1, 'Threshold'))];
+countsLow2 = [sum(strcmp(conditionsLow2, 'Generations')), ...
+    sum(strcmp(conditionsLow2, 'Plateau')), ...
+    sum(strcmp(conditionsLow2, 'Threshold'))];
+countsMed2 = [sum(strcmp(conditionsMed2, 'Generations')), ...
+    sum(strcmp(conditionsMed2, 'Plateau')), ...
+    sum(strcmp(conditionsMed2, 'Threshold'))];
+countsHigh2 = [sum(strcmp(conditionsHigh2, 'Generations')), ...
+    sum(strcmp(conditionsHigh2, 'Plateau')), ...
+    sum(strcmp(conditionsHigh2, 'Threshold'))];
+countsLow3 = [sum(strcmp(conditionsLow3, 'Generations')), ...
+    sum(strcmp(conditionsLow3, 'Plateau')), ...
+    sum(strcmp(conditionsLow3, 'Threshold'))];
+countsMed3 = [sum(strcmp(conditionsMed3, 'Generations')), ...
+    sum(strcmp(conditionsMed3, 'Plateau')), ...
+    sum(strcmp(conditionsMed3, 'Threshold'))];
+countsHigh3 = [sum(strcmp(conditionsHigh3, 'Generations')), ...
+    sum(strcmp(conditionsHigh3, 'Plateau')), ...
+    sum(strcmp(conditionsHigh3, 'Threshold'))];
+countsLow4 = [sum(strcmp(conditionsLow4, 'Generations')), ...
+    sum(strcmp(conditionsLow4, 'Plateau')), ...
+    sum(strcmp(conditionsLow4, 'Threshold'))];
+countsMed4 = [sum(strcmp(conditionsMed4, 'Generations')), ...
+    sum(strcmp(conditionsMed4, 'Plateau')), ...
+    sum(strcmp(conditionsMed4, 'Threshold'))];
+countsHigh4 = [sum(strcmp(conditionsHigh4, 'Generations')), ...
+    sum(strcmp(conditionsHigh4, 'Plateau')), ...
+    sum(strcmp(conditionsHigh4, 'Threshold'))];
+
+labels = {'Generations', 'Plateau', 'Threshold'};
+
+figure('Position', [600 0 1280 1920])
+t7 = tiledlayout(4, 3, 'TileSpacing', 'compact', 'Padding', 'compact');
+title(t7, '\bf Termination Probability Per Condition vs. Quality Setting and T60 Time', 'FontSize', 14)
+
+nexttile
+p1 = pie(countsLow1);
+set(findobj(p1, 'Type', 'Text'), 'FontSize', 12);
+title('Low, 0.625s', 'FontSize', 14)
+
+nexttile
+p2 = pie(countsMed1);
+set(findobj(p2, 'Type', 'Text'), 'FontSize', 12);
+legend(labels, 'Location', 'northoutside', 'Orientation', 'horizontal', 'FontSize', 14)
+title('Medium, 0.625s', 'FontSize', 14)
+
+nexttile
+p3 = pie(countsHigh1);
+set(findobj(p3, 'Type', 'Text'), 'FontSize', 12);
+title('High, 0.625s', 'FontSize', 14)
+
+nexttile
+p1 = pie(countsLow2);
+set(findobj(p1, 'Type', 'Text'), 'FontSize', 12);
+title('Low, 1.25s', 'FontSize', 14)
+
+nexttile
+p2 = pie(countsMed2);
+set(findobj(p2, 'Type', 'Text'), 'FontSize', 12);
+title('Medium, 1.25s', 'FontSize', 14)
+
+nexttile
+p3 = pie(countsHigh2);
+set(findobj(p3, 'Type', 'Text'), 'FontSize', 12);
+title('High, 1.25s', 'FontSize', 14)
+
+nexttile
+p1 = pie(countsLow3);
+set(findobj(p1, 'Type', 'Text'), 'FontSize', 12);
+title('Low, 2.5s', 'FontSize', 14)
+
+nexttile
+p2 = pie(countsMed3);
+set(findobj(p2, 'Type', 'Text'), 'FontSize', 12);
+title('Medium, 2.5s', 'FontSize', 14)
+
+nexttile
+p3 = pie(countsHigh3);
+set(findobj(p3, 'Type', 'Text'), 'FontSize', 12);
+title('High, 2.5s', 'FontSize', 14)
+
+nexttile
+p1 = pie(countsLow4);
+set(findobj(p1, 'Type', 'Text'), 'FontSize', 12);
+title('Low, 5s', 'FontSize', 14)
+
+nexttile
+p2 = pie(countsMed4);
+set(findobj(p2, 'Type', 'Text'), 'FontSize', 12);
+title('Medium, 5s', 'FontSize', 14)
+
+nexttile
+p3 = pie(countsHigh4);
+set(findobj(p3, 'Type', 'Text'), 'FontSize', 12);
+title('High, 5s', 'FontSize', 14)
+
+savefig(['results_' timestamp '_figure_terminating.fig'])

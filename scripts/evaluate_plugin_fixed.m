@@ -119,3 +119,99 @@ print_stats(NUM_IRS, timesHigh, fitnessesHigh, lossesHigh, conditionsHigh, 'High
 
 %% Close Log File
 diary off
+
+%% Generate and Save Figures
+
+% Comparison of Run Times
+figure('Position', [600 498 640 480])
+boxplot([timesLow timesMed timesHigh], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('Comparison of Run Times', 'FontSize', 12)
+xlabel('Quality')
+ylabel('Run Time (s)')
+ylim([0 inf])
+savefig(['results_' timestamp '_figure_time.fig'])
+
+% Comparison of Fitness Values
+figure('Position', [600 498 640 480])
+boxplot([fitnessesLow fitnessesMed fitnessesHigh], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('Comparison of Fitness Values', 'FontSize', 12)
+xlabel('Quality')
+ylabel('Fitness Value')
+ylim([0 inf])
+savefig(['results_' timestamp '_figure_fitness.fig'])
+
+% Comparison of T60 Error Values
+figure('Position', [600 498 640 480])
+boxplot([[lossesLow.T60]' [lossesMed.T60]' [lossesHigh.T60]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('Comparison of T60 Error Values', 'FontSize', 12)
+xlabel('Quality')
+ylabel('Absolute Deviation of T60 (s)')
+ylim([0 inf])
+savefig(['results_' timestamp '_figure_T60.fig'])
+
+% Comparison of EDT Error Values
+figure('Position', [600 498 640 480])
+boxplot([[lossesLow.EDT]' [lossesMed.EDT]' [lossesHigh.EDT]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('Comparison of EDT Error Values', 'FontSize', 12)
+xlabel('Quality')
+ylabel('Absolute Deviation of EDT (s)')
+ylim([0 inf])
+savefig(['results_' timestamp '_figure_EDT.fig'])
+
+% Comparison of C80 Error Values
+figure('Position', [600 498 640 480])
+boxplot([[lossesLow.C80]' [lossesMed.C80]' [lossesHigh.C80]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('Comparison of C80 Error Values', 'FontSize', 12)
+xlabel('Quality')
+ylabel('Absolute Deviation of C80 (dB)')
+ylim([0 inf])
+savefig(['results_' timestamp '_figure_C80.fig'])
+
+% Comparison of BR Error Values
+figure('Position', [600 498 640 480])
+boxplot([[lossesLow.BR]' [lossesMed.BR]' [lossesHigh.BR]'], 'Labels', {'Low', 'Medium', 'High'}, ...
+    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+title('Comparison of BR Error Values', 'FontSize', 12)
+xlabel('Quality')
+ylabel('Absolute Deviation of BR (dB)')
+ylim([0 inf])
+savefig(['results_' timestamp '_figure_BR.fig'])
+
+% Comparison of Terminating Condition Occurrences
+countsLow = [sum(strcmp(conditionsLow, 'Generations')), ...
+    sum(strcmp(conditionsLow, 'Plateau')), ...
+    sum(strcmp(conditionsLow, 'Threshold'))];
+countsMed = [sum(strcmp(conditionsMed, 'Generations')), ...
+    sum(strcmp(conditionsMed, 'Plateau')), ...
+    sum(strcmp(conditionsMed, 'Threshold'))];
+countsHigh = [sum(strcmp(conditionsHigh, 'Generations')), ...
+    sum(strcmp(conditionsHigh, 'Plateau')), ...
+    sum(strcmp(conditionsHigh, 'Threshold'))];
+labels = {'Generations', 'Plateau', 'Threshold'};
+
+figure('Position', [600 498 1280 480])
+t = tiledlayout(1, 3, 'TileSpacing', 'compact', 'Padding', 'compact');
+title(t, '\bf Termination Probability Per Condition vs. Quality Setting', 'FontSize', 14)
+
+nexttile
+p1 = pie(countsLow);
+set(findobj(p1, 'Type', 'Text'), 'FontSize', 12);
+title('Low', 'FontSize', 14)
+
+nexttile
+p2 = pie(countsMed);
+set(findobj(p2, 'Type', 'Text'), 'FontSize', 12);
+legend(labels, 'Location', 'northoutside', 'Orientation', 'horizontal', 'FontSize', 14)
+title('Medium', 'FontSize', 14)
+
+nexttile
+p3 = pie(countsHigh);
+set(findobj(p3, 'Type', 'Text'), 'FontSize', 12);
+title('High', 'FontSize', 14)
+
+savefig(['results_' timestamp '_figure_terminating.fig'])
