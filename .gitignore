@@ -14,6 +14,9 @@
 # Ignore MATLAB autosave files.
 **/*.asv
 
+# Ignore MATLAB figure files.
+**/*.fig
+
 # Ignore all .wav audio files.
 **/output
 **/irs
