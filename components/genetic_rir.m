@@ -46,7 +46,7 @@ function [irBest, irBestFitness, fitnessCurve, loss, condition] = ...
     currentGen = 0;
     currentPlatLen = 0;
 
-    if nargout > 2, fitnessCurve = zeros(gaParams.NUM_GENERATIONS + 1, 1); end
+    if nargout > 2, fitnessCurve = NaN(gaParams.NUM_GENERATIONS + 1, 1); end
     loss = struct('T60', 0, 'EDT', 0, 'C80', 0, 'BR', 0, ...
         'zT60', 0, 'zEDT', 0, 'zC80', 0, 'zBR', 0);
     stddev = struct('T60', 0, 'EDT', 0, 'C80', 0, 'BR', 0);
