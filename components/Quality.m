@@ -6,5 +6,6 @@ classdef Quality < int8
         low    (0)
         medium (1)
         high   (2)
+        max    (3)
     end
 end
