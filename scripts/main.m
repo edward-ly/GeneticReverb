@@ -4,8 +4,8 @@
 %
 % File: main.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.11.1
-% Last Updated: 23 January 2020
+% Version: 0.11.2
+% Last Updated: 11 March 2020
 %
 % Usage: Adjust parameter values to your liking, then click on "Editor > Run" or
 % run `main` in the MATLAB command window under the project root directory. Two
