@@ -2,8 +2,8 @@
 %
 % File: convolution.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.1.0
-% Last Updated: 11 March 2020
+% Version: 0.1.1
+% Last Updated: 17 March 2020
 %
 % BSD 3-Clause License
 % 
@@ -68,7 +68,7 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 [numAudioSamples, numAudioChannels] = size(drySignal);
 
 % Impulse Response
-[ir, irSampleRate] = audioread([dryFilePath dryFileName]);
+[ir, irSampleRate] = audioread([irFilePath irFileName]);
 [irSamples, irChannels] = size(ir);
 
 %% Create Wet Signal
