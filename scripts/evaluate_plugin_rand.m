@@ -45,7 +45,7 @@ addpath ../components
 addpath ../Violinplot-Matlab-master
 
 %% Output Parameters
-NUM_IRS = 30;                  % Number of IRs to generate per iteration
+NUM_IRS = 250;                  % Number of IRs to generate per iteration
 VERBOSE = false;                % Display genetic algorithm status messages
 T60s = [0.625, 1.25, 2.5, 5.0]; % List of T60 values to test
 
