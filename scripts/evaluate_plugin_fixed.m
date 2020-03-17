@@ -215,8 +215,8 @@ countsMax = [sum(strcmp(conditionsMax, 'Generations')), ...
     sum(strcmp(conditionsMax, 'Threshold'))];
 labels = {'Generations', 'Plateau', 'Threshold'};
 
-figure('Position', [600 498 640 480])
-t = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+figure('Position', [600 258 960 720])
+t = tiledlayout(2, 2, 'TileSpacing', 'none', 'Padding', 'compact');
 title(t, '\bf Termination Probability Per Condition vs. Quality Setting', 'FontSize', 14)
 
 nexttile
@@ -227,7 +227,7 @@ title('Low', 'FontSize', 14)
 nexttile
 p2 = pie(countsMed);
 set(findobj(p2, 'Type', 'Text'), 'FontSize', 12);
-legend(labels, 'Location', 'northoutside', 'Orientation', 'horizontal', 'FontSize', 14)
+legend(labels, 'Location', 'bestoutside', 'FontSize', 12)
 title('Medium', 'FontSize', 14)
 
 nexttile
