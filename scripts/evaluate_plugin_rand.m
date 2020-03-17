@@ -2,8 +2,8 @@
 %
 % File: evaluate_plugin.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.5.0
-% Last Updated: 10 March 2020
+% Version: 0.5.1
+% Last Updated: 17 March 2020
 %
 %
 % BSD 3-Clause License
