@@ -41,9 +41,10 @@ clear; close all;
 
 % Add paths to any external functions used
 addpath ../components
+addpath ../Violinplot-Matlab-master
 
 %% Script Parameters
-NUM_IRS = 250;                  % Number of IRs to generate per iteration
+NUM_IRS = 30;                  % Number of IRs to generate per iteration
 VERBOSE = false;                % Display genetic algorithm status messages
 
 %% Genetic Algorithm Parameters
@@ -133,12 +134,11 @@ print_stats(NUM_IRS, timesMax, fitnessesMax, lossesMax, conditionsMax, 'Max');
 diary off
 
 %% Generate and Save Figures
+labels = {'Low', 'Medium', 'High', 'Max'};
 
 % Comparison of Run Times
 figure('Position', [600 498 640 480])
-boxplot([timesLow timesMed timesHigh timesMax], ...
-    'Labels', {'Low', 'Medium', 'High', 'Max'}, ...
-    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
+violinplot([timesLow timesMed timesHigh timesMax], labels, 'ShowNotches', true);
 title('Comparison of Run Times', 'FontSize', 12)
 xlabel('Quality')
 ylabel('Run Time (s)')
@@ -147,10 +147,7 @@ savefig(['results_' timestamp '_figure_time.fig'])
 
 % Comparison of Fitness Values
 figure('Position', [600 498 640 480])
-boxplot([fitnessesLow fitnessesMed fitnessesHigh fitnessesMax], ...
-    'Labels', {'Low', 'Medium', 'High', 'Max'}, ...
-    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
-title('Comparison of Fitness Values', 'FontSize', 12)
+violinplot([fitnessesLow fitnessesMed fitnessesHigh fitnessesMax], labels, 'ShowNotches', true);
 xlabel('Quality')
 ylabel('Fitness Value')
 ylim([0 inf])
@@ -158,10 +155,7 @@ savefig(['results_' timestamp '_figure_fitness.fig'])
 
 % Comparison of T60 Error Values
 figure('Position', [600 498 640 480])
-boxplot([[lossesLow.T60]' [lossesMed.T60]' [lossesHigh.T60]' [lossesMax.T60]'], ...
-    'Labels', {'Low', 'Medium', 'High', 'Max'}, ...
-    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
-title('Comparison of T60 Error Values', 'FontSize', 12)
+violinplot([[lossesLow.T60]' [lossesMed.T60]' [lossesHigh.T60]' [lossesMax.T60]'], labels, 'ShowNotches', true);
 xlabel('Quality')
 ylabel('Absolute Deviation of T60 (s)')
 ylim([0 inf])
@@ -169,10 +163,7 @@ savefig(['results_' timestamp '_figure_T60.fig'])
 
 % Comparison of EDT Error Values
 figure('Position', [600 498 640 480])
-boxplot([[lossesLow.EDT]' [lossesMed.EDT]' [lossesHigh.EDT]' [lossesMax.EDT]'], ...
-    'Labels', {'Low', 'Medium', 'High', 'Max'}, ...
-    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
-title('Comparison of EDT Error Values', 'FontSize', 12)
+violinplot([[lossesLow.EDT]' [lossesMed.EDT]' [lossesHigh.EDT]' [lossesMax.EDT]'], labels, 'ShowNotches', true);
 xlabel('Quality')
 ylabel('Absolute Deviation of EDT (s)')
 ylim([0 inf])
@@ -180,10 +171,7 @@ savefig(['results_' timestamp '_figure_EDT.fig'])
 
 % Comparison of C80 Error Values
 figure('Position', [600 498 640 480])
-boxplot([[lossesLow.C80]' [lossesMed.C80]' [lossesHigh.C80]' [lossesMax.C80]'], ...
-    'Labels', {'Low', 'Medium', 'High', 'Max'}, ...
-    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
-title('Comparison of C80 Error Values', 'FontSize', 12)
+violinplot([[lossesLow.C80]' [lossesMed.C80]' [lossesHigh.C80]' [lossesMax.C80]'], labels, 'ShowNotches', true);
 xlabel('Quality')
 ylabel('Absolute Deviation of C80 (dB)')
 ylim([0 inf])
@@ -191,10 +179,7 @@ savefig(['results_' timestamp '_figure_C80.fig'])
 
 % Comparison of BR Error Values
 figure('Position', [600 498 640 480])
-boxplot([[lossesLow.BR]' [lossesMed.BR]' [lossesHigh.BR]' [lossesMax.BR]'], ...
-    'Labels', {'Low', 'Medium', 'High', 'Max'}, ...
-    'Notch', 'on', 'Symbol', 'rx', 'OutlierSize', 4)
-title('Comparison of BR Error Values', 'FontSize', 12)
+violinplot([[lossesLow.BR]' [lossesMed.BR]' [lossesHigh.BR]' [lossesMax.BR]'], labels, 'ShowNotches', true);
 xlabel('Quality')
 ylabel('Absolute Deviation of BR (dB)')
 ylim([0 inf])
