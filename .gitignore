@@ -41,3 +41,6 @@
 
 # Ignore libsndfile library.
 **/libsndfile*
+
+# Ignore outside repositories.
+**/Violinplot-Matlab-master
