@@ -157,19 +157,19 @@ savefig(['results_' timestamp '_figure_fitness.fig'])
 
 % Comparison of T60 Error Values
 figure('Position', [600 498 640 480])
-violinplot([[lossesLow.T60]' [lossesMed.T60]' [lossesHigh.T60]' [lossesMax.T60]'], ...
+violinplot([[lossesLow.T60]' [lossesMed.T60]' [lossesHigh.T60]' [lossesMax.T60]'] .* 1000, ...
     labels, 'ShowData', false);
 xlabel('Quality')
-ylabel('Absolute Deviation of T60 (s)')
+ylabel('Absolute Deviation of T60 (ms)')
 ylim([0 inf])
 savefig(['results_' timestamp '_figure_T60.fig'])
 
 % Comparison of EDT Error Values
 figure('Position', [600 498 640 480])
-violinplot([[lossesLow.EDT]' [lossesMed.EDT]' [lossesHigh.EDT]' [lossesMax.EDT]'], ...
+violinplot([[lossesLow.EDT]' [lossesMed.EDT]' [lossesHigh.EDT]' [lossesMax.EDT]'] .* 1000, ...
     labels, 'ShowData', false);
 xlabel('Quality')
-ylabel('Absolute Deviation of EDT (s)')
+ylabel('Absolute Deviation of EDT (ms)')
 ylim([0 inf])
 savefig(['results_' timestamp '_figure_EDT.fig'])
 
