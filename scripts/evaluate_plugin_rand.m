@@ -177,22 +177,26 @@ xlabel(t1, 'Quality')
 ylabel(t1, 'Run Time (s)')
 
 t11 = nexttile;
-violinplot([timesLow1 timesMed1 timesHigh1 timesMax1], labels);
+violinplot([timesLow1 timesMed1 timesHigh1 timesMax1], ...
+    labels, 'ShowData', false);
 title('T60 = 0.625s')
 y11 = ylim;
 
 t12 = nexttile;
-violinplot([timesLow2 timesMed2 timesHigh2 timesMax2], labels);
+violinplot([timesLow2 timesMed2 timesHigh2 timesMax2], ...
+    labels, 'ShowData', false);
 title('T60 = 1.25s')
 y12 = ylim;
 
 t13 = nexttile;
-violinplot([timesLow3 timesMed3 timesHigh3 timesMax3], labels);
+violinplot([timesLow3 timesMed3 timesHigh3 timesMax3], ...
+    labels, 'ShowData', false);
 title('T60 = 2.5s')
 y13 = ylim;
 
 t14 = nexttile;
-violinplot([timesLow4 timesMed4 timesHigh4 timesMax4], labels);
+violinplot([timesLow4 timesMed4 timesHigh4 timesMax4], ...
+    labels, 'ShowData', false);
 title('T60 = 5s')
 y14 = ylim;
 
@@ -209,22 +213,26 @@ xlabel(t2, 'Quality')
 ylabel(t2, 'Fitness Value')
 
 t21 = nexttile;
-violinplot([fitnessesLow1 fitnessesMed1 fitnessesHigh1 fitnessesMax1], labels);
+violinplot([fitnessesLow1 fitnessesMed1 fitnessesHigh1 fitnessesMax1], ...
+    labels, 'ShowData', false);
 title('T60 = 0.625s')
 y21 = ylim;
 
 t22 = nexttile;
-violinplot([fitnessesLow2 fitnessesMed2 fitnessesHigh2 fitnessesMax2], labels);
+violinplot([fitnessesLow2 fitnessesMed2 fitnessesHigh2 fitnessesMax2], ...
+    labels, 'ShowData', false);
 title('T60 = 1.25s')
 y22 = ylim;
 
 t23 = nexttile;
-violinplot([fitnessesLow3 fitnessesMed3 fitnessesHigh3 fitnessesMax3], labels);
+violinplot([fitnessesLow3 fitnessesMed3 fitnessesHigh3 fitnessesMax3], ...
+    labels, 'ShowData', false);
 title('T60 = 2.5s')
 y23 = ylim;
 
 t24 = nexttile;
-violinplot([fitnessesLow4 fitnessesMed4 fitnessesHigh4 fitnessesMax4], labels);
+violinplot([fitnessesLow4 fitnessesMed4 fitnessesHigh4 fitnessesMax4], ...
+    labels, 'ShowData', false);
 title('T60 = 5s')
 y24 = ylim;
 
@@ -241,22 +249,26 @@ xlabel(t3, 'Quality')
 ylabel(t3, 'Absolute Deviation of T60 (s)')
 
 t31 = nexttile;
-violinplot([[lossesLow1.T60]' [lossesMed1.T60]' [lossesHigh1.T60]' [lossesMax1.T60]'], labels);
+violinplot([[lossesLow1.T60]' [lossesMed1.T60]' [lossesHigh1.T60]' [lossesMax1.T60]'], ...
+    labels, 'ShowData', false);
 title('T60 = 0.625s')
 y31 = ylim;
 
 t32 = nexttile;
-violinplot([[lossesLow2.T60]' [lossesMed2.T60]' [lossesHigh2.T60]' [lossesMax2.T60]'], labels);
+violinplot([[lossesLow2.T60]' [lossesMed2.T60]' [lossesHigh2.T60]' [lossesMax2.T60]'], ...
+    labels, 'ShowData', false);
 title('T60 = 1.25s')
 y32 = ylim;
 
 t33 = nexttile;
-violinplot([[lossesLow3.T60]' [lossesMed3.T60]' [lossesHigh3.T60]' [lossesMax3.T60]'], labels);
+violinplot([[lossesLow3.T60]' [lossesMed3.T60]' [lossesHigh3.T60]' [lossesMax3.T60]'], ...
+    labels, 'ShowData', false);
 title('T60 = 2.5s')
 y33 = ylim;
 
 t34 = nexttile;
-violinplot([[lossesLow4.T60]' [lossesMed4.T60]' [lossesHigh4.T60]' [lossesMax4.T60]'], labels);
+violinplot([[lossesLow4.T60]' [lossesMed4.T60]' [lossesHigh4.T60]' [lossesMax4.T60]'], ...
+    labels, 'ShowData', false);
 title('T60 = 5s')
 y34 = ylim;
 
@@ -273,22 +285,26 @@ xlabel(t4, 'Quality')
 ylabel(t4, 'Absolute Deviation of EDT (s)')
 
 t41 = nexttile;
-violinplot([[lossesLow1.EDT]' [lossesMed1.EDT]' [lossesHigh1.EDT]' [lossesMax1.EDT]'], labels);
+violinplot([[lossesLow1.EDT]' [lossesMed1.EDT]' [lossesHigh1.EDT]' [lossesMax1.EDT]'], ...
+    labels, 'ShowData', false);
 title('T60 = 0.625s')
 y41 = ylim;
 
 t42 = nexttile;
-violinplot([[lossesLow2.EDT]' [lossesMed2.EDT]' [lossesHigh2.EDT]' [lossesMax2.EDT]'], labels);
+violinplot([[lossesLow2.EDT]' [lossesMed2.EDT]' [lossesHigh2.EDT]' [lossesMax2.EDT]'], ...
+    labels, 'ShowData', false);
 title('T60 = 1.25s')
 y42 = ylim;
 
 t43 = nexttile;
-violinplot([[lossesLow3.EDT]' [lossesMed3.EDT]' [lossesHigh3.EDT]' [lossesMax3.EDT]'], labels);
+violinplot([[lossesLow3.EDT]' [lossesMed3.EDT]' [lossesHigh3.EDT]' [lossesMax3.EDT]'], ...
+    labels, 'ShowData', false);
 title('T60 = 2.5s')
 y43 = ylim;
 
 t44 = nexttile;
-violinplot([[lossesLow4.EDT]' [lossesMed4.EDT]' [lossesHigh4.EDT]' [lossesMax4.EDT]'], labels);
+violinplot([[lossesLow4.EDT]' [lossesMed4.EDT]' [lossesHigh4.EDT]' [lossesMax4.EDT]'], ...
+    labels, 'ShowData', false);
 title('T60 = 5s')
 y44 = ylim;
 
@@ -305,22 +321,26 @@ xlabel(t5, 'Quality')
 ylabel(t5, 'Absolute Deviation of C80 (dB)')
 
 t51 = nexttile;
-violinplot([[lossesLow1.C80]' [lossesMed1.C80]' [lossesHigh1.C80]' [lossesMax1.C80]'], labels);
+violinplot([[lossesLow1.C80]' [lossesMed1.C80]' [lossesHigh1.C80]' [lossesMax1.C80]'], ...
+    labels, 'ShowData', false);
 title('T60 = 0.625s')
 y51 = ylim;
 
 t52 = nexttile;
-violinplot([[lossesLow2.C80]' [lossesMed2.C80]' [lossesHigh2.C80]' [lossesMax2.C80]'], labels);
+violinplot([[lossesLow2.C80]' [lossesMed2.C80]' [lossesHigh2.C80]' [lossesMax2.C80]'], ...
+    labels, 'ShowData', false);
 title('T60 = 1.25s')
 y52 = ylim;
 
 t53 = nexttile;
-violinplot([[lossesLow3.C80]' [lossesMed3.C80]' [lossesHigh3.C80]' [lossesMax3.C80]'], labels);
+violinplot([[lossesLow3.C80]' [lossesMed3.C80]' [lossesHigh3.C80]' [lossesMax3.C80]'], ...
+    labels, 'ShowData', false);
 title('T60 = 2.5s')
 y53 = ylim;
 
 t54 = nexttile;
-violinplot([[lossesLow4.C80]' [lossesMed4.C80]' [lossesHigh4.C80]' [lossesMax4.C80]'], labels);
+violinplot([[lossesLow4.C80]' [lossesMed4.C80]' [lossesHigh4.C80]' [lossesMax4.C80]'], ...
+    labels, 'ShowData', false);
 title('T60 = 5s')
 y54 = ylim;
 
@@ -337,22 +357,26 @@ xlabel(t6, 'Quality')
 ylabel(t6, 'Absolute Deviation of BR (dB)')
 
 t61 = nexttile;
-violinplot([[lossesLow1.BR]' [lossesMed1.BR]' [lossesHigh1.BR]' [lossesMax1.BR]'], labels);
+violinplot([[lossesLow1.BR]' [lossesMed1.BR]' [lossesHigh1.BR]' [lossesMax1.BR]'], ...
+    labels, 'ShowData', false);
 title('T60 = 0.625s')
 y61 = ylim;
 
 t62 = nexttile;
-violinplot([[lossesLow2.BR]' [lossesMed2.BR]' [lossesHigh2.BR]' [lossesMax2.BR]'], labels);
+violinplot([[lossesLow2.BR]' [lossesMed2.BR]' [lossesHigh2.BR]' [lossesMax2.BR]'], ...
+    labels, 'ShowData', false);
 title('T60 = 1.25s')
 y62 = ylim;
 
 t63 = nexttile;
-violinplot([[lossesLow3.BR]' [lossesMed3.BR]' [lossesHigh3.BR]' [lossesMax3.BR]'], labels);
+violinplot([[lossesLow3.BR]' [lossesMed3.BR]' [lossesHigh3.BR]' [lossesMax3.BR]'], ...
+    labels, 'ShowData', false);
 title('T60 = 2.5s')
 y63 = ylim;
 
 t64 = nexttile;
-violinplot([[lossesLow4.BR]' [lossesMed4.BR]' [lossesHigh4.BR]' [lossesMax4.BR]'], labels);
+violinplot([[lossesLow4.BR]' [lossesMed4.BR]' [lossesHigh4.BR]' [lossesMax4.BR]'], ...
+    labels, 'ShowData', false);
 title('T60 = 5s')
 y64 = ylim;
 
