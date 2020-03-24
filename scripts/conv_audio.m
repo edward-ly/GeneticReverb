@@ -2,8 +2,8 @@
 %
 % File: conv_audio.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.1.1
-% Last Updated: 18 March 2020
+% Version: 0.1.2
+% Last Updated: 24 March 2020
 %
 % BSD 3-Clause License
 % 
