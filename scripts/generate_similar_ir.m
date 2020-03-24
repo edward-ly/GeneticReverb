@@ -43,7 +43,7 @@ clear; close all;
 addpath ../components
 
 %% Script Parameters
-NUM_IRS = 30;                   % Number of IRs to generate
+NUM_IRS = 12;                   % Number of IRs to generate
 IR_SAMPLE_RATE = 44100;         % Sample rate of desired IR
 VERBOSE = false;                % Display genetic algorithm status messages
 
@@ -101,7 +101,7 @@ bestIR = irs(:, bestFitnessIndex);
 
 % Add predelay
 delay = round(irValues.PREDELAY * IR_SAMPLE_RATE);
-bestIR = [zeros(1, delay), bestIR(1:(end - delay))];
+bestIR = [zeros(delay, 1); bestIR(1:(end - delay))];
 
 %% Display and Save Output
 audiowrite([outFilePath outFileName], bestIR, IR_SAMPLE_RATE);
