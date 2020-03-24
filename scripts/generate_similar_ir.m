@@ -99,6 +99,10 @@ end
 [bestFitness, bestFitnessIndex] = min(fitnesses);
 bestIR = irs(:, bestFitnessIndex);
 
+% Add predelay
+delay = round(irValues.PREDELAY * IR_SAMPLE_RATE);
+bestIR = [zeros(1, delay), bestIR(1:(end - delay))];
+
 %% Display and Save Output
 audiowrite([outFilePath outFileName], bestIR, IR_SAMPLE_RATE);
 fprintf('\nSaved new impulse response to %s%s\n', outFilePath, outFileName);
