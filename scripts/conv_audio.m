@@ -44,6 +44,8 @@ addpath ../components
 
 %% Output Parameters
 NORMALIZE_AUDIO = true;    % Normalize audio after applying convolution
+STEREO = false;            % Convolve audio using all IR channels if possible,
+                           % otherwise use only 1st channel of IR
 
 %% Load/Save UI
 % Specify audio file for dry signal input
@@ -82,8 +84,14 @@ end
 % column/channel of the impulse response will filter the corresponding
 % column/channel in the audio
 wetSignal = zeros(numAudioSamples + irSamples - 1, numAudioChannels);
-for i = 1:numAudioChannels
-    wetSignal(:, i) = conv(ir(:, mod(i, irChannels) + 1), drySignal(:, i));
+if STEREO
+    for i = 1:numAudioChannels %#ok<*UNRCH>
+        wetSignal(:, i) = conv(ir(:, mod(i, irChannels) + 1), drySignal(:, i));
+    end
+else
+    for i = 1:numAudioChannels
+        wetSignal(:, i) = conv(ir(:, 1), drySignal(:, i));
+    end
 end
 
 % Normalize audio
