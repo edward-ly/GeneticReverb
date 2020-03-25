@@ -8,7 +8,7 @@ function pop = init_pop(gaParams, irParams)
 % Output arguments:
 % pop = output population
 %
-% Current algorithm:
+% Current algorithm: simulate the conditions of real-world recorded IRs.
 % (1) Generate Gaussian (white) noise and reduce its gain by a random factor.
 % (2) Take some samples at random and manually change the values of these
 % samples. The probability of a sample at time t being chosen increases as t
@@ -18,11 +18,11 @@ function pop = init_pop(gaParams, irParams)
 % changing sign.
 % (3) Apply exponential decay to the signal to simulate sound absorption (the
 % rate of which is inversely proportional to the input T60 value).
-% (4) Apply a low-pass and high-pass filter (both with 6 dB/octave rolloff, but
-% random cutoff frequencies).
-% (5) Add a small amount of low-pass Gaussian noise (within noise floor, with a
-% cutoff frequency of 250 Hz and 12 dB/octave rolloff for the low-pass filter).
-% This is to simulate the conditions of real-world recorded impulse responses.
+% (4) Apply a band-pass filter (constant 6 dB/octave rolloff at both ends of the
+% band, while the cutoff frequencies are random).
+% (5) Add a small amount of low-pass Gaussian noise (gain is within noise floor,
+% with a cutoff frequency of 250 Hz and 12 dB/octave rolloff for the low-pass
+% filter).
 %
     % Require all arguments
     if nargin < 2, error('Not enough input arguments.'); end
@@ -67,8 +67,8 @@ function pop = init_pop(gaParams, irParams)
     end
 
     bg_noise = randn(n, popSize) * 0.0003;
-    [d, c] = butter(2, 250/(fs/2));
-    bg_noise = filter(d, c, bg_noise);
+    [b, a] = butter(2, 250/(fs/2));
+    bg_noise = filter(b, a, bg_noise);
     pop = pop + bg_noise;
 
     pop(1, :) = 1; % normalize first reflection at t = 0
