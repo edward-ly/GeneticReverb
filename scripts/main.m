@@ -162,9 +162,12 @@ if SHOW_FIGURES
 
     % Plot output impulse response in decibels
     irBest2 = 10 .* log10(irBest .* irBest);
+    [~, sirdB] = schroeder(irBest);
 
     figure
+    hold on
     plot((1:numSamples) ./ audioSampleRate, irBest2)
+    plot((1:numSamples) ./ audioSampleRate, sirdB)
     grid on
     xlabel('Time (s)')
     ylabel('Relative Gain (dB)')
