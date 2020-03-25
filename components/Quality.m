@@ -3,9 +3,9 @@ classdef Quality < int8
     % Values affect the parameters of the genetic algorithm and thus CPU usage
 
     enumeration
-        low    (0)
-        medium (1)
-        high   (2)
-        max    (3)
+        Low    (0)
+        Medium (1)
+        High   (2)
+        Max    (3)
     end
 end

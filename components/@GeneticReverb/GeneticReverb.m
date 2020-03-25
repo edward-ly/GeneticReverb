@@ -58,7 +58,7 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
         R_DELAY = 10;             % Right channel predelay (ms)
 
         STEREO = true;            % Enable stereo effect
-        QUALITY = Quality.low;    % Reverb quality
+        QUALITY = Quality.Low;    % Reverb quality
 
         NEW_IR = true;            % Toggle to generate new IR
         SAVE_IR = true;           % Toggle to save IR to file
