@@ -49,10 +49,6 @@ function pop = init_pop(gaParams, irParams)
     sampleOccurences = rand(n, popSize) < sampleProbability;
     sampleSigns = (-1) .^ (rand(n, popSize) < 0.5);
 
-    ITDGsample = round(irParams.ITDG * fs);
-    sampleOccurences(1:ITDGsample, :) = 0; % no reflections before ITDG time
-    sampleOccurences(ITDGsample + 1, :) = 1; % make reflection at ITDG time
-
     noise = randn(n, popSize) * (rand * 0.4 + 0.1); % {'lin', 0.1, 0.5}
     samples = randn(n, popSize) * 0.05 + 1;
     pop = (noise .* ~sampleOccurences) + ...

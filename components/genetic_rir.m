@@ -14,7 +14,6 @@ function [irBest, irBestFitness, fitnessCurve, loss, condition] = ...
 %     SAMPLE_RATE = sample rate of impulse response
 %     NUM_SAMPLES = length of recorded impulse response (samples)
 %     T60 = T60 decay time (s)
-%     ITDG = initial time delay gap (s)
 %     EDT = early decay time (s)
 %     C80 = clarity (dB)
 %     BR = bass ratio
@@ -115,8 +114,7 @@ function [irBest, irBestFitness, fitnessCurve, loss, condition] = ...
             gaParams.POPULATION_SIZE);
 
         % Mutate entire population
-        ITDG = round(irParams.ITDG * irParams.SAMPLE_RATE);
-        irPopulation = mutate(irPopulation, gaParams.MUTATION_RATE, ITDG);
+        irPopulation = mutate(irPopulation, gaParams.MUTATION_RATE);
     end
 
     if verbose

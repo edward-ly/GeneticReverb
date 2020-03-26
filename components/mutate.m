@@ -1,10 +1,9 @@
-function out = mutate(in, MUTATION_RATE, ITDG)
+function out = mutate(in, MUTATION_RATE)
 % MUTATE Changes the population's values with some probability.
 %
 % Input arguments:
 % in = input population
 % MUTATION_RATE = probability of each sample changing value
-% ITDG = index of sample at ITDG time
 %
 % Output arguments:
 % out = output population
@@ -15,7 +14,7 @@ function out = mutate(in, MUTATION_RATE, ITDG)
 % chance of each value being positive or negative.
 %
     % Require all arguments
-    if nargin < 3, error('Not enough input arguments.'); end
+    if nargin < 2, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
 
     % =========================================================================
@@ -24,7 +23,7 @@ function out = mutate(in, MUTATION_RATE, ITDG)
     [I, J] = size(out);
 
     mutPoints = rand(I, J) < MUTATION_RATE;
+    mutPoints(1, :) = 0; % do not mutate initial reflection
     mutValues = mutPoints .* randn(I, J) ./ norminv(0.75);
-    mutValues(1:ITDG, :) = 0; % no mutations before ITDG time
     out = (out .* ~mutPoints) + (out .* mutValues);
 end

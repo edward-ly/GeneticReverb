@@ -10,7 +10,6 @@ function irValues = calc_ir_values(ir, numSamples, sampleRate)
 % irValues = struct containing IR parameter values
 %     T60 = T60 decay time (s)
 %     EDT = early decay time (s)
-%     ITDG = initial time delay gap (s)
 %     PREDELAY = predelay time (s)
 %     C80 = clarity (dB)
 %     BR = bass ratio (dB)
@@ -35,9 +34,7 @@ function irValues = calc_ir_values(ir, numSamples, sampleRate)
 
     % =========================================================================
 
-    % ITDG (initial time delay gap) & predelay
-    irITDGSample = find(irEDCdB < 0 & irEDCdB > -45, 1);
-    irITDG = (irITDGSample - irInitSample) / sampleRate;
+    % Predelay
     irDelay = irInitSample / sampleRate;
 
     % T60 & EDT
@@ -77,7 +74,6 @@ function irValues = calc_ir_values(ir, numSamples, sampleRate)
     irValues = struct( ...
         'T60', irT60, ...
         'EDT', irEDT, ...
-        'ITDG', irITDG, ...
         'PREDELAY', irDelay, ...
         'C80', irC80, ...
         'BR', irBR);
