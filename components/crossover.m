@@ -1,4 +1,4 @@
-function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES)
+function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE)
 % CROSSOVER Generate children and replace least fit individuals.
 %
 % Input arguments:
@@ -10,11 +10,11 @@ function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES)
 % Output arguments:
 % out = output population
 %
-% Current algorithm: three-point crossover where the points are random (and
-% distinct) along the length of the impulse response.
+% Current algorithm: weighted average of the parents where the weights are
+% random for each individual.
 %
     % Require all arguments
-    if nargin < 4, error('Not enough input arguments.'); end
+    if nargin < 3, error('Not enough input arguments.'); end
     if nargout < 1, error('Not enough output arguments.'); end
 
     % =========================================================================
@@ -23,17 +23,10 @@ function out = crossover(in, SELECTION_SIZE, POPULATION_SIZE, NUM_SAMPLES)
     
     for i = (SELECTION_SIZE + 1):POPULATION_SIZE
         parents = randperm(SELECTION_SIZE, 2);
-        points = sort(randperm(NUM_SAMPLES, 3));
+        p1 = in(:, parents(1));
+        p2 = in(:, parents(2));
+        w = rand;
 
-        out(:, i) = in(:, parents(1));
-        for j = 1:length(points)
-            if j == length(points)
-                out(points(j):end, i) = ...
-                    in(points(j):end, parents(mod(j, 2) + 1));
-            else
-                out(points(j):(points(j+1)-1), i) = ...
-                    in(points(j):(points(j+1)-1), parents(mod(j, 2) + 1));
-            end
-        end
+        out(:, i) = (w .* p1) + ((1 - w) .* p2);
     end
 end

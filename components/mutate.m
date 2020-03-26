@@ -9,9 +9,10 @@ function out = mutate(in, MUTATION_RATE, ITDG)
 % Output arguments:
 % out = output population
 %
-% Current algorithm: 1) for random samples, remove the reflection at each
-% sample (if there is one), then 2) for random samples, add to each a random
-% value from the normal distribution (mean = 0, std = 0.1).
+% Current algorithm: for each random sample, multiply its value by a random
+% factor from the normal distribution (mean = 0, std = 1.4826). This gives a 50%
+% chance of each sample increasing or decreasing in magnitude, as well as a 50%
+% chance of each value being positive or negative.
 %
     % Require all arguments
     if nargin < 3, error('Not enough input arguments.'); end
@@ -22,10 +23,8 @@ function out = mutate(in, MUTATION_RATE, ITDG)
     out = in;
     [I, J] = size(out);
 
-    mutValues1 = double(rand(I, J) > MUTATION_RATE);
-    mutValues1(1:ITDG, :) = 1; % no mutations before ITDG time
-
-    mutValues2 = double(rand(I, J) < MUTATION_RATE) .* (randn(I, J) * 0.1);
-    mutValues2(1:ITDG, :) = 0; % no mutations before ITDG time
-    out = out .* mutValues1 + out .* mutValues2;
+    mutPoints = rand(I, J) < MUTATION_RATE;
+    mutValues = mutPoints .* randn(I, J) ./ norminv(0.75);
+    mutValues(1:ITDG, :) = 0; % no mutations before ITDG time
+    out = (out .* ~mutPoints) + (out .* mutValues);
 end

@@ -112,7 +112,7 @@ function [irBest, irBestFitness, fitnessCurve, loss, condition] = ...
         % Select best individuals and generate children to replace remaining
         % individuals
         irPopulation = crossover(irPopulation, gaParams.SELECTION_SIZE, ...
-            gaParams.POPULATION_SIZE, irParams.NUM_SAMPLES);
+            gaParams.POPULATION_SIZE);
 
         % Mutate entire population
         ITDG = round(irParams.ITDG * irParams.SAMPLE_RATE);
