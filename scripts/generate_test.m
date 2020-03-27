@@ -146,3 +146,5 @@ for i = 1:numFiles
     audiowrite([FILE_PATH file2], out(:, 2), fs2);
     audiowrite([FILE_PATH file3], out(:, 3), fs3);
 end
+
+fprintf('Normalized all files.\n');
