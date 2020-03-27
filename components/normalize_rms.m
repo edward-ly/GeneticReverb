@@ -1,5 +1,6 @@
 function [outLeft, outRight] = normalize_rms(inLeft, inRight)
-% NORMALIZE_RMS Normalizes two signals so that RMS levels are equal.
+% NORMALIZE_RMS Normalizes 2nd signal so that RMS level is equal to that of 1st
+% signal.
 %
 % Input arguments:
 % inLeft = column vector containing first input signal
@@ -19,6 +20,6 @@ function [outLeft, outRight] = normalize_rms(inLeft, inRight)
 
     leftRMS = rms(inLeft);
     rightRMS = rms(inRight);
-    outLeft = inLeft .* (1 + (rightRMS / leftRMS));
-    outRight = inRight .* (1 + (leftRMS / rightRMS));
+    outLeft = inLeft;
+    outRight = inRight .* (1 + (leftRMS / rightRMS)) ./ (1 + (rightRMS / leftRMS));
 end
