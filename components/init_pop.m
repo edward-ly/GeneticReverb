@@ -56,9 +56,9 @@ function pop = init_pop(gaParams, irParams)
     pop = pop .* decayAmount;
 
     for i = 1:popSize
-        % Lower cutoff frequency: 125-500 Hz
-        % Higher cutoff frequency: 500-2000 Hz
-        [b, a] = butter(1, 500 .* [2^(rand * 2 - 2) 2^(rand * 2)] ./ (fs/2));
+        % Lower cutoff frequency: 31.25-500 Hz
+        % Higher cutoff frequency: 500-8000 Hz
+        [b, a] = butter(1, 500 .* [2^(rand * 4 - 4) 2^(rand * 4)] ./ (fs/2));
         pop(:, i) = filter(b, a, pop(:, i));
     end
 
