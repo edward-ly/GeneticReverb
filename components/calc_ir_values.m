@@ -19,18 +19,11 @@ function irValues = calc_ir_values(ir, numSamples, sampleRate)
 
     % =========================================================================
 
-    % Filter for peaks and valleys
-    irdB = 20 .* log10(abs(ir));
-    [~, peaks] = findpeaks(irdB);
-    filteredIR = zeros(numSamples, 1);
-    filteredIR(peaks) = ir(peaks);
-
-    % Find onset of impulse response and zero out previous samples
-    [~, irInitSample] = max(abs(filteredIR));
-    filteredIR(1:irInitSample) = 0;
+    % Find onset of impulse response
+    [~, irInitSample] = max(abs(ir));
 
     % Calculate Schroeder curve of impulse response
-    [irEDC, irEDCdB] = schroeder(filteredIR);
+    [irEDC, irEDCdB] = schroeder(ir);
 
     % =========================================================================
 
@@ -63,7 +56,7 @@ function irValues = calc_ir_values(ir, numSamples, sampleRate)
     % BR (bass ratio)
     % Find amount of energy in 125 - 500Hz and 500Hz - 2000Hz bands and
     % calculate the ratio between the two
-    irfft = 20 .* log10(abs(fft(filteredIR)));
+    irfft = 20 .* log10(abs(fft(ir)));
     f125 = ceil(125 * numSamples / sampleRate) + 1;
     f500 = ceil(500 * numSamples / sampleRate);
     f2000 = floor(2000 * numSamples / sampleRate) + 1;
@@ -72,9 +65,9 @@ function irValues = calc_ir_values(ir, numSamples, sampleRate)
     irBR = lowContent - highContent;
 
     irValues = struct( ...
+        'PREDELAY', irDelay, ...
         'T60', irT60, ...
         'EDT', irEDT, ...
-        'PREDELAY', irDelay, ...
         'C80', irC80, ...
         'BR', irBR);
 end
