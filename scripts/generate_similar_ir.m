@@ -2,8 +2,8 @@
 %
 % File: generate_similar_ir.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.1.1
-% Last Updated: 24 March 2020
+% Version: 0.2.0
+% Last Updated: 27 March 2020
 %
 % BSD 3-Clause License
 %
@@ -43,17 +43,25 @@ clear; close all;
 addpath ../components
 
 %% Script Parameters
-NUM_IRS = 12;                   % Number of IRs to generate
+NUM_IRS = 30;                   % Number of IRs to generate per setting
 IR_SAMPLE_RATE = 44100;         % Sample rate of desired IR
 VERBOSE = false;                % Display genetic algorithm status messages
 
 %% Genetic Algorithm Parameters
-gaParams = struct( ...
+gaParamsMax = struct( ...
     'POPULATION_SIZE', 50, ...
     'SELECTION_SIZE', 20, ...
-    'NUM_GENERATIONS', 150, ...
-    'PLATEAU_LENGTH', 30, ...
-    'FITNESS_THRESHOLD', 0.001, ...
+    'NUM_GENERATIONS', 100, ...
+    'PLATEAU_LENGTH', 20, ...
+    'FITNESS_THRESHOLD', 0.01, ...
+    'MUTATION_RATE', 0.001);
+
+gaParamsHigh = struct( ...
+    'POPULATION_SIZE', 50, ...
+    'SELECTION_SIZE', 20, ...
+    'NUM_GENERATIONS', 50, ...
+    'PLATEAU_LENGTH', 10, ...
+    'FITNESS_THRESHOLD', 0.01, ...
     'MUTATION_RATE', 0.001);
 
 %% Load/Save UI
@@ -61,12 +69,6 @@ gaParams = struct( ...
 [fileName, filePath] = uigetfile( ...
     {'*.wav', 'WAV Files (*.wav)'}, 'Open Impulse Response WAV File...');
 if ~fileName, fprintf('No file selected, exiting...\n'); return; end
-
-% Specify location to save output files
-newFileName = replace(fileName, '.wav', '_ga.wav');
-[outFileName, outFilePath] = uiputfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Save New Impulse Response As...', newFileName);
-if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Read Input Audio File
 [drySignal, audioSampleRate] = audioread([filePath fileName]);
@@ -77,6 +79,7 @@ fprintf('Acoustics values of impulse response in file "%s%s"...\n', ...
     filePath, fileName);
 
 irValues = calc_ir_values(drySignal(:, 1), numAudioSamples, audioSampleRate) %#ok<*NOPTS>
+delay = round(irValues.PREDELAY * IR_SAMPLE_RATE);
 
 %% Initialize irParams Struct
 irParams = struct( ...
@@ -87,27 +90,53 @@ irParams = struct( ...
     'C80', irValues.C80, ...
     'BR', irValues.BR);
 
-%% Generate New Impulse Response
+%% Generate New Impulse Response (High Setting)
 irs = zeros(irParams.NUM_SAMPLES, NUM_IRS);
 fitnesses = zeros(NUM_IRS, 1);
 
 parfor i = 1:NUM_IRS
-    [irs(:, i), fitnesses(i)] = genetic_rir(gaParams, irParams, VERBOSE);
+    [irs(:, i), fitnesses(i)] = genetic_rir(gaParamsHigh, irParams, VERBOSE);
 end
 
 [bestFitness, bestFitnessIndex] = min(fitnesses);
-bestIR = irs(:, bestFitnessIndex);
+bestIRHigh = irs(:, bestFitnessIndex);
 
 % Add predelay
-delay = round(irValues.PREDELAY * IR_SAMPLE_RATE);
-bestIR = [zeros(delay, 1); bestIR(1:(end - delay))];
+bestIRHigh = [zeros(delay, 1); bestIRHigh(1:(end - delay))];
 
 %% Display and Save Output
-audiowrite([outFilePath outFileName], bestIR, IR_SAMPLE_RATE);
-fprintf('\nSaved new impulse response to %s%s\n', outFilePath, outFileName);
+% Specify output file names, save them in same path as input file
+newFileName1 = replace(fileName, '.wav', '_ga_high.wav');
 
-fprintf('Acoustics values of new impulse response...\n');
+audiowrite([filePath newFileName1], bestIRHigh, IR_SAMPLE_RATE);
+fprintf('\nSaved new impulse response to %s%s\n\n', filePath, newFileName1);
 
-irValues = calc_ir_values(bestIR, irParams.NUM_SAMPLES, IR_SAMPLE_RATE) %#ok<*NOPTS>
+fprintf('Acoustics values of new impulse response (high settings)...\n');
+
+irValuesHigh = calc_ir_values(bestIRHigh, irParams.NUM_SAMPLES, IR_SAMPLE_RATE) %#ok<*NOPTS>
+
+fprintf('Fitness value: %f\n', bestFitness);
+
+%% Generate New Impulse Response (Max Setting)
+parfor i = 1:NUM_IRS
+    [irs(:, i), fitnesses(i)] = genetic_rir(gaParamsMax, irParams, VERBOSE);
+end
+
+[bestFitness, bestFitnessIndex] = min(fitnesses);
+bestIRMax = irs(:, bestFitnessIndex);
+
+% Add predelay
+bestIRMax = [zeros(delay, 1); bestIRMax(1:(end - delay))];
+
+%% Display and Save Output
+% Specify output file names, save them in same path as input file
+newFileName2 = replace(fileName, '.wav', '_ga_max.wav');
+
+audiowrite([filePath newFileName2], bestIRMax, IR_SAMPLE_RATE);
+fprintf('\nSaved new impulse response to %s%s\n\n', filePath, newFileName2);
+
+fprintf('Acoustics values of new impulse response (max settings)...\n');
+
+irValuesMax = calc_ir_values(bestIRMax, irParams.NUM_SAMPLES, IR_SAMPLE_RATE) %#ok<*NOPTS>
 
 fprintf('Fitness value: %f\n', bestFitness);
