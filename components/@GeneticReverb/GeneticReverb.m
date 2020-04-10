@@ -5,8 +5,8 @@
 %
 % File: GeneticReverb.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 3.2.1
-% Last Updated: 23 January 2020
+% Version: 3.3.1
+% Last Updated: 10 April 2020
 %
 % Usage: Validate and generate the VST plugin, respectively, with:
 %     validateAudioPlugin GeneticReverb
