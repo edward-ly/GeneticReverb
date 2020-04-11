@@ -2,8 +2,8 @@
 %
 % File: evaluate_plugin.m
 % Author: Edward Ly (m5222120@u-aizu.ac.jp)
-% Version: 0.5.4
-% Last Updated: 10 April 2020
+% Version: 0.5.5
+% Last Updated: 11 April 2020
 %
 %
 % BSD 3-Clause License
@@ -64,7 +64,7 @@ fprintf('Group Size = %d\n\n', NUM_IRS);
 
 %% Generate and Evaluate New Impulse Responses
 % Initial Settings
-[times, fitnesses, losses, conditions] = ir_test_init(gaParamsLow, 1, NUM_IRS);
+[times, fitnesses, losses, conditions] = ir_test_init(gaParamsLow, NUM_IRS);
 print_stats(NUM_IRS, times, fitnesses, losses, conditions, 'Initial');
 
 % Low Settings, T60 = 0.625s
