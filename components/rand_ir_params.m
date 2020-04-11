@@ -18,8 +18,8 @@ function params = rand_ir_params(T60)
         'NUM_SAMPLES', 0, ...
         'T60', T60, ...
         'EDT', 0, ...
-        'C80', rand * 30 - 15, ...           % -15 to 15 dB (lin)
-        'BR', rand * 10 - 5);                % -5 to 5 dB (lin)
+        'C80', rand * 60 - 30, ...           % -30 to 30 dB (lin)
+        'BR', rand * 20 - 10);                % -10 to 10 dB (lin)
 
     params.NUM_SAMPLES = ceil(1.5 * params.T60 * params.SAMPLE_RATE);
     params.EDT = (rand * 20 + 5) * params.T60 / 100.0; % 5 to 25 percent of T60
