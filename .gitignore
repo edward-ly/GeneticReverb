@@ -29,9 +29,12 @@
 **/lib
 **/packages
 
-# Ignore VST plugin files (Windows and MacOS).
+# Ignore VST plugin files/executables (Windows and MacOS).
 **/*.dll
 **/*.vst
+**/*.exe
+**/*.app
+**/*.component
 
 # Ignore test files (in test folder).
 **/test/*
