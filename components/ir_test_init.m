@@ -15,8 +15,8 @@ function [times, fitnesses, lossesStruct, conditions] = ...
 % conditions = array of termininating conditions reached for each IR
 %
     % Require all arguments
-    if nargin < 3, error('Not enough input arguments.'); end
-    if nargout < 3, error('Not enough output arguments.'); end
+    if nargin < 2, error('Not enough input arguments.'); end
+    if nargout < 4, error('Not enough output arguments.'); end
 
     % =========================================================================
 
