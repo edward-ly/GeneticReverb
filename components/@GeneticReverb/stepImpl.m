@@ -39,10 +39,10 @@ function out = stepImpl(plugin, in)
     end
     out = [outL outR];
 
-    % Apply dry/wet mix
-    out = in .* (1 - plugin.MIX / 100) + out .* plugin.MIX ./ 100;
-
-    % Apply output gain
+    % Apply gain to wet signal
     gain = 10 ^ (plugin.GAIN / 20);
     out = out .* gain;
+
+    % Apply dry/wet mix
+    out = in .* (1 - plugin.MIX / 100) + out .* plugin.MIX ./ 100;
 end
