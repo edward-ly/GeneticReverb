@@ -39,6 +39,9 @@
 # Ignore test files (in test folder).
 **/test/*
 
+# Ignore R and .csv data files (in data folder).
+**/data
+
 # Ignore text files.
 **/*.txt
 
