@@ -44,9 +44,16 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
         newIRs = zeros(irParams.NUM_SAMPLES, 2);
         for i = 1:2, newIRs(:, i) = genetic_rir(gaParams, irParams); end
 
-        % Modify gains of IRs so that RMS levels are equal
-        [newIRs(:, 1), newIRs(:, 2)] = ...
-            normalize_rms(newIRs(:, 1), newIRs(:, 2));
+        if plugin.NORMALIZE_STEREO
+            % Modify gains of IRs so that RMS levels are equal
+            [newIRs(:, 1), newIRs(:, 2)] = ...
+                normalize_rms(newIRs(:, 1), newIRs(:, 2));
+        else
+            % Modify gains of IRs so that RMS difference is no more than maximum
+            % ILD (interaural level difference)
+            [newIRs(:, 1), newIRs(:, 2)] = ...
+                limit_ild(newIRs(:, 1), newIRs(:, 2));
+        end
 
         % Normalize to prevent clipping
         newIRs = normalize_signal(newIRs, 0.99);
