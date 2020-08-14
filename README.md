@@ -62,6 +62,7 @@ Listed below are the current user parameters of the plugin. You can change the i
   - **Warmth** - Specifies the difference in energy levels (in decibels) of low-frequency (125-500 Hz) content compared to mid-frequency (500-2000 Hz) content. A value of 0 dB represents a 1:1 ratio (flat response), and increasing or decreasing this value makes the impulse response more "warm" or "brilliant", respectively.
   - **Predelay** - Specifies the amount of time delay before the arrival of the direct sound in the impulse response. Higher values also contribute to the impression of larger rooms. Currently available as two separate knobs in the plugin, one for each of the left and right stereo channels to delay each impulse response separately.
   - **Mono/Stereo** - Setting this to "mono" mode means that the genetic algorithm will generate only one impulse response to be used for both the left and right audio channels, while "stereo" mode makes the genetic algorithm generate two instead, one for each stereo channel to create a binaural effect. In "stereo" mode, the gains of the impulse responses are also adjusted so that they are equal (according to average RMS amplitude).
+  - **Normalize** - If set to "On", adjusts the gain of the two impulse responses so that their RMS levels are equal. Otherwise, the difference in RMS levels will only be limited by the maximum possible ILD (Interaural Level Difference, assumed to be 20 dB in the plugin). Works in "stereo" mode only.
   - **Quality** - Specifies the quality of the reverb by changing the amount of time given to the genetic algorithm to produce an impulse response (more specifically, changing various parameters in the genetic algorithm such as the population size or the maximum number of generations to execute).
 - Post-Processing Parameters
   - **Output Gain** - Adjusts the gain of the wet signal before being mixed with the dry input signal.
@@ -78,4 +79,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-11 April 2020
+14 August 2020
