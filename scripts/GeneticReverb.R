@@ -183,9 +183,8 @@ p = ggplot(
     )
 ) + geom_col(
     position = position_dodge(),
-    color = "black",
-    alpha = 0.5
-) + scale_fill_grey() + geom_point(
+    color = "black"
+) + scale_fill_grey(start = 0.6, end = 0.9) + geom_point(
     position = position_dodge(width = 0.9)
 ) + geom_errorbar(
     position = position_dodge(width = 0.9),
@@ -310,9 +309,8 @@ p2 = ggplot(
     )
 ) + geom_col(
     position = position_dodge(),
-    color = "black",
-    alpha = 0.5
-) + scale_fill_grey() + geom_point(
+    color = "black"
+) + scale_fill_grey(start = 0.6, end = 0.9) + geom_point(
     position = position_dodge(width = 0.9)
 ) + geom_errorbar(
     position = position_dodge(width = 0.9),
