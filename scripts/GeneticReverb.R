@@ -321,3 +321,9 @@ p2 = ggplot(
     fill = "",
     y = "Probability of Correct Response"
 )
+
+############################################################################
+## Save All Figures To EPS Files
+
+ggsave("figure_subj_all.eps", plot = p, device = "eps", path = "../data/")
+ggsave("figure_subj_imp.eps", plot = p2, device = "eps", path = "../data/")
