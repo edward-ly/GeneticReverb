@@ -185,7 +185,7 @@ p = ggplot(
     position = position_dodge(),
     color = "black",
     alpha = 0.5
-) + geom_point(
+) + scale_fill_grey() + geom_point(
     position = position_dodge(width = 0.9)
 ) + geom_errorbar(
     position = position_dodge(width = 0.9),
@@ -194,7 +194,7 @@ p = ggplot(
     title = "",
     x = "",
     fill = "",
-    y = "Probabilty of Correct Response"
+    y = "Probability of Correct Response"
 )
 
 ############################################################################
@@ -312,7 +312,7 @@ p2 = ggplot(
     position = position_dodge(),
     color = "black",
     alpha = 0.5
-) + geom_point(
+) + scale_fill_grey() + geom_point(
     position = position_dodge(width = 0.9)
 ) + geom_errorbar(
     position = position_dodge(width = 0.9),
@@ -321,5 +321,5 @@ p2 = ggplot(
     title = "",
     x = "",
     fill = "",
-    y = "Probabilty of Correct Response"
+    y = "Probability of Correct Response"
 )
