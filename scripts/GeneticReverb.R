@@ -8,8 +8,8 @@
 #
 # File: GeneticReverb.R
 # Author: Edward Ly (m5222120@u-aizu.ac.jp)
-# Version: 0.1.0
-# Last Updated: 8 July 2020
+# Version: 0.2.0
+# Last Updated: 17 August 2020
 
 ############################################################################
 ## Load required libraries
