@@ -186,7 +186,7 @@ p <- ggplot(
     position = position_dodge(),
     color = "black"
   ) +
-  scale_fill_grey(start = 0.6, end = 0.9) +
+  scale_fill_manual(values = c("#b2d5eb", "#f4cbba")) +
   geom_point(
     position = position_dodge(width = 0.9)
   ) +
@@ -196,6 +196,7 @@ p <- ggplot(
   ) +
   theme4journal +
   theme(legend.position = "bottom") +
+  theme_classic() +
   labs(
     title = "",
     x = "",
@@ -319,7 +320,7 @@ p2 <- ggplot(
     position = position_dodge(),
     color = "black"
   ) +
-  scale_fill_grey(start = 0.6, end = 0.9) +
+  scale_fill_manual(values = c("#b2d5eb", "#f4cbba")) +
   geom_point(
     position = position_dodge(width = 0.9)
   ) +
@@ -329,6 +330,7 @@ p2 <- ggplot(
   ) +
   theme4journal +
   theme(legend.position = "bottom") +
+  theme_classic() +
   labs(
     title = "",
     x = "",
