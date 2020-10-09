@@ -1,7 +1,7 @@
 % Script to generate and evaluate IRs similar to an input IR from file.
 %
 % File: evaluate_plugin_fixed.m
-% Author: Edward Ly (m5222120@u-aizu.ac.jp)
+% Author: Edward Ly (edward.ly@pm.me)
 % Version: 0.1.4
 % Last Updated: 10 April 2020
 %

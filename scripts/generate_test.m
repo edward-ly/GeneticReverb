@@ -1,7 +1,7 @@
 % Performs mass convolution and normalization for evaluation purposes.
 %
 % File: generate_test.m
-% Author: Edward Ly (m5222120@u-aizu.ac.jp)
+% Author: Edward Ly (edward.ly@pm.me)
 % Version: 0.1.1
 % Last Updated: 1 April 2020
 %

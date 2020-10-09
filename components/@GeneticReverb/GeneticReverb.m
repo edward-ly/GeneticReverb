@@ -4,7 +4,7 @@
 % dry/wet mix and gain of the output signal.
 %
 % File: GeneticReverb.m
-% Author: Edward Ly (m5222120@u-aizu.ac.jp)
+% Author: Edward Ly (edward.ly@pm.me)
 % Version: 3.4.0
 % Last Updated: 14 August 2020
 %

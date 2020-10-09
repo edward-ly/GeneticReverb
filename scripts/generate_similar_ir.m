@@ -1,7 +1,7 @@
 % Script to generate and save an IR similar to an input IR from file.
 %
 % File: generate_similar_ir.m
-% Author: Edward Ly (m5222120@u-aizu.ac.jp)
+% Author: Edward Ly (edward.ly@pm.me)
 % Version: 0.2.0
 % Last Updated: 27 March 2020
 %

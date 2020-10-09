@@ -1,7 +1,7 @@
 % Script to normalize 2 audio files so that RMS levels are equal.
 %
 % File: normalize_irs.m
-% Author: Edward Ly (m5222120@u-aizu.ac.jp)
+% Author: Edward Ly (edward.ly@pm.me)
 % Version: 0.1.0
 % Last Updated: 24 March 2020
 %

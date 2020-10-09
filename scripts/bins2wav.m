@@ -2,7 +2,7 @@
 % Any WAV files that have already been created are skipped.
 %
 % File: bins2wav.m
-% Author: Edward Ly (m5222120@u-aizu.ac.jp)
+% Author: Edward Ly (edward.ly@pm.me)
 % Version: 0.1.0
 % Last Updated: 8 November 2019
 %

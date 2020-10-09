@@ -7,7 +7,7 @@
 #     or, alternatively, "Run line or selection" or "Run all" in RGui
 #
 # File: GeneticReverb.R
-# Author: Edward Ly (m5222120@u-aizu.ac.jp)
+# Author: Edward Ly (edward.ly@pm.me)
 # Version: 0.2.1
 # Last Updated: 9 October 2020
 

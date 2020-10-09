@@ -1,7 +1,7 @@
 % Generates a wet audio signal from two audio files (a dry signal and an IR).
 %
 % File: conv_audio.m
-% Author: Edward Ly (m5222120@u-aizu.ac.jp)
+% Author: Edward Ly (edward.ly@pm.me)
 % Version: 0.1.2
 % Last Updated: 24 March 2020
 %

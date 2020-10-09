@@ -1,7 +1,7 @@
 % Script to calculate the acoustics parameter values of an impulse response.
 %
 % File: get_ir_values.m
-% Author: Edward Ly (m5222120@u-aizu.ac.jp)
+% Author: Edward Ly (edward.ly@pm.me)
 % Version: 0.1.1
 % Last Updated: 10 March 2020
 %

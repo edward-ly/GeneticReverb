@@ -3,7 +3,7 @@
 % convolution, and saves the impulse response and output audio to WAV files.
 %
 % File: main.m
-% Author: Edward Ly (m5222120@u-aizu.ac.jp)
+% Author: Edward Ly (edward.ly@pm.me)
 % Version: 0.11.3
 % Last Updated: 26 March 2020
 %
