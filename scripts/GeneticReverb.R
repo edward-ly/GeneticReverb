@@ -199,7 +199,7 @@ p <- ggplot(
   theme_classic() +
   labs(
     title = "",
-    x = "",
+    x = "Quality",
     fill = "",
     y = "Probability of Correct Response"
   )
@@ -333,7 +333,7 @@ p2 <- ggplot(
   theme_classic() +
   labs(
     title = "",
-    x = "",
+    x = "Quality",
     fill = "",
     y = "Probability of Correct Response"
   )
