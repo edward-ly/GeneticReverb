@@ -339,7 +339,7 @@ p2 <- ggplot(
   )
 
 ############################################################################
-## Save All Figures To EPS Files
+## Save All Figures To PDF Files
 
-ggsave("figure_subj_all.eps", plot = p, device = "eps", path = "../data/")
-ggsave("figure_subj_imp.eps", plot = p2, device = "eps", path = "../data/")
+ggsave("figure_subj_all.pdf", plot = p, device = "pdf", path = "../data/")
+ggsave("figure_subj_imp.pdf", plot = p2, device = "pdf", path = "../data/")
