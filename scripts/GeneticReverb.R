@@ -341,5 +341,19 @@ p2 <- ggplot(
 ############################################################################
 ## Save All Figures To PDF Files
 
-ggsave("figure_subj_all.pdf", plot = p, device = "pdf", path = "../data/")
-ggsave("figure_subj_imp.pdf", plot = p2, device = "pdf", path = "../data/")
+ggsave(
+  "figure_subj_all.pdf",
+  plot = p,
+  device = "pdf",
+  path = "../data/",
+  width = 6,
+  height = 4.5
+)
+ggsave(
+  "figure_subj_imp.pdf",
+  plot = p2,
+  device = "pdf",
+  path = "../data/",
+  width = 6,
+  height = 4.5
+)
