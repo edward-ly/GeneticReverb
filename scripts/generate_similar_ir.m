@@ -54,7 +54,7 @@ gaParamsHigh = load('quality_settings.mat', 'High').High;
 %% Load/Save UI
 % Specify IR file for input
 [fileName, filePath] = uigetfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Open Impulse Response WAV File...');
+  {'*.wav', 'WAV Files (*.wav)'}, 'Open Impulse Response WAV File...');
 if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Read Input Audio File
@@ -63,26 +63,26 @@ if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Calculate and display parameter values (Channel 1 only)
 fprintf('Acoustics values of impulse response in file "%s%s"...\n', ...
-    filePath, fileName);
+  filePath, fileName);
 
 irValues = calc_ir_values(drySignal(:, 1), numAudioSamples, audioSampleRate) %#ok<*NOPTS>
 delay = round(irValues.PREDELAY * IR_SAMPLE_RATE);
 
 %% Initialize irParams Struct
 irParams = struct( ...
-    'SAMPLE_RATE', IR_SAMPLE_RATE, ...
-    'NUM_SAMPLES', round(numAudioSamples * IR_SAMPLE_RATE / audioSampleRate), ...
-    'T60', irValues.T60, ...
-    'EDT', irValues.EDT, ...
-    'C80', irValues.C80, ...
-    'BR', irValues.BR);
+  'SAMPLE_RATE', IR_SAMPLE_RATE, ...
+  'NUM_SAMPLES', round(numAudioSamples * IR_SAMPLE_RATE / audioSampleRate), ...
+  'T60', irValues.T60, ...
+  'EDT', irValues.EDT, ...
+  'C80', irValues.C80, ...
+  'BR', irValues.BR);
 
 %% Generate New Impulse Response (High Setting)
 irs = zeros(irParams.NUM_SAMPLES, NUM_IRS);
 fitnesses = zeros(NUM_IRS, 1);
 
 parfor i = 1:NUM_IRS
-    [irs(:, i), fitnesses(i)] = genetic_rir(gaParamsHigh, irParams, VERBOSE);
+  [irs(:, i), fitnesses(i)] = genetic_rir(gaParamsHigh, irParams, VERBOSE);
 end
 
 [bestFitness, bestFitnessIndex] = min(fitnesses);
@@ -106,7 +106,7 @@ fprintf('Fitness value: %f\n', bestFitness);
 
 %% Generate New Impulse Response (Max Setting)
 parfor i = 1:NUM_IRS
-    [irs(:, i), fitnesses(i)] = genetic_rir(gaParamsMax, irParams, VERBOSE);
+  [irs(:, i), fitnesses(i)] = genetic_rir(gaParamsMax, irParams, VERBOSE);
 end
 
 [bestFitness, bestFitnessIndex] = min(fitnesses);

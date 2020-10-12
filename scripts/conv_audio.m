@@ -6,24 +6,24 @@
 % Last Updated: 24 March 2020
 %
 % BSD 3-Clause License
-% 
+%
 % Copyright (c) 2020, Edward Ly
 % All rights reserved.
-% 
+%
 % Redistribution and use in source and binary forms, with or without
 % modification, are permitted provided that the following conditions are met:
-% 
+%
 % 1. Redistributions of source code must retain the above copyright notice, this
 %    list of conditions and the following disclaimer.
-% 
+%
 % 2. Redistributions in binary form must reproduce the above copyright notice,
 %    this list of conditions and the following disclaimer in the documentation
 %    and/or other materials provided with the distribution.
-% 
+%
 % 3. Neither the name of the copyright holder nor the names of its
 %    contributors may be used to endorse or promote products derived from
 %    this software without specific prior written permission.
-% 
+%
 % THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 % AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 % IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -45,23 +45,23 @@ addpath ../components
 %% Output Parameters
 NORMALIZE_AUDIO = true;    % Normalize audio after applying convolution
 STEREO = false;            % Convolve audio using all IR channels if possible,
-                           % otherwise use only 1st channel of IR
+% otherwise use only 1st channel of IR
 
 %% Load/Save UI
 % Specify audio file for dry signal input
 [dryFileName, dryFilePath] = uigetfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Open Audio WAV File...');
+  {'*.wav', 'WAV Files (*.wav)'}, 'Open Audio WAV File...');
 if ~dryFileName, fprintf('No file selected, exiting...\n'); return; end
 
 % Specify audio file for impulse response
 [irFileName, irFilePath] = uigetfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Open Impulse Response WAV File...');
+  {'*.wav', 'WAV Files (*.wav)'}, 'Open Impulse Response WAV File...');
 if ~irFileName, fprintf('No file selected, exiting...\n'); return; end
 
 % Specify location to save output files
 newFileName = replace(dryFileName, '.wav', '_wet.wav');
 [outFileName, outFilePath] = uiputfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Save Audio As...', newFileName);
+  {'*.wav', 'WAV Files (*.wav)'}, 'Save Audio As...', newFileName);
 if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Read Input Audio Files
@@ -76,8 +76,8 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 %% Create Wet Signal
 % Resample IR sample rate to match audio sample rate, if necessary
 if irSampleRate ~= audioSampleRate
-    ir = resample(ir, audioSampleRate, irSampleRate);
-    [irSamples, irChannels] = size(ir);
+  ir = resample(ir, audioSampleRate, irSampleRate);
+  [irSamples, irChannels] = size(ir);
 end
 
 % Apply impulse response to input audio signal via convolution. Each
@@ -85,13 +85,13 @@ end
 % column/channel in the audio
 wetSignal = zeros(numAudioSamples + irSamples - 1, numAudioChannels);
 if STEREO
-    for i = 1:numAudioChannels %#ok<*UNRCH>
-        wetSignal(:, i) = conv(ir(:, mod(i, irChannels) + 1), drySignal(:, i));
-    end
+  for i = 1:numAudioChannels %#ok<*UNRCH>
+    wetSignal(:, i) = conv(ir(:, mod(i, irChannels) + 1), drySignal(:, i));
+  end
 else
-    for i = 1:numAudioChannels
-        wetSignal(:, i) = conv(ir(:, 1), drySignal(:, i));
-    end
+  for i = 1:numAudioChannels
+    wetSignal(:, i) = conv(ir(:, 1), drySignal(:, i));
+  end
 end
 
 % Normalize audio

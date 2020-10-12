@@ -13,17 +13,17 @@ function out = mutate(in, MUTATION_RATE)
 % chance of each sample increasing or decreasing in magnitude, as well as a 50%
 % chance of each value being positive or negative.
 %
-    % Require all arguments
-    if nargin < 2, error('Not enough input arguments.'); end
-    if nargout < 1, error('Not enough output arguments.'); end
+  % Require all arguments
+  if nargin < 2, error('Not enough input arguments.'); end
+  if nargout < 1, error('Not enough output arguments.'); end
 
-    % =========================================================================
+  % =========================================================================
 
-    out = in;
-    [I, J] = size(out);
+  out = in;
+  [I, J] = size(out);
 
-    mutPoints = rand(I, J) < MUTATION_RATE;
-    mutPoints(1, :) = 0; % do not mutate initial reflection
-    mutValues = mutPoints .* randn(I, J) ./ norminv(0.75);
-    out = (out .* ~mutPoints) + (out .* mutValues);
+  mutPoints = rand(I, J) < MUTATION_RATE;
+  mutPoints(1, :) = 0; % do not mutate initial reflection
+  mutValues = mutPoints .* randn(I, J) ./ norminv(0.75);
+  out = (out .* ~mutPoints) + (out .* mutValues);
 end

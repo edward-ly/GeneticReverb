@@ -10,16 +10,16 @@ function [outLeft, outRight] = normalize_rms(inLeft, inRight)
 % outLeft = column vector containing first signal normalized
 % outRight = column vector containing second signal normalized
 %
-    % Require output arguments
-    if nargout < 2, error('Not enough output arguments.'); end
-    
-    % Require input arguments
-    if nargin < 2, error('Not enough input arguments.'); end
+  % Require output arguments
+  if nargout < 2, error('Not enough output arguments.'); end
 
-    % =========================================================================
+  % Require input arguments
+  if nargin < 2, error('Not enough input arguments.'); end
 
-    leftRMS = rms(inLeft);
-    rightRMS = rms(inRight);
-    outLeft = inLeft;
-    outRight = inRight .* (1 + (leftRMS / rightRMS)) ./ (1 + (rightRMS / leftRMS));
+  % =========================================================================
+
+  leftRMS = rms(inLeft);
+  rightRMS = rms(inRight);
+  outLeft = inLeft;
+  outRight = inRight .* (1 + (leftRMS / rightRMS)) ./ (1 + (rightRMS / leftRMS));
 end

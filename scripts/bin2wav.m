@@ -41,13 +41,13 @@ addpath ../components
 
 %% Choose a binary file for input
 [fileName, filePath] = uigetfile( ...
-    {'*.bin', 'BIN Files (*.bin)'}, 'Open Binary File...');
+  {'*.bin', 'BIN Files (*.bin)'}, 'Open Binary File...');
 if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Perform the conversion
 [fileCreated, newFileName] = bin_to_wav(filePath, fileName);
 if fileCreated
-    fprintf('Saved data to %s%s\n', filePath, newFileName);
+  fprintf('Saved data to %s%s\n', filePath, newFileName);
 else
-    fprintf('%s%s\nWAV file already exists, exiting...\n', filePath, newFileName);
+  fprintf('%s%s\nWAV file already exists, exiting...\n', filePath, newFileName);
 end

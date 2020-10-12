@@ -53,17 +53,17 @@ fileNameList = ls([filePath '*.bin']);
 skipCount = 0;
 
 for i = 1:size(fileNameList, 1)
-    fileName = deblank(fileNameList(i, :));
-    [fileCreated, newFileName] = bin_to_wav(filePath, fileName);
-    if fileCreated
-        fprintf('Created file %s%s\n', filePath, newFileName);
-    else
-        skipCount = skipCount + 1;
-    end
+  fileName = deblank(fileNameList(i, :));
+  [fileCreated, newFileName] = bin_to_wav(filePath, fileName);
+  if fileCreated
+    fprintf('Created file %s%s\n', filePath, newFileName);
+  else
+    skipCount = skipCount + 1;
+  end
 end
 
 if skipCount > 0
-    plural = '';
-    if skipCount > 1, plural = 's'; end
-    fprintf('Skipped %d file%s.\n', skipCount, plural);
+  plural = '';
+  if skipCount > 1, plural = 's'; end
+  fprintf('Skipped %d file%s.\n', skipCount, plural);
 end

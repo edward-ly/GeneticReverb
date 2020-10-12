@@ -149,25 +149,25 @@ ylabel(t1, 'Run Time (s)')
 
 t11 = nexttile;
 violinplot([timesLow1 timesMed1 timesHigh1 timesMax1], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 0.625s')
 y11 = ylim;
 
 t12 = nexttile;
 violinplot([timesLow2 timesMed2 timesHigh2 timesMax2], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 1.25s')
 y12 = ylim;
 
 t13 = nexttile;
 violinplot([timesLow3 timesMed3 timesHigh3 timesMax3], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 2.5s')
 y13 = ylim;
 
 t14 = nexttile;
 violinplot([timesLow4 timesMed4 timesHigh4 timesMax4], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 5s')
 y14 = ylim;
 
@@ -185,25 +185,25 @@ ylabel(t2, 'Fitness Value')
 
 t21 = nexttile;
 violinplot([fitnessesLow1 fitnessesMed1 fitnessesHigh1 fitnessesMax1], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 0.625s')
 y21 = ylim;
 
 t22 = nexttile;
 violinplot([fitnessesLow2 fitnessesMed2 fitnessesHigh2 fitnessesMax2], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 1.25s')
 y22 = ylim;
 
 t23 = nexttile;
 violinplot([fitnessesLow3 fitnessesMed3 fitnessesHigh3 fitnessesMax3], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 2.5s')
 y23 = ylim;
 
 t24 = nexttile;
 violinplot([fitnessesLow4 fitnessesMed4 fitnessesHigh4 fitnessesMax4], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 5s')
 y24 = ylim;
 
@@ -221,25 +221,25 @@ ylabel(t3, 'Absolute Deviation of T60 (ms)')
 
 t31 = nexttile;
 violinplot([[lossesLow1.T60]' [lossesMed1.T60]' [lossesHigh1.T60]' [lossesMax1.T60]'] .* 1000, ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 0.625s')
 y31 = ylim;
 
 t32 = nexttile;
 violinplot([[lossesLow2.T60]' [lossesMed2.T60]' [lossesHigh2.T60]' [lossesMax2.T60]'] .* 1000, ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 1.25s')
 y32 = ylim;
 
 t33 = nexttile;
 violinplot([[lossesLow3.T60]' [lossesMed3.T60]' [lossesHigh3.T60]' [lossesMax3.T60]'] .* 1000, ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 2.5s')
 y33 = ylim;
 
 t34 = nexttile;
 violinplot([[lossesLow4.T60]' [lossesMed4.T60]' [lossesHigh4.T60]' [lossesMax4.T60]'] .* 1000, ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 5s')
 y34 = ylim;
 
@@ -257,25 +257,25 @@ ylabel(t4, 'Absolute Deviation of EDT (ms)')
 
 t41 = nexttile;
 violinplot([[lossesLow1.EDT]' [lossesMed1.EDT]' [lossesHigh1.EDT]' [lossesMax1.EDT]'] .* 1000, ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 0.625s')
 y41 = ylim;
 
 t42 = nexttile;
 violinplot([[lossesLow2.EDT]' [lossesMed2.EDT]' [lossesHigh2.EDT]' [lossesMax2.EDT]'] .* 1000, ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 1.25s')
 y42 = ylim;
 
 t43 = nexttile;
 violinplot([[lossesLow3.EDT]' [lossesMed3.EDT]' [lossesHigh3.EDT]' [lossesMax3.EDT]'] .* 1000, ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 2.5s')
 y43 = ylim;
 
 t44 = nexttile;
 violinplot([[lossesLow4.EDT]' [lossesMed4.EDT]' [lossesHigh4.EDT]' [lossesMax4.EDT]'] .* 1000, ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 5s')
 y44 = ylim;
 
@@ -293,25 +293,25 @@ ylabel(t5, 'Absolute Deviation of C80 (dB)')
 
 t51 = nexttile;
 violinplot([[lossesLow1.C80]' [lossesMed1.C80]' [lossesHigh1.C80]' [lossesMax1.C80]'], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 0.625s')
 y51 = ylim;
 
 t52 = nexttile;
 violinplot([[lossesLow2.C80]' [lossesMed2.C80]' [lossesHigh2.C80]' [lossesMax2.C80]'], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 1.25s')
 y52 = ylim;
 
 t53 = nexttile;
 violinplot([[lossesLow3.C80]' [lossesMed3.C80]' [lossesHigh3.C80]' [lossesMax3.C80]'], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 2.5s')
 y53 = ylim;
 
 t54 = nexttile;
 violinplot([[lossesLow4.C80]' [lossesMed4.C80]' [lossesHigh4.C80]' [lossesMax4.C80]'], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 5s')
 y54 = ylim;
 
@@ -329,25 +329,25 @@ ylabel(t6, 'Absolute Deviation of BR (dB)')
 
 t61 = nexttile;
 violinplot([[lossesLow1.BR]' [lossesMed1.BR]' [lossesHigh1.BR]' [lossesMax1.BR]'], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 0.625s')
 y61 = ylim;
 
 t62 = nexttile;
 violinplot([[lossesLow2.BR]' [lossesMed2.BR]' [lossesHigh2.BR]' [lossesMax2.BR]'], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 1.25s')
 y62 = ylim;
 
 t63 = nexttile;
 violinplot([[lossesLow3.BR]' [lossesMed3.BR]' [lossesHigh3.BR]' [lossesMax3.BR]'], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 2.5s')
 y63 = ylim;
 
 t64 = nexttile;
 violinplot([[lossesLow4.BR]' [lossesMed4.BR]' [lossesHigh4.BR]' [lossesMax4.BR]'], ...
-    labels, 'ShowData', false);
+  labels, 'ShowData', false);
 title('T60 = 5s')
 y64 = ylim;
 
@@ -358,53 +358,53 @@ savefig(['results_' timestamp '_figure_BR.fig'])
 
 % Comparison of Terminating Condition Occurrences
 countsLow1 = [sum(strcmp(conditionsLow1, 'Generations')), ...
-    sum(strcmp(conditionsLow1, 'Plateau')), ...
-    sum(strcmp(conditionsLow1, 'Threshold'))];
+  sum(strcmp(conditionsLow1, 'Plateau')), ...
+  sum(strcmp(conditionsLow1, 'Threshold'))];
 countsMed1 = [sum(strcmp(conditionsMed1, 'Generations')), ...
-    sum(strcmp(conditionsMed1, 'Plateau')), ...
-    sum(strcmp(conditionsMed1, 'Threshold'))];
+  sum(strcmp(conditionsMed1, 'Plateau')), ...
+  sum(strcmp(conditionsMed1, 'Threshold'))];
 countsHigh1 = [sum(strcmp(conditionsHigh1, 'Generations')), ...
-    sum(strcmp(conditionsHigh1, 'Plateau')), ...
-    sum(strcmp(conditionsHigh1, 'Threshold'))];
+  sum(strcmp(conditionsHigh1, 'Plateau')), ...
+  sum(strcmp(conditionsHigh1, 'Threshold'))];
 countsMax1 = [sum(strcmp(conditionsMax1, 'Generations')), ...
-    sum(strcmp(conditionsMax1, 'Plateau')), ...
-    sum(strcmp(conditionsMax1, 'Threshold'))];
+  sum(strcmp(conditionsMax1, 'Plateau')), ...
+  sum(strcmp(conditionsMax1, 'Threshold'))];
 countsLow2 = [sum(strcmp(conditionsLow2, 'Generations')), ...
-    sum(strcmp(conditionsLow2, 'Plateau')), ...
-    sum(strcmp(conditionsLow2, 'Threshold'))];
+  sum(strcmp(conditionsLow2, 'Plateau')), ...
+  sum(strcmp(conditionsLow2, 'Threshold'))];
 countsMed2 = [sum(strcmp(conditionsMed2, 'Generations')), ...
-    sum(strcmp(conditionsMed2, 'Plateau')), ...
-    sum(strcmp(conditionsMed2, 'Threshold'))];
+  sum(strcmp(conditionsMed2, 'Plateau')), ...
+  sum(strcmp(conditionsMed2, 'Threshold'))];
 countsHigh2 = [sum(strcmp(conditionsHigh2, 'Generations')), ...
-    sum(strcmp(conditionsHigh2, 'Plateau')), ...
-    sum(strcmp(conditionsHigh2, 'Threshold'))];
+  sum(strcmp(conditionsHigh2, 'Plateau')), ...
+  sum(strcmp(conditionsHigh2, 'Threshold'))];
 countsMax2 = [sum(strcmp(conditionsMax2, 'Generations')), ...
-    sum(strcmp(conditionsMax2, 'Plateau')), ...
-    sum(strcmp(conditionsMax2, 'Threshold'))];
+  sum(strcmp(conditionsMax2, 'Plateau')), ...
+  sum(strcmp(conditionsMax2, 'Threshold'))];
 countsLow3 = [sum(strcmp(conditionsLow3, 'Generations')), ...
-    sum(strcmp(conditionsLow3, 'Plateau')), ...
-    sum(strcmp(conditionsLow3, 'Threshold'))];
+  sum(strcmp(conditionsLow3, 'Plateau')), ...
+  sum(strcmp(conditionsLow3, 'Threshold'))];
 countsMed3 = [sum(strcmp(conditionsMed3, 'Generations')), ...
-    sum(strcmp(conditionsMed3, 'Plateau')), ...
-    sum(strcmp(conditionsMed3, 'Threshold'))];
+  sum(strcmp(conditionsMed3, 'Plateau')), ...
+  sum(strcmp(conditionsMed3, 'Threshold'))];
 countsHigh3 = [sum(strcmp(conditionsHigh3, 'Generations')), ...
-    sum(strcmp(conditionsHigh3, 'Plateau')), ...
-    sum(strcmp(conditionsHigh3, 'Threshold'))];
+  sum(strcmp(conditionsHigh3, 'Plateau')), ...
+  sum(strcmp(conditionsHigh3, 'Threshold'))];
 countsMax3 = [sum(strcmp(conditionsMax3, 'Generations')), ...
-    sum(strcmp(conditionsMax3, 'Plateau')), ...
-    sum(strcmp(conditionsMax3, 'Threshold'))];
+  sum(strcmp(conditionsMax3, 'Plateau')), ...
+  sum(strcmp(conditionsMax3, 'Threshold'))];
 countsLow4 = [sum(strcmp(conditionsLow4, 'Generations')), ...
-    sum(strcmp(conditionsLow4, 'Plateau')), ...
-    sum(strcmp(conditionsLow4, 'Threshold'))];
+  sum(strcmp(conditionsLow4, 'Plateau')), ...
+  sum(strcmp(conditionsLow4, 'Threshold'))];
 countsMed4 = [sum(strcmp(conditionsMed4, 'Generations')), ...
-    sum(strcmp(conditionsMed4, 'Plateau')), ...
-    sum(strcmp(conditionsMed4, 'Threshold'))];
+  sum(strcmp(conditionsMed4, 'Plateau')), ...
+  sum(strcmp(conditionsMed4, 'Threshold'))];
 countsHigh4 = [sum(strcmp(conditionsHigh4, 'Generations')), ...
-    sum(strcmp(conditionsHigh4, 'Plateau')), ...
-    sum(strcmp(conditionsHigh4, 'Threshold'))];
+  sum(strcmp(conditionsHigh4, 'Plateau')), ...
+  sum(strcmp(conditionsHigh4, 'Threshold'))];
 countsMax4 = [sum(strcmp(conditionsMax4, 'Generations')), ...
-    sum(strcmp(conditionsMax4, 'Plateau')), ...
-    sum(strcmp(conditionsMax4, 'Threshold'))];
+  sum(strcmp(conditionsMax4, 'Plateau')), ...
+  sum(strcmp(conditionsMax4, 'Threshold'))];
 
 labels = {'Generations', 'Plateau', 'Threshold'};
 

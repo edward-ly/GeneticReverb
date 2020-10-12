@@ -11,22 +11,22 @@ function [sortedPop, sortedFitness, sortedLoss] = sort_pop(pop, fitness, loss)
 % sortedFitness = fitness values of sorted population
 % sortedLoss = detailed error values of sorted population
 %
-    % Require all input arguments
-    if nargin < 3, error('Not enough input arguments.'); end
+  % Require all input arguments
+  if nargin < 3, error('Not enough input arguments.'); end
 
-    % Output argument sortedFitness is optional
-    if nargout < 1, error('Not enough output arguments.'); end
+  % Output argument sortedFitness is optional
+  if nargout < 1, error('Not enough output arguments.'); end
 
-    % =========================================================================
+  % =========================================================================
 
-    [sortedFitness, indices] = sort(fitness);
-    sortedPop = pop(:, indices);
-    sortedLoss.T60 = loss.T60(indices);
-    sortedLoss.EDT = loss.EDT(indices);
-    sortedLoss.C80 = loss.C80(indices);
-    sortedLoss.BR = loss.BR(indices);
-    sortedLoss.zT60 = loss.zT60(indices);
-    sortedLoss.zEDT = loss.zEDT(indices);
-    sortedLoss.zC80 = loss.zC80(indices);
-    sortedLoss.zBR = loss.zBR(indices);
+  [sortedFitness, indices] = sort(fitness);
+  sortedPop = pop(:, indices);
+  sortedLoss.T60 = loss.T60(indices);
+  sortedLoss.EDT = loss.EDT(indices);
+  sortedLoss.C80 = loss.C80(indices);
+  sortedLoss.BR = loss.BR(indices);
+  sortedLoss.zT60 = loss.zT60(indices);
+  sortedLoss.zEDT = loss.zEDT(indices);
+  sortedLoss.zC80 = loss.zC80(indices);
+  sortedLoss.zBR = loss.zBR(indices);
 end

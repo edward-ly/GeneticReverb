@@ -16,24 +16,24 @@
 %
 %
 % BSD 3-Clause License
-% 
+%
 % Copyright (c) 2020, Edward Ly
 % All rights reserved.
-% 
+%
 % Redistribution and use in source and binary forms, with or without
 % modification, are permitted provided that the following conditions are met:
-% 
+%
 % 1. Redistributions of source code must retain the above copyright notice, this
 %    list of conditions and the following disclaimer.
-% 
+%
 % 2. Redistributions in binary form must reproduce the above copyright notice,
 %    this list of conditions and the following disclaimer in the documentation
 %    and/or other materials provided with the distribution.
-% 
+%
 % 3. Neither the name of the copyright holder nor the names of its
 %    contributors may be used to endorse or promote products derived from
 %    this software without specific prior written permission.
-% 
+%
 % THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 % AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 % IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -70,12 +70,12 @@ WARMTH_AMOUNT = 50;        % Amount of warmth applied to IR (%)
 %     changing value in each generation
 
 gaParams = struct( ...
-    'POPULATION_SIZE', 50, ...
-    'SELECTION_SIZE', 20, ...
-    'NUM_GENERATIONS', 250, ...
-    'PLATEAU_LENGTH', 50, ...
-    'FITNESS_THRESHOLD', 0.001, ...
-    'MUTATION_RATE', 0.001);
+  'POPULATION_SIZE', 50, ...
+  'SELECTION_SIZE', 20, ...
+  'NUM_GENERATIONS', 250, ...
+  'PLATEAU_LENGTH', 50, ...
+  'FITNESS_THRESHOLD', 0.001, ...
+  'MUTATION_RATE', 0.001);
 
 %% Impulse Response Parameters
 % SAMPLE_RATE = Sample rate of impulse response (Hz)
@@ -88,25 +88,25 @@ gaParams = struct( ...
 %     low frequency to high frequency content) (dB)
 
 irParams = struct( ...
-    'SAMPLE_RATE', 44100, ...
-    'NUM_SAMPLES', 0, ...
-    'T60', 0.3914, ...
-    'EDT', 0.0644, ...
-    'C80', 12.3611, ...
-    'BR', 0.7041);
+  'SAMPLE_RATE', 44100, ...
+  'NUM_SAMPLES', 0, ...
+  'T60', 0.3914, ...
+  'EDT', 0.0644, ...
+  'C80', 12.3611, ...
+  'BR', 0.7041);
 
 irParams.NUM_SAMPLES = round(1.5 * irParams.T60 * irParams.SAMPLE_RATE);
 
 %% Load/Save UI
 % Specify audio file for input
 [fileName, filePath] = uigetfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
+  {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
 if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 
 % Specify location to save output files
 newFileName = replace(fileName, '.wav', '_wet.wav');
 [outFileName, outFilePath] = uiputfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Save Audio As...', newFileName);
+  {'*.wav', 'WAV Files (*.wav)'}, 'Save Audio As...', newFileName);
 if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 
 %% Read Input Audio File
@@ -124,8 +124,8 @@ irBest = normalize_signal(irBest, 0.99);
 
 % Resample IR sample rate to match audio sample rate, if necessary
 if irParams.SAMPLE_RATE ~= audioSampleRate
-    irBest = resample(irBest, audioSampleRate, irParams.SAMPLE_RATE);
-    numSamples = numel(irBest);
+  irBest = resample(irBest, audioSampleRate, irParams.SAMPLE_RATE);
+  numSamples = numel(irBest);
 end
 
 % Apply impulse response to input audio signal via convolution. Each
@@ -133,7 +133,7 @@ end
 % column/channel in the audio
 wetSignal = zeros(numAudioSamples + numSamples - 1, numAudioChannels);
 for i = 1:numAudioChannels
-    wetSignal(:, i) = conv(irBest, drySignal(:, i));
+  wetSignal(:, i) = conv(irBest, drySignal(:, i));
 end
 
 % Normalize audio
@@ -151,30 +151,30 @@ fprintf('Saved output audio to %s%s\n', outFilePath, outFileName);
 
 %% Display Figures
 if SHOW_FIGURES
-    % Plot output impulse response
-    figure
-    plot((1:numSamples) ./ audioSampleRate, irBest)
-    grid on
-    xlabel('Time (s)')
-    ylabel('Amplitude')
-
-    % Plot output impulse response in decibels
-    irBest2 = 10 .* log10(irBest .* irBest);
-    [~, sirdB] = schroeder(irBest);
-
-    figure
-    hold on
-    plot((1:numSamples) ./ audioSampleRate, irBest2)
-    plot((1:numSamples) ./ audioSampleRate, sirdB)
-    grid on
-    xlabel('Time (s)')
-    ylabel('Relative Gain (dB)')
-
-    % Plot best fitness value over time (in generations)
-    figure
-    plot(0:gaParams.NUM_GENERATIONS, fitnessCurve)
-    grid on
-    axis([-inf inf 0 inf])
-    xlabel('Generation')
-    ylabel('Fitness Value')
+  % Plot output impulse response
+  figure
+  plot((1:numSamples) ./ audioSampleRate, irBest)
+  grid on
+  xlabel('Time (s)')
+  ylabel('Amplitude')
+  
+  % Plot output impulse response in decibels
+  irBest2 = 10 .* log10(irBest .* irBest);
+  [~, sirdB] = schroeder(irBest);
+  
+  figure
+  hold on
+  plot((1:numSamples) ./ audioSampleRate, irBest2)
+  plot((1:numSamples) ./ audioSampleRate, sirdB)
+  grid on
+  xlabel('Time (s)')
+  ylabel('Relative Gain (dB)')
+  
+  % Plot best fitness value over time (in generations)
+  figure
+  plot(0:gaParams.NUM_GENERATIONS, fitnessCurve)
+  grid on
+  axis([-inf inf 0 inf])
+  xlabel('Generation')
+  ylabel('Fitness Value')
 end

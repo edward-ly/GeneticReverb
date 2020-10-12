@@ -44,7 +44,7 @@ addpath ../components
 
 %% Choose an audio file for input
 [fileName, filePath] = uigetfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
+  {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
 if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 
 [drySignal, audioSampleRate] = audioread([filePath fileName]);
@@ -53,6 +53,6 @@ if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 %% Calculate and display parameter values
 fprintf('Analyzing impulse response in file "%s%s"...\n', filePath, fileName);
 for i = 1:numAudioChannels
-    fprintf('Channel %i:\n', i);
-    calc_ir_values(drySignal(:, i), numAudioSamples, audioSampleRate)
+  fprintf('Channel %i:\n', i);
+  calc_ir_values(drySignal(:, i), numAudioSamples, audioSampleRate)
 end

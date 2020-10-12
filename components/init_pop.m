@@ -24,48 +24,48 @@ function pop = init_pop(gaParams, irParams)
 % with a cutoff frequency of 250 Hz and 12 dB/octave rolloff for the low-pass
 % filter).
 %
-    % Require all arguments
-    if nargin < 2, error('Not enough input arguments.'); end
-    if nargout < 1, error('Not enough output arguments.'); end
+  % Require all arguments
+  if nargin < 2, error('Not enough input arguments.'); end
+  if nargout < 1, error('Not enough output arguments.'); end
 
-    fs = irParams.SAMPLE_RATE;
-    T60 = irParams.T60;
-    n = irParams.NUM_SAMPLES;
-    popSize = gaParams.POPULATION_SIZE;
+  fs = irParams.SAMPLE_RATE;
+  T60 = irParams.T60;
+  n = irParams.NUM_SAMPLES;
+  popSize = gaParams.POPULATION_SIZE;
 
-    % =========================================================================
+  % =========================================================================
 
-    sampleDensity = rand(1, popSize) * 0.5 + 0.2; % {'lin', 0.2, 0.7}
-    sampleDensity = repmat(sampleDensity, n, 1);
+  sampleDensity = rand(1, popSize) * 0.5 + 0.2; % {'lin', 0.2, 0.7}
+  sampleDensity = repmat(sampleDensity, n, 1);
 
-    decayRate = rand(1, popSize) * 2e-4 + 2e-4; % {'lin', 2e-4, 4e-4}
-    decayRate = repmat(decayRate, n, 1);
+  decayRate = rand(1, popSize) * 2e-4 + 2e-4; % {'lin', 2e-4, 4e-4}
+  decayRate = repmat(decayRate, n, 1);
 
-    t = repmat((1:n)', 1, popSize) ./ fs;
+  t = repmat((1:n)', 1, popSize) ./ fs;
 
-    decayAmount = decayRate .^ (t / T60);
+  decayAmount = decayRate .^ (t / T60);
 
-    sampleProbability = 1 - sampleDensity .^ t;
-    sampleOccurences = rand(n, popSize) < sampleProbability;
-    sampleSigns = (-1) .^ (rand(n, popSize) < 0.5);
+  sampleProbability = 1 - sampleDensity .^ t;
+  sampleOccurences = rand(n, popSize) < sampleProbability;
+  sampleSigns = (-1) .^ (rand(n, popSize) < 0.5);
 
-    noise = randn(n, popSize) * (rand * 0.4 + 0.1); % {'lin', 0.1, 0.5}
-    samples = randn(n, popSize) * 0.05 + 1;
-    pop = (noise .* ~sampleOccurences) + ...
-        (samples .* sampleOccurences .* sampleSigns);
-    pop = pop .* decayAmount;
+  noise = randn(n, popSize) * (rand * 0.4 + 0.1); % {'lin', 0.1, 0.5}
+  samples = randn(n, popSize) * 0.05 + 1;
+  pop = (noise .* ~sampleOccurences) + ...
+    (samples .* sampleOccurences .* sampleSigns);
+  pop = pop .* decayAmount;
 
-    for i = 1:popSize
-        % Lower cutoff frequency: 31.25-500 Hz
-        % Higher cutoff frequency: 500-8000 Hz
-        [b, a] = butter(1, 500 .* [2^(rand * 4 - 4) 2^(rand * 4)] ./ (fs/2));
-        pop(:, i) = filter(b, a, pop(:, i));
-    end
+  for i = 1:popSize
+    % Lower cutoff frequency: 31.25-500 Hz
+    % Higher cutoff frequency: 500-8000 Hz
+    [b, a] = butter(1, 500 .* [2^(rand * 4 - 4) 2^(rand * 4)] ./ (fs/2));
+    pop(:, i) = filter(b, a, pop(:, i));
+  end
 
-    bg_noise = randn(n, popSize) * 0.0003;
-    [b, a] = butter(2, 250/(fs/2));
-    bg_noise = filter(b, a, bg_noise);
-    pop = pop + bg_noise;
+  bg_noise = randn(n, popSize) * 0.0003;
+  [b, a] = butter(2, 250/(fs/2));
+  bg_noise = filter(b, a, bg_noise);
+  pop = pop + bg_noise;
 
-    pop(1, :) = 1; % normalize first reflection at t = 0
+  pop(1, :) = 1; % normalize first reflection at t = 0
 end

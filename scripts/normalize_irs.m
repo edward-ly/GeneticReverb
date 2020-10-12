@@ -45,11 +45,11 @@ addpath ../components
 %% Load/Save UI
 % Specify files for input
 [fileName1, filePath1] = uigetfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
+  {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
 if ~fileName1, fprintf('No file selected, exiting...\n'); return; end
 
 [fileName2, filePath2] = uigetfile( ...
-    {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
+  {'*.wav', 'WAV Files (*.wav)'}, 'Open WAV File...');
 if ~fileName2, fprintf('No file selected, exiting...\n'); return; end
 
 %% Read Input Audio Files
