@@ -47,6 +47,7 @@ function pop = init_pop(gaParams, irParams)
 
   sampleProbability = 1 - sampleDensity .^ t;
   sampleOccurences = rand(n, popSize) < sampleProbability;
+  sampleOccurences(1, :) = true; % ensure first sample is a reflection
   sampleSigns = (-1) .^ (rand(n, popSize) < 0.5);
 
   noise = randn(n, popSize) * (rand * 0.4 + 0.1); % {'lin', 0.1, 0.5}
@@ -66,6 +67,4 @@ function pop = init_pop(gaParams, irParams)
   [b, a] = butter(2, 250/(fs/2));
   bg_noise = filter(b, a, bg_noise);
   pop = pop + bg_noise;
-
-  pop(1, :) = 1; % normalize first reflection at t = 0
 end
