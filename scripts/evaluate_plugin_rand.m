@@ -138,37 +138,48 @@ diary off
 % Suppress Warnings
 warning('off', 'MATLAB:handle_graphics:Layout:NoPositionSetInTiledChartLayout')
 
+% Figure Variables
 labels = {'Low', 'Medium', 'High', 'Max'};
+axisLabelFontSize = 30;
+tileFontSize = 20;
+tileTitleFontSize = 22;
+pieLegendFontSize = 12;
+pieTextFontSize = 12;
+pieTitleFontSize = 14;
+pieHeaderFontSize = 14;
 
 % Comparison of Run Times
 figure('Position', [360 18 1280 960])
 t1 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
-title(t1, 'Comparison of Run Times', 'FontSize', 12)
-xlabel(t1, 'Quality')
-ylabel(t1, 'Run Time (s)')
+xlabel(t1, 'Quality', 'FontSize', axisLabelFontSize)
+ylabel(t1, 'Run Time (s)', 'FontSize', axisLabelFontSize)
 
 t11 = nexttile;
 violinplot([timesLow1 timesMed1 timesHigh1 timesMax1], ...
   labels, 'ShowData', false);
-title('T60 = 0.625s')
+t11.FontSize = tileFontSize;
+title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y11 = ylim;
 
 t12 = nexttile;
 violinplot([timesLow2 timesMed2 timesHigh2 timesMax2], ...
   labels, 'ShowData', false);
-title('T60 = 1.25s')
+t12.FontSize = tileFontSize;
+title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y12 = ylim;
 
 t13 = nexttile;
 violinplot([timesLow3 timesMed3 timesHigh3 timesMax3], ...
   labels, 'ShowData', false);
-title('T60 = 2.5s')
+t13.FontSize = tileFontSize;
+title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y13 = ylim;
 
 t14 = nexttile;
 violinplot([timesLow4 timesMed4 timesHigh4 timesMax4], ...
   labels, 'ShowData', false);
-title('T60 = 5s')
+t14.FontSize = tileFontSize;
+title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y14 = ylim;
 
 linkaxes([t11 t12 t13 t14], 'y')
@@ -179,32 +190,35 @@ savefig(['results_' timestamp '_figure_time.fig'])
 % Comparison of Fitness Values
 figure('Position', [360 18 1280 960])
 t2 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
-title(t2, 'Comparison of Fitness Values', 'FontSize', 12)
-xlabel(t2, 'Quality')
-ylabel(t2, 'Fitness Value')
+xlabel(t2, 'Quality', 'FontSize', axisLabelFontSize)
+ylabel(t2, 'Fitness Value', 'FontSize', axisLabelFontSize)
 
 t21 = nexttile;
 violinplot([fitnessesLow1 fitnessesMed1 fitnessesHigh1 fitnessesMax1], ...
   labels, 'ShowData', false);
-title('T60 = 0.625s')
+t21.FontSize = tileFontSize;
+title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y21 = ylim;
 
 t22 = nexttile;
 violinplot([fitnessesLow2 fitnessesMed2 fitnessesHigh2 fitnessesMax2], ...
   labels, 'ShowData', false);
-title('T60 = 1.25s')
+t22.FontSize = tileFontSize;
+title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y22 = ylim;
 
 t23 = nexttile;
 violinplot([fitnessesLow3 fitnessesMed3 fitnessesHigh3 fitnessesMax3], ...
   labels, 'ShowData', false);
-title('T60 = 2.5s')
+t23.FontSize = tileFontSize;
+title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y23 = ylim;
 
 t24 = nexttile;
 violinplot([fitnessesLow4 fitnessesMed4 fitnessesHigh4 fitnessesMax4], ...
   labels, 'ShowData', false);
-title('T60 = 5s')
+t24.FontSize = tileFontSize;
+title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y24 = ylim;
 
 linkaxes([t21 t22 t23 t24], 'y')
@@ -215,32 +229,35 @@ savefig(['results_' timestamp '_figure_fitness.fig'])
 % Comparison of T60 Error Values
 figure('Position', [360 18 1280 960])
 t3 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
-title(t3, 'Comparison of T60 Error Values', 'FontSize', 12)
-xlabel(t3, 'Quality')
-ylabel(t3, 'Absolute Deviation of T60 (ms)')
+xlabel(t3, 'Quality', 'FontSize', axisLabelFontSize)
+ylabel(t3, 'Absolute Deviation of T60 (ms)', 'FontSize', axisLabelFontSize)
 
 t31 = nexttile;
 violinplot([lossesLow1.T60 lossesMed1.T60 lossesHigh1.T60 lossesMax1.T60] .* 1000, ...
   labels, 'ShowData', false);
-title('T60 = 0.625s')
+t31.FontSize = tileFontSize;
+title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y31 = ylim;
 
 t32 = nexttile;
 violinplot([lossesLow2.T60 lossesMed2.T60 lossesHigh2.T60 lossesMax2.T60] .* 1000, ...
   labels, 'ShowData', false);
-title('T60 = 1.25s')
+t32.FontSize = tileFontSize;
+title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y32 = ylim;
 
 t33 = nexttile;
 violinplot([lossesLow3.T60 lossesMed3.T60 lossesHigh3.T60 lossesMax3.T60] .* 1000, ...
   labels, 'ShowData', false);
-title('T60 = 2.5s')
+t33.FontSize = tileFontSize;
+title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y33 = ylim;
 
 t34 = nexttile;
 violinplot([lossesLow4.T60 lossesMed4.T60 lossesHigh4.T60 lossesMax4.T60] .* 1000, ...
   labels, 'ShowData', false);
-title('T60 = 5s')
+t34.FontSize = tileFontSize;
+title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y34 = ylim;
 
 linkaxes([t31 t32 t33 t34], 'y')
@@ -251,32 +268,35 @@ savefig(['results_' timestamp '_figure_T60.fig'])
 % Comparison of EDT Error Values
 figure('Position', [360 18 1280 960])
 t4 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
-title(t4, 'Comparison of EDT Error Values', 'FontSize', 12)
-xlabel(t4, 'Quality')
-ylabel(t4, 'Absolute Deviation of EDT (ms)')
+xlabel(t4, 'Quality', 'FontSize', axisLabelFontSize)
+ylabel(t4, 'Absolute Deviation of EDT (ms)', 'FontSize', axisLabelFontSize)
 
 t41 = nexttile;
 violinplot([lossesLow1.EDT lossesMed1.EDT lossesHigh1.EDT lossesMax1.EDT] .* 1000, ...
   labels, 'ShowData', false);
-title('T60 = 0.625s')
+t41.FontSize = tileFontSize;
+title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y41 = ylim;
 
 t42 = nexttile;
 violinplot([lossesLow2.EDT lossesMed2.EDT lossesHigh2.EDT lossesMax2.EDT] .* 1000, ...
   labels, 'ShowData', false);
-title('T60 = 1.25s')
+t42.FontSize = tileFontSize;
+title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y42 = ylim;
 
 t43 = nexttile;
 violinplot([lossesLow3.EDT lossesMed3.EDT lossesHigh3.EDT lossesMax3.EDT] .* 1000, ...
   labels, 'ShowData', false);
-title('T60 = 2.5s')
+t43.FontSize = tileFontSize;
+title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y43 = ylim;
 
 t44 = nexttile;
 violinplot([lossesLow4.EDT lossesMed4.EDT lossesHigh4.EDT lossesMax4.EDT] .* 1000, ...
   labels, 'ShowData', false);
-title('T60 = 5s')
+t44.FontSize = tileFontSize;
+title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y44 = ylim;
 
 linkaxes([t41 t42 t43 t44], 'y')
@@ -287,32 +307,35 @@ savefig(['results_' timestamp '_figure_EDT.fig'])
 % Comparison of C80 Error Values
 figure('Position', [360 18 1280 960])
 t5 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
-title(t5, 'Comparison of C80 Error Values', 'FontSize', 12)
-xlabel(t5, 'Quality')
-ylabel(t5, 'Absolute Deviation of C80 (dB)')
+xlabel(t5, 'Quality', 'FontSize', axisLabelFontSize)
+ylabel(t5, 'Absolute Deviation of C80 (dB)', 'FontSize', axisLabelFontSize)
 
 t51 = nexttile;
 violinplot([lossesLow1.C80 lossesMed1.C80 lossesHigh1.C80 lossesMax1.C80], ...
   labels, 'ShowData', false);
-title('T60 = 0.625s')
+t51.FontSize = tileFontSize;
+title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y51 = ylim;
 
 t52 = nexttile;
 violinplot([lossesLow2.C80 lossesMed2.C80 lossesHigh2.C80 lossesMax2.C80], ...
   labels, 'ShowData', false);
-title('T60 = 1.25s')
+t52.FontSize = tileFontSize;
+title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y52 = ylim;
 
 t53 = nexttile;
 violinplot([lossesLow3.C80 lossesMed3.C80 lossesHigh3.C80 lossesMax3.C80], ...
   labels, 'ShowData', false);
-title('T60 = 2.5s')
+t53.FontSize = tileFontSize;
+title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y53 = ylim;
 
 t54 = nexttile;
 violinplot([lossesLow4.C80 lossesMed4.C80 lossesHigh4.C80 lossesMax4.C80], ...
   labels, 'ShowData', false);
-title('T60 = 5s')
+t54.FontSize = tileFontSize;
+title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y54 = ylim;
 
 linkaxes([t51 t52 t53 t54], 'y')
@@ -323,32 +346,35 @@ savefig(['results_' timestamp '_figure_C80.fig'])
 % Comparison of BR Error Values
 figure('Position', [360 18 1280 960])
 t6 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
-title(t6, 'Comparison of BR Error Values', 'FontSize', 12)
-xlabel(t6, 'Quality')
-ylabel(t6, 'Absolute Deviation of BR (dB)')
+xlabel(t6, 'Quality', 'FontSize', axisLabelFontSize)
+ylabel(t6, 'Absolute Deviation of BR (dB)', 'FontSize', axisLabelFontSize)
 
 t61 = nexttile;
 violinplot([lossesLow1.BR lossesMed1.BR lossesHigh1.BR lossesMax1.BR], ...
   labels, 'ShowData', false);
-title('T60 = 0.625s')
+t61.FontSize = tileFontSize;
+title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y61 = ylim;
 
 t62 = nexttile;
 violinplot([lossesLow2.BR lossesMed2.BR lossesHigh2.BR lossesMax2.BR], ...
   labels, 'ShowData', false);
-title('T60 = 1.25s')
+t62.FontSize = tileFontSize;
+title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y62 = ylim;
 
 t63 = nexttile;
 violinplot([lossesLow3.BR lossesMed3.BR lossesHigh3.BR lossesMax3.BR], ...
   labels, 'ShowData', false);
-title('T60 = 2.5s')
+t63.FontSize = tileFontSize;
+title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y63 = ylim;
 
 t64 = nexttile;
 violinplot([lossesLow4.BR lossesMed4.BR lossesHigh4.BR lossesMax4.BR], ...
   labels, 'ShowData', false);
-title('T60 = 5s')
+t64.FontSize = tileFontSize;
+title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y64 = ylim;
 
 linkaxes([t61 t62 t63 t64], 'y')
@@ -410,87 +436,87 @@ labels = {'Generations', 'Plateau', 'Threshold'};
 
 figure('Position', [360 18 1280 960])
 t7 = tiledlayout(4, 4, 'TileSpacing', 'none', 'Padding', 'compact');
-title(t7, '\bf Termination Probability Per Condition vs. Quality Setting and T60 Time', 'FontSize', 14)
+title(t7, '\bf Termination Probability Per Condition vs. Quality Setting and T60 Time', 'FontSize', pieHeaderFontSize)
 
 nexttile
 p = pie(countsLow1);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Low, 0.625s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Low, 0.625s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsMed1);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Medium, 0.625s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Medium, 0.625s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsHigh1);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('High, 0.625s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('High, 0.625s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsMax1);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-legend(labels, 'Location', 'bestoutside', 'FontSize', 12)
-title('Max, 0.625s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+legend(labels, 'Location', 'bestoutside', 'FontSize', pieLegendFontSize)
+title('Max, 0.625s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsLow2);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Low, 1.25s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Low, 1.25s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsMed2);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Medium, 1.25s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Medium, 1.25s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsHigh2);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('High, 1.25s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('High, 1.25s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsMax2);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Max, 1.25s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Max, 1.25s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsLow3);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Low, 2.5s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Low, 2.5s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsMed3);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Medium, 2.5s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Medium, 2.5s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsHigh3);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('High, 2.5s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('High, 2.5s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsMax3);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Max, 2.5s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Max, 2.5s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsLow4);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Low, 5s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Low, 5s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsMed4);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Medium, 5s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Medium, 5s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsHigh4);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('High, 5s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('High, 5s', 'FontSize', pieTitleFontSize)
 
 nexttile
 p = pie(countsMax4);
-set(findobj(p, 'Type', 'Text'), 'FontSize', 12);
-title('Max, 5s', 'FontSize', 14)
+set(findobj(p, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Max, 5s', 'FontSize', pieTitleFontSize)
 
 savefig(['results_' timestamp '_figure_terminating.fig'])

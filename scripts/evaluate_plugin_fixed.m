@@ -105,13 +105,19 @@ print_stats(NUM_IRS, timesMax, fitnessesMax, lossesMax, conditionsMax, 'Max');
 diary off
 
 %% Generate and Save Figures
+% Figure Variables
 labels = {'Low', 'Medium', 'High', 'Max'};
+axisFontSize = 12;
+pieLegendFontSize = 12;
+pieTextFontSize = 12;
+pieTitleFontSize = 14;
+pieHeaderFontSize = 14;
 
 % Comparison of Run Times
 figure('Position', [600 498 640 480])
 violinplot([timesLow timesMed timesHigh timesMax], ...
   labels, 'ShowData', false);
-title('Comparison of Run Times', 'FontSize', 12)
+ax = gca; ax.FontSize = axisFontSize;
 xlabel('Quality')
 ylabel('Run Time (s)')
 ylim([0 inf])
@@ -121,6 +127,7 @@ savefig(['results_' timestamp '_figure_time.fig'])
 figure('Position', [600 498 640 480])
 violinplot([fitnessesLow fitnessesMed fitnessesHigh fitnessesMax], ...
   labels, 'ShowData', false);
+ax = gca; ax.FontSize = axisFontSize;
 xlabel('Quality')
 ylabel('Fitness Value')
 ylim([0 inf])
@@ -130,6 +137,7 @@ savefig(['results_' timestamp '_figure_fitness.fig'])
 figure('Position', [600 498 640 480])
 violinplot([[lossesLow.T60]' [lossesMed.T60]' [lossesHigh.T60]' [lossesMax.T60]'] .* 1000, ...
   labels, 'ShowData', false);
+ax = gca; ax.FontSize = axisFontSize;
 xlabel('Quality')
 ylabel('Absolute Deviation of T60 (ms)')
 ylim([0 inf])
@@ -139,6 +147,7 @@ savefig(['results_' timestamp '_figure_T60.fig'])
 figure('Position', [600 498 640 480])
 violinplot([[lossesLow.EDT]' [lossesMed.EDT]' [lossesHigh.EDT]' [lossesMax.EDT]'] .* 1000, ...
   labels, 'ShowData', false);
+ax = gca; ax.FontSize = axisFontSize;
 xlabel('Quality')
 ylabel('Absolute Deviation of EDT (ms)')
 ylim([0 inf])
@@ -148,6 +157,7 @@ savefig(['results_' timestamp '_figure_EDT.fig'])
 figure('Position', [600 498 640 480])
 violinplot([[lossesLow.C80]' [lossesMed.C80]' [lossesHigh.C80]' [lossesMax.C80]'], ...
   labels, 'ShowData', false);
+ax = gca; ax.FontSize = axisFontSize;
 xlabel('Quality')
 ylabel('Absolute Deviation of C80 (dB)')
 ylim([0 inf])
@@ -157,6 +167,7 @@ savefig(['results_' timestamp '_figure_C80.fig'])
 figure('Position', [600 498 640 480])
 violinplot([[lossesLow.BR]' [lossesMed.BR]' [lossesHigh.BR]' [lossesMax.BR]'], ...
   labels, 'ShowData', false);
+ax = gca; ax.FontSize = axisFontSize;
 xlabel('Quality')
 ylabel('Absolute Deviation of BR (dB)')
 ylim([0 inf])
@@ -179,27 +190,27 @@ labels = {'Generations', 'Plateau', 'Threshold'};
 
 figure('Position', [600 258 960 720])
 t = tiledlayout(2, 2, 'TileSpacing', 'none', 'Padding', 'compact');
-title(t, '\bf Termination Probability Per Condition vs. Quality Setting', 'FontSize', 14)
+title(t, '\bf Termination Probability Per Condition vs. Quality Setting', 'FontSize', pieHeaderFontSize)
 
 nexttile
 p1 = pie(countsLow);
-set(findobj(p1, 'Type', 'Text'), 'FontSize', 12);
-title('Low', 'FontSize', 14)
+set(findobj(p1, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Low', 'FontSize', pieTitleFontSize)
 
 nexttile
 p2 = pie(countsMed);
-set(findobj(p2, 'Type', 'Text'), 'FontSize', 12);
-legend(labels, 'Location', 'bestoutside', 'FontSize', 12)
-title('Medium', 'FontSize', 14)
+set(findobj(p2, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+legend(labels, 'Location', 'bestoutside', 'FontSize', pieLegendFontSize)
+title('Medium', 'FontSize', pieTitleFontSize)
 
 nexttile
 p3 = pie(countsHigh);
-set(findobj(p3, 'Type', 'Text'), 'FontSize', 12);
-title('High', 'FontSize', 14)
+set(findobj(p3, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('High', 'FontSize', pieTitleFontSize)
 
 nexttile
 p4 = pie(countsMax);
-set(findobj(p4, 'Type', 'Text'), 'FontSize', 12);
-title('Max', 'FontSize', 14)
+set(findobj(p4, 'Type', 'Text'), 'FontSize', pieTextFontSize);
+title('Max', 'FontSize', pieTitleFontSize)
 
 savefig(['results_' timestamp '_figure_terminating.fig'])
