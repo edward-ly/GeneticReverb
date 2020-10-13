@@ -31,34 +31,22 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
   end
 
   % Calculate number of predelay samples
-  delayLeft = round(plugin.L_DELAY * sampleRate / 1000);
-  delayRight = round(plugin.R_DELAY * sampleRate / 1000);
+  pDelay = round(plugin.PREDELAY * sampleRate / 1000);
 
   % Struct for IR parameters
-  irParamsLeft = struct( ...
+  irParams = struct( ...
     'SAMPLE_RATE', plugin.IR_SAMPLE_RATE, ...
     'NUM_SAMPLES', plugin.IR_NUM_SAMPLES, ...
-    'PREDELAY', delayLeft, ...
+    'PREDELAY', pDelay, ...
     'T60', plugin.T60, ...
     'EDT', pEDT, ...
     'C80', plugin.C80, ...
     'BR', plugin.WARMTH);
 
   if plugin.STEREO
-    % Additional struct for IR parameters (right channel)
-    irParamsRight = struct( ...
-      'SAMPLE_RATE', plugin.IR_SAMPLE_RATE, ...
-      'NUM_SAMPLES', plugin.IR_NUM_SAMPLES, ...
-      'PREDELAY', delayRight, ...
-      'T60', plugin.T60, ...
-      'EDT', pEDT, ...
-      'C80', plugin.C80, ...
-      'BR', plugin.WARMTH);
-
     % Generate new impulse responses
-    newIRs = zeros(irParamsLeft.NUM_SAMPLES, 2);
-    newIRs(:, 1) = genetic_rir(gaParams, irParamsLeft);
-    newIRs(:, 2) = genetic_rir(gaParams, irParamsRight);
+    newIRs = zeros(irParams.NUM_SAMPLES, 2);
+    for i = 1:2, newIRs(:, i) = genetic_rir(gaParams, irParams); end
 
     if plugin.NORMALIZE_STEREO
       % Modify gains of IRs so that RMS levels are equal
@@ -77,7 +65,7 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     irRight = resample_ir(plugin, newIRs(:, 2), sampleRate)';
   else
     % Generate new impulse response
-    newIR = genetic_rir(gaParams, irParamsLeft);
+    newIR = genetic_rir(gaParams, irParams);
 
     % Normalize to prevent clipping
     newIR = normalize_signal(newIR, 0.99);
@@ -90,6 +78,6 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
   end
 
   % Apply predelay
-  irLeft = [zeros(1, delayLeft), irLeft(1:(end - delayLeft))];
-  irRight = [zeros(1, delayRight), irRight(1:(end - delayRight))];
+  irLeft = [zeros(1, pDelay), irLeft(1:(end - pDelay))];
+  irRight = [zeros(1, pDelay), irRight(1:(end - pDelay))];
 end
