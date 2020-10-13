@@ -13,6 +13,7 @@ function [irBest, irBestFitness, fitnessCurve, loss, condition] = ...
 % irParams = struct containing impulse response parameters
 %   SAMPLE_RATE = sample rate of impulse response
 %   NUM_SAMPLES = length of recorded impulse response (samples)
+%   PREDELAY = Predelay time (samples), used for calculating C80
 %   T60 = T60 decay time (s)
 %   EDT = early decay time (s)
 %   C80 = clarity (dB)

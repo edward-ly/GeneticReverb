@@ -6,6 +6,7 @@ function [f, loss, outDev] = fitness(irPop, params, popSize, inDev)
 % params = struct containing impulse response parameters
 %   SAMPLE_RATE = sample rate of impulse response
 %   NUM_SAMPLES = length of recorded impulse response (samples)
+%   PREDELAY = Predelay time (samples), used for calculating C80
 %   T60 = T60 decay time (s)
 %   EDT = early decay time (s)
 %   C80 = clarity (dB)
@@ -78,11 +79,10 @@ function [f, loss, outDev] = fitness(irPop, params, popSize, inDev)
   irEDT = (ir10dBSamples - 1) ./ sampleRate;
 
   % C80 (clarity)
-  sample_80ms = round(0.08 * sampleRate) + 1;
-  % if sample_80ms >= irParams.NUM_SAMPLES, f = Inf; return; end
-  earlyEnergy = irEDC(1, :) - irEDC(sample_80ms, :);
+  sample_80ms = round(0.08 * sampleRate) + 1 - params.PREDELAY;
+  if sample_80ms < 1, sample_80ms = 1; end
+  earlyEnergy = irEDC(1, :) - irEDC(sample_80ms, :) + ones(1, popSize);
   lateEnergy  = irEDC(sample_80ms, :);
-  % lateEnergy(lateEnergy <= 0) = Inf;
   irC80 = 10 .* log10(earlyEnergy ./ lateEnergy);
 
   % BR (bass ratio)
