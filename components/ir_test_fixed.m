@@ -4,8 +4,8 @@ function [times, fitnesses, lossesStruct, conditions] = ...
 % For evaluation purposes only.
 %
 % Input arguments:
+% irParams = struct containing impulse response parameters
 % gaParams = struct containing genetic algorithm parameters
-% T60 = desired T60 of impulse response (s)
 % NUM_IRS = number of impulse responses to generate
 %
 % Output arguments:
