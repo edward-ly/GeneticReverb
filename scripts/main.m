@@ -80,6 +80,7 @@ gaParams = struct( ...
 %% Impulse Response Parameters
 % SAMPLE_RATE = Sample rate of impulse response (Hz)
 % NUM_SAMPLES = Number of samples in IR to record / length of IR
+% PREDELAY = Delay time before onset of first early reflection (samples)
 % T60 = Total reverberation time (s)
 % EDT = Early decay time (s)
 % C80 = Clarity, or relative loudness of early reverberations over
@@ -90,11 +91,13 @@ gaParams = struct( ...
 irParams = struct( ...
   'SAMPLE_RATE', 44100, ...
   'NUM_SAMPLES', 0, ...
+  'PREDELAY', 0, ...
   'T60', 0.3914, ...
   'EDT', 0.0644, ...
   'C80', 12.3611, ...
   'BR', 0.7041);
 
+irParams.PREDELAY = round(0.002 * irParams.SAMPLE_RATE);
 irParams.NUM_SAMPLES = round(1.5 * irParams.T60 * irParams.SAMPLE_RATE);
 
 %% Load/Save UI
@@ -121,6 +124,9 @@ numSamples = irParams.NUM_SAMPLES;
 
 % Normalize impulse response
 irBest = normalize_signal(irBest, 0.99);
+
+% Add Predelay
+irBest = [zeros(irParams.PREDELAY, 1); irBest(1:(end - irParams.PREDELAY))];
 
 % Resample IR sample rate to match audio sample rate, if necessary
 if irParams.SAMPLE_RATE ~= audioSampleRate
