@@ -117,9 +117,11 @@ pieHeaderFontSize = 14;
 figure('Position', [600 498 640 480])
 violinplot([timesLow timesMed timesHigh timesMax], ...
   labels, 'ShowData', false);
-ax = gca; ax.FontSize = axisFontSize;
+ax = gca;
+ax.FontSize = axisFontSize;
+ax.YMinorTick = 'on';
 xlabel('Quality')
-ylabel('Run Time (s)')
+ylabel('Elapsed Time (s)')
 ylim([0 inf])
 savefig(['results_' timestamp '_figure_time.fig'])
 
@@ -127,9 +129,11 @@ savefig(['results_' timestamp '_figure_time.fig'])
 figure('Position', [600 498 640 480])
 violinplot([fitnessesLow fitnessesMed fitnessesHigh fitnessesMax], ...
   labels, 'ShowData', false);
-ax = gca; ax.FontSize = axisFontSize;
+ax = gca;
+ax.FontSize = axisFontSize;
+ax.YMinorTick = 'on';
 xlabel('Quality')
-ylabel('Fitness Value')
+ylabel('Loss Value')
 ylim([0 inf])
 savefig(['results_' timestamp '_figure_fitness.fig'])
 
@@ -137,7 +141,9 @@ savefig(['results_' timestamp '_figure_fitness.fig'])
 figure('Position', [600 498 640 480])
 violinplot([[lossesLow.T60]' [lossesMed.T60]' [lossesHigh.T60]' [lossesMax.T60]'] .* 1000, ...
   labels, 'ShowData', false);
-ax = gca; ax.FontSize = axisFontSize;
+ax = gca;
+ax.FontSize = axisFontSize;
+ax.YMinorTick = 'on';
 xlabel('Quality')
 ylabel('Absolute Deviation of T60 (ms)')
 ylim([0 inf])
@@ -147,7 +153,9 @@ savefig(['results_' timestamp '_figure_T60.fig'])
 figure('Position', [600 498 640 480])
 violinplot([[lossesLow.EDT]' [lossesMed.EDT]' [lossesHigh.EDT]' [lossesMax.EDT]'] .* 1000, ...
   labels, 'ShowData', false);
-ax = gca; ax.FontSize = axisFontSize;
+ax = gca;
+ax.FontSize = axisFontSize;
+ax.YMinorTick = 'on';
 xlabel('Quality')
 ylabel('Absolute Deviation of EDT (ms)')
 ylim([0 inf])
@@ -157,7 +165,9 @@ savefig(['results_' timestamp '_figure_EDT.fig'])
 figure('Position', [600 498 640 480])
 violinplot([[lossesLow.C80]' [lossesMed.C80]' [lossesHigh.C80]' [lossesMax.C80]'], ...
   labels, 'ShowData', false);
-ax = gca; ax.FontSize = axisFontSize;
+ax = gca;
+ax.FontSize = axisFontSize;
+ax.YMinorTick = 'on';
 xlabel('Quality')
 ylabel('Absolute Deviation of C80 (dB)')
 ylim([0 inf])
@@ -167,7 +177,9 @@ savefig(['results_' timestamp '_figure_C80.fig'])
 figure('Position', [600 498 640 480])
 violinplot([[lossesLow.BR]' [lossesMed.BR]' [lossesHigh.BR]' [lossesMax.BR]'], ...
   labels, 'ShowData', false);
-ax = gca; ax.FontSize = axisFontSize;
+ax = gca;
+ax.FontSize = axisFontSize;
+ax.YMinorTick = 'on';
 xlabel('Quality')
 ylabel('Absolute Deviation of BR (dB)')
 ylim([0 inf])

@@ -152,12 +152,13 @@ pieHeaderFontSize = 14;
 figure('Position', [360 18 1280 960])
 t1 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
 xlabel(t1, 'Quality', 'FontSize', axisLabelFontSize)
-ylabel(t1, 'Run Time (s)', 'FontSize', axisLabelFontSize)
+ylabel(t1, 'Elapsed Time (s)', 'FontSize', axisLabelFontSize)
 
 t11 = nexttile;
 violinplot([timesLow1 timesMed1 timesHigh1 timesMax1], ...
   labels, 'ShowData', false);
 t11.FontSize = tileFontSize;
+t11.YMinorTick = 'on';
 title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y11 = ylim;
 
@@ -165,6 +166,7 @@ t12 = nexttile;
 violinplot([timesLow2 timesMed2 timesHigh2 timesMax2], ...
   labels, 'ShowData', false);
 t12.FontSize = tileFontSize;
+t12.YMinorTick = 'on';
 title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y12 = ylim;
 
@@ -172,6 +174,7 @@ t13 = nexttile;
 violinplot([timesLow3 timesMed3 timesHigh3 timesMax3], ...
   labels, 'ShowData', false);
 t13.FontSize = tileFontSize;
+t13.YMinorTick = 'on';
 title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y13 = ylim;
 
@@ -179,6 +182,7 @@ t14 = nexttile;
 violinplot([timesLow4 timesMed4 timesHigh4 timesMax4], ...
   labels, 'ShowData', false);
 t14.FontSize = tileFontSize;
+t14.YMinorTick = 'on';
 title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y14 = ylim;
 
@@ -191,12 +195,13 @@ savefig(['results_' timestamp '_figure_time.fig'])
 figure('Position', [360 18 1280 960])
 t2 = tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
 xlabel(t2, 'Quality', 'FontSize', axisLabelFontSize)
-ylabel(t2, 'Fitness Value', 'FontSize', axisLabelFontSize)
+ylabel(t2, 'Loss Value', 'FontSize', axisLabelFontSize)
 
 t21 = nexttile;
 violinplot([fitnessesLow1 fitnessesMed1 fitnessesHigh1 fitnessesMax1], ...
   labels, 'ShowData', false);
 t21.FontSize = tileFontSize;
+t21.YMinorTick = 'on';
 title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y21 = ylim;
 
@@ -204,6 +209,7 @@ t22 = nexttile;
 violinplot([fitnessesLow2 fitnessesMed2 fitnessesHigh2 fitnessesMax2], ...
   labels, 'ShowData', false);
 t22.FontSize = tileFontSize;
+t22.YMinorTick = 'on';
 title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y22 = ylim;
 
@@ -211,6 +217,7 @@ t23 = nexttile;
 violinplot([fitnessesLow3 fitnessesMed3 fitnessesHigh3 fitnessesMax3], ...
   labels, 'ShowData', false);
 t23.FontSize = tileFontSize;
+t23.YMinorTick = 'on';
 title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y23 = ylim;
 
@@ -218,6 +225,7 @@ t24 = nexttile;
 violinplot([fitnessesLow4 fitnessesMed4 fitnessesHigh4 fitnessesMax4], ...
   labels, 'ShowData', false);
 t24.FontSize = tileFontSize;
+t24.YMinorTick = 'on';
 title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y24 = ylim;
 
@@ -236,6 +244,7 @@ t31 = nexttile;
 violinplot([lossesLow1.T60 lossesMed1.T60 lossesHigh1.T60 lossesMax1.T60] .* 1000, ...
   labels, 'ShowData', false);
 t31.FontSize = tileFontSize;
+t31.YMinorTick = 'on';
 title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y31 = ylim;
 
@@ -243,6 +252,7 @@ t32 = nexttile;
 violinplot([lossesLow2.T60 lossesMed2.T60 lossesHigh2.T60 lossesMax2.T60] .* 1000, ...
   labels, 'ShowData', false);
 t32.FontSize = tileFontSize;
+t32.YMinorTick = 'on';
 title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y32 = ylim;
 
@@ -250,6 +260,7 @@ t33 = nexttile;
 violinplot([lossesLow3.T60 lossesMed3.T60 lossesHigh3.T60 lossesMax3.T60] .* 1000, ...
   labels, 'ShowData', false);
 t33.FontSize = tileFontSize;
+t33.YMinorTick = 'on';
 title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y33 = ylim;
 
@@ -257,6 +268,7 @@ t34 = nexttile;
 violinplot([lossesLow4.T60 lossesMed4.T60 lossesHigh4.T60 lossesMax4.T60] .* 1000, ...
   labels, 'ShowData', false);
 t34.FontSize = tileFontSize;
+t34.YMinorTick = 'on';
 title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y34 = ylim;
 
@@ -275,6 +287,7 @@ t41 = nexttile;
 violinplot([lossesLow1.EDT lossesMed1.EDT lossesHigh1.EDT lossesMax1.EDT] .* 1000, ...
   labels, 'ShowData', false);
 t41.FontSize = tileFontSize;
+t41.YMinorTick = 'on';
 title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y41 = ylim;
 
@@ -282,6 +295,7 @@ t42 = nexttile;
 violinplot([lossesLow2.EDT lossesMed2.EDT lossesHigh2.EDT lossesMax2.EDT] .* 1000, ...
   labels, 'ShowData', false);
 t42.FontSize = tileFontSize;
+t42.YMinorTick = 'on';
 title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y42 = ylim;
 
@@ -289,6 +303,7 @@ t43 = nexttile;
 violinplot([lossesLow3.EDT lossesMed3.EDT lossesHigh3.EDT lossesMax3.EDT] .* 1000, ...
   labels, 'ShowData', false);
 t43.FontSize = tileFontSize;
+t43.YMinorTick = 'on';
 title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y43 = ylim;
 
@@ -296,6 +311,7 @@ t44 = nexttile;
 violinplot([lossesLow4.EDT lossesMed4.EDT lossesHigh4.EDT lossesMax4.EDT] .* 1000, ...
   labels, 'ShowData', false);
 t44.FontSize = tileFontSize;
+t44.YMinorTick = 'on';
 title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y44 = ylim;
 
@@ -314,6 +330,7 @@ t51 = nexttile;
 violinplot([lossesLow1.C80 lossesMed1.C80 lossesHigh1.C80 lossesMax1.C80], ...
   labels, 'ShowData', false);
 t51.FontSize = tileFontSize;
+t51.YMinorTick = 'on';
 title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y51 = ylim;
 
@@ -321,6 +338,7 @@ t52 = nexttile;
 violinplot([lossesLow2.C80 lossesMed2.C80 lossesHigh2.C80 lossesMax2.C80], ...
   labels, 'ShowData', false);
 t52.FontSize = tileFontSize;
+t52.YMinorTick = 'on';
 title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y52 = ylim;
 
@@ -328,6 +346,7 @@ t53 = nexttile;
 violinplot([lossesLow3.C80 lossesMed3.C80 lossesHigh3.C80 lossesMax3.C80], ...
   labels, 'ShowData', false);
 t53.FontSize = tileFontSize;
+t53.YMinorTick = 'on';
 title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y53 = ylim;
 
@@ -335,6 +354,7 @@ t54 = nexttile;
 violinplot([lossesLow4.C80 lossesMed4.C80 lossesHigh4.C80 lossesMax4.C80], ...
   labels, 'ShowData', false);
 t54.FontSize = tileFontSize;
+t54.YMinorTick = 'on';
 title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y54 = ylim;
 
@@ -353,6 +373,7 @@ t61 = nexttile;
 violinplot([lossesLow1.BR lossesMed1.BR lossesHigh1.BR lossesMax1.BR], ...
   labels, 'ShowData', false);
 t61.FontSize = tileFontSize;
+t61.YMinorTick = 'on';
 title('T60 = 0.625s', 'FontSize', tileTitleFontSize)
 y61 = ylim;
 
@@ -360,6 +381,7 @@ t62 = nexttile;
 violinplot([lossesLow2.BR lossesMed2.BR lossesHigh2.BR lossesMax2.BR], ...
   labels, 'ShowData', false);
 t62.FontSize = tileFontSize;
+t62.YMinorTick = 'on';
 title('T60 = 1.25s', 'FontSize', tileTitleFontSize)
 y62 = ylim;
 
@@ -367,6 +389,7 @@ t63 = nexttile;
 violinplot([lossesLow3.BR lossesMed3.BR lossesHigh3.BR lossesMax3.BR], ...
   labels, 'ShowData', false);
 t63.FontSize = tileFontSize;
+t63.YMinorTick = 'on';
 title('T60 = 2.5s', 'FontSize', tileTitleFontSize)
 y63 = ylim;
 
@@ -374,6 +397,7 @@ t64 = nexttile;
 violinplot([lossesLow4.BR lossesMed4.BR lossesHigh4.BR lossesMax4.BR], ...
   labels, 'ShowData', false);
 t64.FontSize = tileFontSize;
+t64.YMinorTick = 'on';
 title('T60 = 5s', 'FontSize', tileTitleFontSize)
 y64 = ylim;
 
