@@ -2,8 +2,8 @@
 %
 % File: evaluate_plugin_fixed.m
 % Author: Edward Ly (edward.ly@pm.me)
-% Version: 0.1.5
-% Last Updated: 13 October 2020
+% Version: 0.1.6
+% Last Updated: 15 October 2020
 %
 % BSD 3-Clause License
 %
