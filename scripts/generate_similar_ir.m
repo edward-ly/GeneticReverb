@@ -2,8 +2,8 @@
 %
 % File: generate_similar_ir.m
 % Author: Edward Ly (edward.ly@pm.me)
-% Version: 0.2.0
-% Last Updated: 27 March 2020
+% Version: 0.2.1
+% Last Updated: 25 October 2020
 %
 % BSD 3-Clause License
 %
@@ -66,12 +66,13 @@ fprintf('Acoustics values of impulse response in file "%s%s"...\n', ...
   filePath, fileName);
 
 irValues = calc_ir_values(drySignal(:, 1), numAudioSamples, audioSampleRate) %#ok<*NOPTS>
-delay = round(irValues.PREDELAY * IR_SAMPLE_RATE);
+delaySamples = round(irValues.PREDELAY * IR_SAMPLE_RATE);
 
 %% Initialize irParams Struct
 irParams = struct( ...
   'SAMPLE_RATE', IR_SAMPLE_RATE, ...
   'NUM_SAMPLES', round(numAudioSamples * IR_SAMPLE_RATE / audioSampleRate), ...
+  'PREDELAY', delaySamples, ...
   'T60', irValues.T60, ...
   'EDT', irValues.EDT, ...
   'C80', irValues.C80, ...
@@ -89,7 +90,7 @@ end
 bestIRHigh = irs(:, bestFitnessIndex);
 
 % Add predelay
-bestIRHigh = [zeros(delay, 1); bestIRHigh(1:(end - delay))];
+bestIRHigh = [zeros(delaySamples, 1); bestIRHigh(1:(end - delaySamples))];
 
 %% Display and Save Output
 % Specify output file names, save them in same path as input file
@@ -113,7 +114,7 @@ end
 bestIRMax = irs(:, bestFitnessIndex);
 
 % Add predelay
-bestIRMax = [zeros(delay, 1); bestIRMax(1:(end - delay))];
+bestIRMax = [zeros(delaySamples, 1); bestIRMax(1:(end - delaySamples))];
 
 %% Display and Save Output
 % Specify output file names, save them in same path as input file
