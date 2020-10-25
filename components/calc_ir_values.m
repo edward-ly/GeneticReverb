@@ -19,7 +19,7 @@ function irValues = calc_ir_values(ir, numSamples, sampleRate)
 
   % =========================================================================
 
-  % Find onset of impulse response
+  % Find first reflection of impulse response
   [~, irInitSample] = max(abs(ir));
 
   % Calculate Schroeder curve of impulse response
@@ -46,9 +46,9 @@ function irValues = calc_ir_values(ir, numSamples, sampleRate)
   irEDT = (ir10dBSample - irInitSample) / sampleRate;
 
   % C80 (clarity)
-  sample_80ms = round(0.08 * sampleRate) + irInitSample;
+  sample_80ms = round(0.08 * sampleRate);
   % if sample_80ms >= irParams.NUM_SAMPLES, f = Inf; return; end
-  earlyEnergy = irEDC(irInitSample) - irEDC(sample_80ms);
+  earlyEnergy = irEDC(1) - irEDC(sample_80ms);
   lateEnergy  = irEDC(sample_80ms);
   % lateEnergy(lateEnergy <= 0) = Inf;
   irC80 = 10 .* log10(earlyEnergy ./ lateEnergy);
