@@ -2,7 +2,7 @@
 %
 % File: generate_similar_ir.m
 % Author: Edward Ly (edward.ly@pm.me)
-% Version: 0.3.0
+% Version: 0.3.1
 % Last Updated: 26 October 2020
 %
 % BSD 3-Clause License
@@ -91,7 +91,10 @@ fitnesses = zeros(NUM_IRS, 1);
 
 parfor i = 1:NUM_IRS
   [irs(:, i), fitnesses(i)] = genetic_rir(gaParamsHigh, irParams, VERBOSE);
+  if (mod(i, 10) == 0), fprintf('.'); end
 end
+
+fprintf('\n');
 
 [bestFitness, bestFitnessIndex] = min(fitnesses);
 bestIRHigh = irs(:, bestFitnessIndex);
@@ -115,7 +118,10 @@ fprintf('Fitness value: %f\n', bestFitness);
 %% Generate New Impulse Response (Max Setting)
 parfor i = 1:NUM_IRS
   [irs(:, i), fitnesses(i)] = genetic_rir(gaParamsMax, irParams, VERBOSE);
+  if (mod(i, 10) == 0), fprintf('.'); end
 end
+
+fprintf('\n');
 
 [bestFitness, bestFitnessIndex] = min(fitnesses);
 bestIRMax = irs(:, bestFitnessIndex);
