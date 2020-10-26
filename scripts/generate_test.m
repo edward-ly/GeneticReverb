@@ -2,8 +2,8 @@
 %
 % File: generate_test.m
 % Author: Edward Ly (edward.ly@pm.me)
-% Version: 0.1.1
-% Last Updated: 1 April 2020
+% Version: 0.2.0
+% Last Updated: 26 October 2020
 %
 % BSD 3-Clause License
 %
@@ -45,6 +45,7 @@ addpath ../components
 DRY_FILE_PATH = '../ir_test/anechoic/';
 IR_FILE_PATH = '../ir_test/irs/';
 WET_FILE_PATH = '../ir_test/test_files/';
+QUESTION_FILE_PATH = '../ir_test/question_files/';
 
 %% Load/Save UI
 irFiles = ls([IR_FILE_PATH 'ir_*.wav']);
@@ -151,3 +152,14 @@ for i = 1:numFiles
 end
 
 fprintf('Normalized all files.\n');
+
+%% Generate Question Files
+key = readtable('../data/answer_key.csv', 'VariableNamingRule', 'preserve');
+key.question_code = lower(key.question_code);
+for i = 1:size(key, 1)
+  sourceFile = [WET_FILE_PATH key{i, 'original_file'}{1}];
+  destinationFile = [QUESTION_FILE_PATH 'question_' key{i, 'question_code'}{1} '.wav'];
+  copyfile(sourceFile, destinationFile);
+end
+
+fprintf('Generated test files.\n');
