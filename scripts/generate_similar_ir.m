@@ -2,8 +2,8 @@
 %
 % File: generate_similar_ir.m
 % Author: Edward Ly (edward.ly@pm.me)
-% Version: 0.2.1
-% Last Updated: 25 October 2020
+% Version: 0.3.0
+% Last Updated: 26 October 2020
 %
 % BSD 3-Clause License
 %
@@ -43,7 +43,7 @@ clear; close all;
 addpath ../components
 
 %% Script Parameters
-NUM_IRS = 30;                   % Number of IRs to generate per setting
+NUM_IRS = 250;                  % Number of IRs to generate per setting
 IR_SAMPLE_RATE = 44100;         % Sample rate of desired IR
 VERBOSE = false;                % Display genetic algorithm status messages
 
@@ -60,6 +60,13 @@ if ~fileName, fprintf('No file selected, exiting...\n'); return; end
 %% Read Input Audio File
 [drySignal, audioSampleRate] = audioread([filePath fileName]);
 [numAudioSamples, numAudioChannels] = size(drySignal);
+
+%% Save Console Output to New File
+timestamp = datestr(now, 'yyyymmdd_HHMMSSFFF');
+outFileName = replace(fileName, '.wav', '_results.txt');
+diary(outFileName)
+fprintf('Date Created = %s\n', timestamp);
+fprintf('Group Size = %d\n\n', NUM_IRS);
 
 %% Calculate and display parameter values (Channel 1 only)
 fprintf('Acoustics values of impulse response in file "%s%s"...\n', ...
@@ -128,3 +135,6 @@ fprintf('Acoustics values of new impulse response (max settings)...\n');
 irValuesMax = calc_ir_values(bestIRMax, irParams.NUM_SAMPLES, IR_SAMPLE_RATE) %#ok<*NOPTS>
 
 fprintf('Fitness value: %f\n', bestFitness);
+
+%% Close Log File
+diary off
