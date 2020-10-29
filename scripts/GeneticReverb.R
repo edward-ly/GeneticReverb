@@ -26,7 +26,7 @@ setwd("/Users/Edward/Documents/GitHub/GeneticReverb/data") # Windows
 ############################################################################
 ## Load data into workspace
 # Survey responses to "data" variable
-source("survey_117287_R_syntax_file.R")
+source("survey_233386_R_syntax_file.R")
 
 # Answer key
 key <- read.csv("answer_key.csv")
@@ -35,7 +35,8 @@ nQuestions <- nrow(key) # number of relevant survey questions
 ############################################################################
 ## Data Pre-Processing
 # Exclude dummy responses, unused columns
-data <- data[2:nrow(data), -31]
+data <- data[2:25, -31]
+# data <- data[2:nrow(data), -31]
 
 # Create new data table with each row containing one question
 responses <- data.frame(
@@ -89,7 +90,7 @@ binom.test(nCorrect, nTotal)
 #     `Anova(model, type = "II", test = "Chisq")`
 
 # Initial model
-model <- glmer(hit ~ (1 | id), data = responses, family = binomial)
+model <- glmer(hit ~ (1 | id), data = responses, family = binomial, control = glmerControl(optimizer='bobyqa', optCtrl=list(maxfun=2e8)))
 
 # Add random effects, keep if significant
 model.sex <- update(model, ~ . + (1 | sex))
@@ -118,8 +119,8 @@ anova(model, model.x.type) # not significant
 
 # Add two-way interactions, keep if significant
 model.program.quality <- update(model, ~ . + program * quality)
-anova(model, model.program.quality) # significant
-model <- model.program.quality
+anova(model, model.program.quality) # not significant
+# model <- model.program.quality
 
 model.program.x.type <- update(model, ~ . + program * x.type)
 anova(model, model.program.x.type) # not significant
@@ -129,7 +130,7 @@ anova(model, model.quality.x.type) # not significant
 
 # Add three-way interaction (keep if significant)
 model.all <- update(model, ~ . + program * quality * x.type)
-anova(model, model.all) # not significant, model failed to converge
+anova(model, model.all) # not significant
 
 # Remove significant factors, keep if still significant
 model.no.program <- update(model, ~ . - program)
@@ -138,8 +139,8 @@ anova(model, model.no.program) # significant
 model.no.quality <- update(model, ~ . - quality)
 anova(model, model.no.quality) # significant
 
-model.no.program.quality <- update(model, ~ . - program:quality)
-anova(model, model.no.program.quality) # significant
+# model.no.program.quality <- update(model, ~ . - program:quality)
+# anova(model, model.no.program.quality) # significant
 
 
 # Posthoc analysis: find least-squares means for all factors
@@ -257,15 +258,16 @@ anova(model2, model2.program) # significant
 model2 <- model2.program
 
 model2.quality <- update(model2, ~ . + quality)
-anova(model2, model2.quality) # not significant
+anova(model2, model2.quality) # significant
+model2 <- model2.quality
 
 model2.x.type <- update(model2, ~ . + x.type)
 anova(model2, model2.x.type) # not significant
 
 # Add two-way interactions, keep if significant
 model2.program.quality <- update(model2, ~ . + program * quality)
-anova(model2, model2.program.quality) # significant
-model2 <- model2.program.quality
+anova(model2, model2.program.quality) # not significant
+# model2 <- model2.program.quality
 
 model2.program.x.type <- update(model2, ~ . + program * x.type)
 anova(model2, model2.program.x.type) # not significant
@@ -278,14 +280,14 @@ model2.all <- update(model2, ~ . + program * quality * x.type)
 anova(model2, model2.all) # not significant
 
 # Remove significant factors, keep if still significant
-model2.no.quality <- update(model2, ~ . - program:quality)
-anova(model2, model2.no.quality) # significant
+# model2.no.quality <- update(model2, ~ . - program:quality)
+# anova(model2, model2.no.quality) # significant
 
 model2.no.program <- update(model2, ~ . - program)
-anova(model2, model2.no.program) # not significant
+anova(model2, model2.no.program) # significant
 
 model2.no.quality <- update(model2, ~ . - quality)
-anova(model2, model2.no.quality) # not significant
+anova(model2, model2.no.quality) # significant
 
 
 # Posthoc analysis: find least-squares means for all factors
