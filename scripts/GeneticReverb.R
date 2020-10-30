@@ -194,9 +194,9 @@ p <- ggplot(
     position = position_dodge(width = 0.9),
     width = 0.2
   ) +
+  theme_classic() +
   theme4journal +
   theme(legend.position = "bottom") +
-  theme_classic() +
   labs(
     title = "",
     x = "Quality",
@@ -329,9 +329,9 @@ p2 <- ggplot(
     position = position_dodge(width = 0.9),
     width = 0.2
   ) +
+  theme_classic() +
   theme4journal +
   theme(legend.position = "bottom") +
-  theme_classic() +
   labs(
     title = "",
     x = "Quality",
