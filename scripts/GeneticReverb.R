@@ -35,8 +35,7 @@ nQuestions <- nrow(key) # number of relevant survey questions
 ############################################################################
 ## Data Pre-Processing
 # Exclude dummy responses, unused columns
-data <- data[2:25, -31]
-# data <- data[2:nrow(data), -31]
+data <- data[2:nrow(data), -31]
 
 # Create new data table with each row containing one question
 responses <- data.frame(
