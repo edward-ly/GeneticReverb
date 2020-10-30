@@ -347,7 +347,7 @@ ggsave(
   plot = p,
   device = "pdf",
   path = "../data/",
-  width = 6,
+  width = 4.5,
   height = 4.5
 )
 ggsave(
@@ -355,6 +355,6 @@ ggsave(
   plot = p2,
   device = "pdf",
   path = "../data/",
-  width = 6,
+  width = 4.5,
   height = 4.5
 )
