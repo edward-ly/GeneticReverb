@@ -2,6 +2,7 @@
 
 This folder contains various example audio files and impulse responses to demonstrate the genetic algorithm.
 Includes anechoic audio along with real, recorded impulse responses from the [OpenAIR Database](https://openairlib.net/) for reference.
+These audio samples were used in research surveys that were conducted in April 2020 (`202004/`) and October 2020 (`202010/`).
 
 Sources (from [OpenAIR Database](https://openairlib.net/) unless otherwise specified):
 - `dry/`
@@ -48,4 +49,4 @@ The reverberated (wet) audio as a result of convolution with the dry audio and t
 
 ## Last Updated
 
-12 October 2020
+4 November 2020
