@@ -3,13 +3,20 @@
 [![View Genetic Reverb - Genetic Algorithm-based VST Reverb Plugin on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/72437-genetic-reverb-genetic-algorithm-based-vst-reverb-plugin)
 
 A VST 2 audio effect plugin written in MATLAB that uses a genetic algorithm to generate a random impulse response describing the reverberation of an artificial room, and uses the impulse response to apply convolution reverb to an audio signal in real-time.
-A MATLAB script version (`main.m`) is also available, which accepts a WAV audio file as input instead.
+A MATLAB script version (in `scripts/main.m`) is also available, which accepts a WAV audio file as input instead.
 The input is combined with the impulse response via convolution, applying the reverb effect to the pre-recorded audio.
 
 Since no two impulse responses will ever be the same, both the script and the plugin are also able to save the generated impulse responses to new files as well.
 You can then load the generated impulse response files into other programs such as my simple [IR Reverb](https://github.com/edward-ly/reverb-pd) Pure Data patch or the [Convolution Reverb](https://www.ableton.com/en/packs/convolution-reverb/) device in [Ableton Live](https://www.ableton.com/en/) to perform the same reverb effect.
 
-This plugin was selected as a finalist in the [MATLAB Plugin Student Competition](http://www.aes.org/students/awards/mpsc/) at the [147th AES Convention in New York, 2019](http://www.aes.org/events/147/).
+This plugin was also featured in the following conferences:
+
+- [147th AES Convention in New York 2019](http://www.aes.org/events/147/), October 16-19
+  - Finalist, [MATLAB Plugin Student Competition](http://www.aes.org/students/awards/mpsc/)
+- [EvoMUSART 2020](http://www.evostar.org/2020/evomusart/) (9th International Conference on Artificial Intelligence in Music, Sound, Art and Design), April 15-17
+  - *[Genetic Reverb: Synthesizing Artificial Reverberant Fields via Genetic Algorithms](https://doi.org/10.1007/978-3-030-43859-3_7)*
+
+If you wish to cite this project, please refer to the latest article.
 
 ### Demo
 
@@ -73,8 +80,8 @@ Adding automation to any of the parameters (other than "Dry/Wet" and "Output Gai
   - **Warmth** - Specifies the difference in energy levels (in decibels) of low-frequency (125-500 Hz) content compared to mid-frequency (500-2000 Hz) content.
       A value of 0 dB represents a 1:1 ratio (flat response), and increasing or decreasing this value makes the impulse response more "warm" or "brilliant", respectively.
   - **Predelay** - Specifies the amount of time delay before the arrival of the direct sound in the impulse response.
-      Higher values also contribute to the impression of larger rooms.
-      Currently available as two separate knobs in the plugin, one for each of the left and right stereo channels to delay each impulse response separately.
+      Higher values contribute to the impression of taller or wider rooms.
+      <!-- Currently available as two separate knobs in the plugin, one for each of the left and right stereo channels to delay each impulse response separately. -->
   - **Mono/Stereo** - Setting this to "mono" mode means that the genetic algorithm will generate only one impulse response to be used for both the left and right audio channels, while "stereo" mode makes the genetic algorithm generate two instead, one for each stereo channel to create a binaural effect.
   - **Normalize** - If set to "On", adjusts the gain of the two impulse responses so that their RMS levels are equal.
       Otherwise, the difference in RMS levels will only be limited by the maximum possible ILD (Interaural Level Difference, assumed to be 20 dB in the plugin).
@@ -98,4 +105,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-10 October 2020
+4 November 2020
