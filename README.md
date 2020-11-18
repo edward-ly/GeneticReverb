@@ -9,18 +9,21 @@ The input is combined with the impulse response via convolution, applying the re
 Since no two impulse responses will ever be the same, both the script and the plugin are also able to save the generated impulse responses to new files as well.
 You can then load the generated impulse response files into other programs such as my simple [IR Reverb](https://github.com/edward-ly/reverb-pd) Pure Data patch or the [Convolution Reverb](https://www.ableton.com/en/packs/convolution-reverb/) device in [Ableton Live](https://www.ableton.com/en/) to perform the same reverb effect.
 
-This plugin was also featured in the following conferences:
+This plugin was also featured in the following conferences and journals:
 
 - [147th AES Convention in New York 2019](http://www.aes.org/events/147/), October 16-19
   - Finalist, [MATLAB Plugin Student Competition](http://www.aes.org/students/awards/mpsc/)
 - [EvoMUSART 2020](http://www.evostar.org/2020/evomusart/) (9th International Conference on Artificial Intelligence in Music, Sound, Art and Design), April 15-17
   - *[Genetic Reverb: Synthesizing Artificial Reverberant Fields via Genetic Algorithms](https://doi.org/10.1007/978-3-030-43859-3_7)*
+- [Entropy](https://www.mdpi.com/journal/entropy) Special Issue ["Artificial Intelligence and Complexity in Art, Music, Games and Design"](https://www.mdpi.com/journal/entropy/special_issues/ai_complexity) (November 2020)
+  - *[Generating Artificial Reverberation via Genetic Algorithms for Real-Time Applications](https://doi.org/10.3390/e22111309)*
 
-If you wish to cite this project, please refer to the latest article.
+If you wish to cite this project, please refer to the latter article.
 
 ### Demo
 
-A video explaining and demonstrating (an older version of) the plugin is below:
+A video explaining and demonstrating the plugin is below.
+Please note that the video refers to an outdated version of the plugin.
 
 [![Genetic Reverb](http://img.youtube.com/vi/Ef1d6nr7TqE/0.jpg)](http://www.youtube.com/watch?v=Ef1d6nr7TqE "Genetic Reverb")
 
@@ -87,6 +90,7 @@ Adding automation to any of the parameters (other than "Dry/Wet" and "Output Gai
       Otherwise, the difference in RMS levels will only be limited by the maximum possible ILD (Interaural Level Difference, assumed to be 20 dB in the plugin).
       Works in "stereo" mode only.
   - **Quality** - Specifies the quality of the reverb by changing the amount of time given to the genetic algorithm to produce an impulse response (more specifically, changing various parameters in the genetic algorithm such as the population size or the maximum number of generations to execute).
+      The higher the quality, the closer the output IR(s) will be to the values specified by the user for the above parameters.
 - Post-Processing Parameters
   - **Output Gain** - Adjusts the gain of the wet signal before being mixed with the dry input signal.
   - **Dry/Wet** - Adjusts the balance between the dry input signal and the wet processed signal.
@@ -105,4 +109,4 @@ See [LICENSE](./LICENSE) for details.
 
 ## Last Updated
 
-4 November 2020
+18 November 2020
