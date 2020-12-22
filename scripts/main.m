@@ -120,8 +120,8 @@ if ~outFileName, fprintf('No file selected, exiting...\n'); return; end
 %% Impulse Response Post-Processing
 numSamples = irParams.NUM_SAMPLES;
 
-% Normalize impulse response
-irBest = normalize_signal(irBest, 0.99);
+% Normalize impulse response gain
+irBest = normalize_signal(irBest, 0.25);
 
 % Add Predelay
 irBest = [zeros(irParams.PREDELAY, 1); irBest(1:(end - irParams.PREDELAY))];
@@ -140,8 +140,10 @@ for i = 1:numAudioChannels
   wetSignal(:, i) = conv(irBest, drySignal(:, i));
 end
 
-% Normalize audio
-if NORMALIZE_AUDIO, wetSignal = normalize_signal(wetSignal, 0.99, 'all'); end
+% Normalize wet signal only to prevent clipping
+if max(abs(wetSignal), [], 'all') > 0.99
+  wetSignal = normalize_signal(wetSignal, 0.99, 'all');
+end
 
 %% Save Output to Files
 % Impulse response to WAV file
