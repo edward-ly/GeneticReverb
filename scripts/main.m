@@ -57,8 +57,6 @@ NORMALIZE_AUDIO = true;    % Normalize audio after applying reverb
 VERBOSE = true;            % Display genetic algorithm status messages
 SHOW_FIGURES = true;       % Display figures plotting IR and output audio
 
-WARMTH_AMOUNT = 50;        % Amount of warmth applied to IR (%)
-
 %% Genetic Algorithm Parameters
 % POPULATION_SIZE = Number of impulse responses in population
 % SELECTION_SIZE = Number of impulse responses to keep in each generation
