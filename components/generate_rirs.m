@@ -57,8 +57,8 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
       [newIRs(:, 1), newIRs(:, 2)] = limit_ild(newIRs(:, 1), newIRs(:, 2));
     end
 
-    % Normalize to prevent clipping
-    newIRs = normalize_signal(newIRs, 0.99);
+    % Adjust gains to more reasonable levels
+    newIRs = normalize_signal(newIRs, 0.25);
 
     % Resample/resize impulse responses, assign to output
     irLeft = resample_ir(plugin, newIRs(:, 1), sampleRate)';
@@ -67,8 +67,8 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     % Generate new impulse response
     newIR = genetic_rir(gaParams, irParams);
 
-    % Normalize to prevent clipping
-    newIR = normalize_signal(newIR, 0.99);
+    % Adjust gains to more reasonable levels
+    newIR = normalize_signal(newIR, 0.25);
 
     % Resample/resize impulse response
     ir = resample_ir(plugin, newIR, sampleRate)';
