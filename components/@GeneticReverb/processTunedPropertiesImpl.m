@@ -15,7 +15,5 @@ function processTunedPropertiesImpl(plugin)
   if propChangeSave, save_irs(plugin, sampleRate); end
 
   % Generate new impulse responses
-  if propChangeIR
-    process_ir_change(plugin, sampleRate);
-  end
+  if propChangeIR, process_ir_change(plugin, sampleRate); end
 end
