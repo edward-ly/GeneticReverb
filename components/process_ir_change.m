@@ -18,7 +18,7 @@ function process_ir_change(plugin, sampleRate)
     plugin.IR_NUM_SAMPLES * sampleRate / plugin.IR_SAMPLE_RATE);
 
   % Determine filter with smallest possible buffer length
-  filterIndex = ceil(log2(plugin.NUM_SAMPLES / 22500));
+  filterIndex = nextpow2(plugin.NUM_SAMPLES / 22500);
   if filterIndex < 0, filterIndex = 0; end
 
   % Extend NUM_SAMPLES to length of an entire buffer
