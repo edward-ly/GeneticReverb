@@ -30,14 +30,14 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     gaParams = plugin.GA_PARAMS.Low;
   end
 
-  % Calculate number of predelay samples
-  pDelay = round(plugin.PREDELAY * sampleRate / 1000);
+  % Calculate number of predelay samples (IR)
+  pDelayIR = round(plugin.PREDELAY * plugin.IR_SAMPLE_RATE / 1000);
 
   % Struct for IR parameters
   irParams = struct( ...
     'SAMPLE_RATE', plugin.IR_SAMPLE_RATE, ...
     'NUM_SAMPLES', plugin.IR_NUM_SAMPLES, ...
-    'PREDELAY', pDelay, ...
+    'PREDELAY', pDelayIR, ...
     'T60', plugin.T60, ...
     'EDT', pEDT, ...
     'C80', plugin.C80, ...
@@ -76,6 +76,9 @@ function [irLeft, irRight] = generate_rirs(plugin, sampleRate)
     % Assign IR to both channels
     irLeft = ir; irRight = ir;
   end
+
+  % Calculate number of predelay samples (plugin)
+  pDelay = round(plugin.PREDELAY * sampleRate / 1000);
 
   % Apply predelay
   irLeft = [zeros(1, pDelay), irLeft(1:(end - pDelay))];
