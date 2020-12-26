@@ -1,19 +1,22 @@
-function process_ir_change(plugin, sampleRate)
+function process_ir_change(plugin)
 % PROCESS_IR_CHANGE Handles plugin process for generating new IRs
 %
 % Input arguments:
 % plugin = plugin object containing IR properties
-% sampleRate = sample rate of plugin
 %
   % Require all arguments
-  if nargin < 2, error('Not enough input arguments.'); end
+  if nargin < 1, error('Not enough input arguments.'); end
 
   % =========================================================================
+
+  % Retrieve current sample rate from host
+  plugin.SAMPLE_RATE = getSampleRate(plugin);
 
   % Calculate number of samples needed for impulse response
   % (before and after resampling)
   plugin.IR_NUM_SAMPLES = ceil(1.5 * plugin.T60 * plugin.IR_SAMPLE_RATE);
-  numSamples = ceil(plugin.IR_NUM_SAMPLES * sampleRate / plugin.IR_SAMPLE_RATE);
+  numSamples = ceil( ...
+    plugin.IR_NUM_SAMPLES * plugin.SAMPLE_RATE / plugin.IR_SAMPLE_RATE);
 
   % Determine filter with smallest possible buffer length
   filterIndex = nextpow2(numSamples / 22500);
@@ -23,7 +26,7 @@ function process_ir_change(plugin, sampleRate)
   plugin.NUM_SAMPLES = 22500 * 2 ^ filterIndex;
 
   % Generate new impulse responses
-  [irLeft, irRight] = generate_rirs(plugin, sampleRate);
+  [irLeft, irRight] = generate_rirs(plugin, plugin.SAMPLE_RATE);
 
   % Assign new IRs to appropriate filters
   if plugin.NUM_SAMPLES == 22500

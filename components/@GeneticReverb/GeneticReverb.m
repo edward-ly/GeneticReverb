@@ -193,6 +193,9 @@ classdef (StrictDefaults) GeneticReverb < audioPlugin & matlab.System
     pFIRFilterLeft1440000; pFIRFilterRight1440000;
     pFIRFilterLeft2880000; pFIRFilterRight2880000;
     
+    % Track sample rate of plugin/host application
+    SAMPLE_RATE = 44100;
+
     % Track number of required samples in impulse response
     % (before and after resampling)
     IR_NUM_SAMPLES = 24000;

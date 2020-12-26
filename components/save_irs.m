@@ -1,4 +1,4 @@
-function save_irs(plugin, sampleRate)
+function save_irs(plugin)
 % SAVE_IRS Save current impulse responses in plugin to file
 %
 % Input arguments:
@@ -6,7 +6,7 @@ function save_irs(plugin, sampleRate)
 % sampleRate = sample rate of plugin
 %
   % Require all arguments
-  if nargin < 2, error('Not enough input arguments.'); end
+  if nargin < 1, error('Not enough input arguments.'); end
 
   % =========================================================================
 
@@ -58,7 +58,7 @@ function save_irs(plugin, sampleRate)
     'W' sprintf('%.3f', plugin.WARMTH)   '_' ...
     'D' sprintf('%.3f', plugin.PREDELAY) '_' ...
     numChannels '_' ...
-    sprintf('%.0f', sampleRate) 'Hz_' ...
+    sprintf('%.0f', plugin.SAMPLE_RATE) 'Hz_' ...
     sprintf('%010u', id) '.bin'];
 
   % Write to binary file ('audiowrite' function currently not

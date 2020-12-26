@@ -80,5 +80,5 @@ function setupImpl(plugin, ~)
     'PartitionLength', plugin.PARTITION_SIZE);
 
   % Generate an initial IR with initial settings
-  process_ir_change(plugin, getSampleRate(plugin));
+  process_ir_change(plugin);
 end

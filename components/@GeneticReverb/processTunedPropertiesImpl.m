@@ -8,12 +8,9 @@ function processTunedPropertiesImpl(plugin)
   % Detect change in "toggle to generate IRs" parameter
   propChangeIR = isChangedProperty(plugin, 'NEW_IR');
 
-  % Get current sample rate of plugin
-  sampleRate = getSampleRate(plugin);
-
   % Save current impulse responses to file
-  if propChangeSave, save_irs(plugin, sampleRate); end
+  if propChangeSave, save_irs(plugin); end
 
   % Generate new impulse responses
-  if propChangeIR, process_ir_change(plugin, sampleRate); end
+  if propChangeIR, process_ir_change(plugin); end
 end
