@@ -12,10 +12,8 @@ function process_ir_change(plugin, sampleRate)
 
   % Calculate number of samples needed for impulse response
   % (before and after resampling)
-  plugin.IR_NUM_SAMPLES = ceil( ...
-    1.5 * plugin.T60 * plugin.IR_SAMPLE_RATE);
-  numSamples = ceil( ...
-    plugin.IR_NUM_SAMPLES * sampleRate / plugin.IR_SAMPLE_RATE);
+  plugin.IR_NUM_SAMPLES = ceil(1.5 * plugin.T60 * plugin.IR_SAMPLE_RATE);
+  numSamples = ceil(plugin.IR_NUM_SAMPLES * sampleRate / plugin.IR_SAMPLE_RATE);
 
   % Determine filter with smallest possible buffer length
   filterIndex = nextpow2(numSamples / 22500);
@@ -48,11 +46,9 @@ function process_ir_change(plugin, sampleRate)
     plugin.pFIRFilterRight720000.Numerator = irRight(1:720000);
   elseif plugin.NUM_SAMPLES == 1440000
     plugin.pFIRFilterLeft1440000.Numerator = irLeft(1:1440000);
-    plugin.pFIRFilterRight1440000.Numerator = ...
-      irRight(1:1440000);
+    plugin.pFIRFilterRight1440000.Numerator = irRight(1:1440000);
   elseif plugin.NUM_SAMPLES == 2880000
     plugin.pFIRFilterLeft2880000.Numerator = irLeft(1:2880000);
-    plugin.pFIRFilterRight2880000.Numerator = ...
-      irRight(1:2880000);
+    plugin.pFIRFilterRight2880000.Numerator = irRight(1:2880000);
   end
 end
