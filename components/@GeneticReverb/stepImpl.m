@@ -45,4 +45,10 @@ function out = stepImpl(plugin, in)
 
   % Apply dry/wet mix
   out = in .* (1 - plugin.MIX / 100) + out .* plugin.MIX ./ 100;
+
+  % Apply ILD via simple amplitude panning
+  angle = atan(10 ^ (plugin.BALANCE / 20));
+  gainL = sqrt(2) * cos(angle);
+  gainR = sqrt(2) * sin(angle);
+  out = bsxfun(@times, out, [gainL gainR]);
 end
